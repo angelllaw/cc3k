@@ -26,7 +26,7 @@ void Floor::init(string map) {
 
     for (int row = 0; row < height; row++) {
         vector<Tile *> tmp;
-        for (int col = 0; col < height; col++) {
+        for (int col = 0; col < width; col++) {
             char c = map[row * width + col];
             tmp.push_back(new Tile(row, col, getTileId(c)));
         }
