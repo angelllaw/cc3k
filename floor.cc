@@ -1,26 +1,36 @@
 #include "floor.h"
 #include "tile.h"
+
+#include <vector>
 #include <iostream>
 using namespace std;
 
-Floor::Floor(int width, int height) : width{width}, height{height}, theFloor{vector<vector<Tile>>(height)} {
-    for (auto &row : theFloor) {
-        for (int col = 0; col < width; ++col) {
-            row.emplace_back(Tile{}); // Q: does Tile need to be a pointer? or else will it be popped off the stack?
-        }
-    }
-    // results in an empty width x height grid of Tiles
+// how do we initialize our floor to have the default map.
+// idea: have a string with our default map
+// make the string into a stringstream, and read off one char at a time to populate the vector we want to initialize
+
+Floor::Floor(int width, int height) : width{width}, height{height} {}
+
+int getTileId(char c) {
+    int id = 0;
+    if (c == ' ') id = 0; 
+    if (c == '-') id = 1;
+    if (c == '|') id = 0;
+    if (c == '#') id = 0;
+    if (c == '+') id = 0;
+    return 0;
 }
 
 // reads in a string map and sets "theFloor" tile IDs
 void Floor::init(string map) {
-    for (int row = 0; row < height; ++row) {
-        for (int col = 0; col < width; ++col) {
-            // set tile id to whatever the char is
-            char c = map[row * width + col]; // TODO: check if this formula is right
 
-            theFloor[row][col].setId(c); // TODO: change c to be a specific ID num (im just lazy)
+    for (int row = 0; row < height; row++) {
+        vector<Tile *> tmp;
+        for (int col = 0; col < height; col++) {
+            char c = map[row * width + col];
+            tmp.push_back(new Tile(row, col, getTileId(c)));
         }
+        theFloor.push_back(tmp);
     }
 }
 
@@ -30,5 +40,3 @@ void Floor::print() {
             cout << col; // TODO: implement the override for tile "<<" operator
     }
 }
-
-
