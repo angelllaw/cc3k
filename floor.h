@@ -19,6 +19,7 @@ METHODS:
         - will be responsible to generating the items and enemies
  */
 
+
 class Player;
 class Tile;
 class Chamber;
@@ -27,10 +28,28 @@ class Floor {
         Player* PC;
         vector<vector<Tile *>> map;
         vector<Chamber *> chambers;
+=======
+#include <string>
+#include <vector>
+#include <map>
+
+class Tile;
+
+class Floor {
+        // TODO: add these fields to UML
+        const int width = 79;
+        const int height = 25;
+        std::vector<std::vector<Tile>> theFloor;
+
+        
+
+        // needs a player pointer
+
         void spawnCoords();
     public:
+        Floor(int width, int height);
         void updateFloor();
-        void init();
+        void init(string map);
         void print();
         bool isValidMove(int x, int y);
 
