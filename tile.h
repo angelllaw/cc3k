@@ -12,8 +12,7 @@ class Item;
 // 2 - horizental wall (|)
 // 3 - passage (#)
 // 4 - door (+)
-// 5 - points to item (item pointer will be not a nullptr)
-// 6 - points to enemy (enemy pointer will be not a nullptr)
+// 5 - moveable tile (nothing currently on it)
 
 // Since tiles "own" the enemy and item, tiles must be responsible for freeing the item / enemy after they die
 class Tile {
@@ -27,8 +26,6 @@ class Tile {
     void removeEntities(); // frees the *item AND *enemy. Set tile id back to 0.
 };
 
-#endif
-=======
 class Tile {
 
         int id = 0; // 0 should mean empty tile
