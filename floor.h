@@ -61,6 +61,7 @@ class Floor {
             "|-----------------------------------------------------------------------------|";
 
         void spawnCoords();
+        void setChambers();
     public:
         Floor(int width, int height);
         void updateFloor();
