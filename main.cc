@@ -6,8 +6,8 @@
 using namespace std;
 
 int main (int argc, char *argv[]) {
-    const int width = 47; // 79
-    const int height = 10; // 25
+    const int width = 79; // 79
+    const int height = 25; // 25
 
 
     Floor f{width, height};

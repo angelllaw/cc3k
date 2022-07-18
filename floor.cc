@@ -108,8 +108,7 @@ void Floor::setChambers(string floorMap) {
 } */
 
 // Benry's way
-// invariant: floorplan is the same for every floor given to game
-// chambers numbered 1...x
+// invariant: chambers are numbered 1...x
 void Floor::setChambers(string map) {
     for (int row = 0; row < height; ++row) {
         for (int col = 0; col < width; ++col) {
@@ -118,8 +117,10 @@ void Floor::setChambers(string map) {
             if ('0' <= c && c <= '9') {
                 if ((c - '0') > chambers.size()) {
                     chambers.emplace_back(new Chamber{});
+                    // cout << "created new chamber" << endl;
                 }
                 chambers[c - '0' - 1]->addTile(idx);
+                // cout << "added (" << col << ", " << row << ") to chamber " << c - '0' - 1 << endl;
             }
         }
     }
