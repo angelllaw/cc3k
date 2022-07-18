@@ -33,7 +33,7 @@ class Floor {
         vector<vector<Tile *>> theFloor;
         vector<Chamber *> chambers;
 
-        string defaultMap = 
+        string floorMap = 
             "|-----------------------------------------------------------------------------|"
             "|                                                                             |"
             "| |--------------------------|        |-----------------------|               |"
@@ -95,11 +95,6 @@ class Floor {
         void init(string map);
         void print();
         bool isValidMove(int x, int y);
-        int randomNum(int top, int bottom); // starting at 0
-
-        void testSetChambers() {
-                setChambers(numberedMap);
-        }
 };
 
 #endif

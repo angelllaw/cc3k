@@ -13,8 +13,6 @@ int main (int argc, char *argv[]) {
     Floor f{width, height};
     f.print();
 
-    f.testSetChambers(); // delete
-
     if (argc == 2) { // optional cmd line arg
 
     } else {

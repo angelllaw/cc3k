@@ -3,16 +3,10 @@
 #include "chamber.h"
 
 #include <vector>
-#include <map>
 #include <iostream>
-#include <ctime>
-#include <cstdlib>
 #include <string>
-#include <stdexcept>
 #include <vector>
 #include <algorithm>
-#include <random>
-#include <chrono>
 using namespace std;
 
 // how do we initialize our floor to have the default map.
@@ -20,7 +14,7 @@ using namespace std;
 // make the string into a stringstream, and read off one char at a time to populate the vector we want to initialize
 
 Floor::Floor(int width, int height) : width{width}, height{height} {
-    init(defaultMap);
+    init(floorMap);
 }
 
 TileType getTileId(char c) {
@@ -124,19 +118,5 @@ void Floor::setChambers(string map) {
             }
         }
     }
-}
-
-// This is an extremely expensive and dumb way of generating random numbers
-// This works well for returning a random element in an Array
-//    - for returning a tile in a Chamber array..
-//    - for returning a direction in a direction Enum
-//    - for returning a chamber in a floor array of chambers
-int Floor::randomNum(int bottom, int top) {
-    vector<int> v;
-    for (int i = bottom; i < top; i++) { v.push_back(i); }
-    unsigned seed = chrono::system_clock::now().time_since_epoch().count();
-	default_random_engine rng{seed};
-    std::shuffle( v.begin(), v.end(), rng );
-    return v[0];
 }
 

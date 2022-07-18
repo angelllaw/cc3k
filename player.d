@@ -1,1 +1,1 @@
-player.o: player.cc
+player.o: player.cc player.h character.h random.h info.h

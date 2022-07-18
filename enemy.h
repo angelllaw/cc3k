@@ -4,10 +4,12 @@
 #include "character.h"
 
 class Enemy : public Character {
-    char e = 'e'; // DELETE
+    
+    void getAttacked(int damage) override;
+
     public:
 
-    ~Enemy(); // should be virtual, just for now
+    // ~Enemy(); // should be virtual, just for now
 };
 
 #endif

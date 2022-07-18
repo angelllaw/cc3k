@@ -4,6 +4,10 @@
 #include "character.h"
 
 class Player : public Character {
+
+    bool hasBarrierSuit = false;
+
+    void getAttacked(int damage) override; 
 };
 
 #endif
