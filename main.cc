@@ -1,5 +1,7 @@
 #include <iostream>
 #include "floor.h"
+#include "item.h"
+#include "enemy.h"
 using namespace std;
 
 int main (int argc, char *argv[]) {
@@ -8,6 +10,7 @@ int main (int argc, char *argv[]) {
 
 
     Floor f{width, height};
+    f.print();
 
     if (argc == 2) { // optional cmd line arg
 

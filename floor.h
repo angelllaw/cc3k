@@ -1,6 +1,11 @@
 #ifndef FLOOR_H
 #define FLOOR_H
 
+#include <string>
+#include <vector>
+#include <map>
+using namespace std;
+
 /* 
 Floor should have:
 FIELDS:
@@ -15,11 +20,6 @@ METHODS:
 - init() creates the vector<vector<tile *>>
         - will be responsible to generating the items and enemies
  */
-
-#include <string>
-#include <vector>
-#include <map>
-using namespace std;
 
 class Player;
 class Tile;
@@ -67,7 +67,7 @@ class Floor {
         void init(string map);
         void print();
         bool isValidMove(int x, int y);
-
+        int randomNum(int top, int bottom); // starting at 0
 };
 
 #endif
