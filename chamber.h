@@ -5,6 +5,9 @@
 
 class Chamber {
     std::vector<int> tiles;
+
+    public:
+        void addTile(int idx);
 };
 
 #endif

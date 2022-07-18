@@ -55,7 +55,9 @@ void Floor::print() {
     }
 }
 
+/*
 // NOTE: in this fn, tiles vector in Chamber class contains ints which are the idx in the string
+// BUG: if the idx cannot find any neighbors in the dict map, it makes a new chamber
 void Floor::setChambers(string floorMap) {    
     int chamberNum = 0;
     map<int, int> chamberMap;
@@ -64,6 +66,7 @@ void Floor::setChambers(string floorMap) {
     for (int row = 0; row < height; ++row) {
         for (int col = 0; col < width; ++col) {
             int idx = row * width + col;
+            cout << "idx: " << idx << endl;
             char c = floorMap[idx];
             if (c == '.') {
                 // check if theres neighboring '.' 
@@ -72,14 +75,14 @@ void Floor::setChambers(string floorMap) {
                     for (int x = col - 1; x <= col + 1 && x >= 0 && x < width; ++x) {
                         if (row == y && col == x) continue;
                         int neighborIdx = y * width + x;
-                        if (floorMap[neighborIdx] == '.') {
+                        if (floorMap[neighborIdx] == '.' && chamberMap.count(neighborIdx) != 0) {
+                            // if neighbor is a '.' and is in the dict map
                             hasNeighbor = true;
-                            cout << "found neighbor at (" << x << ", " << "y)" << endl;
-                            // the first '.' we come acros should be in the map
+                            cout << "found neighbor at (" << x << ", " << y << ")" << endl;
                             // val = chamberNum of neighborIdx
                             // add this idx to tile vector in chamber[val]
-                            chambers[chamberMap[neighborIdx]]->tiles.emplace_back(idx);
-                            cout << "adding " + idx + " to chamber " + chamberMap[neighborIdx] << endl; 
+                            chambers[chamberMap[neighborIdx]]->addTile(idx);
+                            cout << "adding " << "(" << row << ", " <<  col <<")" << " to chamber " << chamberMap[neighborIdx] << endl; 
                             // then add this idx to map with same val as neighbor idx
                             chamberMap[idx] = chamberMap[neighborIdx];
                             break;
@@ -95,14 +98,33 @@ void Floor::setChambers(string floorMap) {
                     chambers.emplace_back(new Chamber{});
                     cout << "created new chamber" << endl;
                     // add idx to tiles vector
-                    chambers[chamberNum]->tiles.emplace_back(idx);
-                    cout << "adding " + idx + " to chamber " + chamberNum << endl; 
+                    chambers[chamberNum]->addTile(idx);
+                    cout << "adding " << "(" << row << ", " <<  col <<")" << " to chamber " << chamberNum << endl; 
                     ++chamberNum;
                 }
             }
         }
     }
+} */
+
+// Benry's way
+// invariant: floorplan is the same for every floor given to game
+// chambers numbered 1...x
+void Floor::setChambers(string map) {
+    for (int row = 0; row < height; ++row) {
+        for (int col = 0; col < width; ++col) {
+            int idx = row * width + col;
+            char c = map[idx];
+            if ('0' <= c && c <= '9') {
+                if ((c - '0') > chambers.size()) {
+                    chambers.emplace_back(new Chamber{});
+                }
+                chambers[c - '0' - 1]->addTile(idx);
+            }
+        }
+    }
 }
+
 // This is an extremely expensive and dumb way of generating random numbers
 // This works well for returning a random element in an Array
 //    - for returning a tile in a Chamber array..
