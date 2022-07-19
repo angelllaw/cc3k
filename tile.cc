@@ -89,3 +89,8 @@ std::ostream &operator<<(std::ostream &out, const Tile &td) {
     }
     return out;
 }
+
+
+void Tile::setItem(unique_ptr<Item> i) {
+    item = move(i);
+}
