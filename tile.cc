@@ -90,6 +90,9 @@ std::ostream &operator<<(std::ostream &out, const Tile &td) {
     return out;
 }
 
+void Tile::setEnemy(unique_ptr<Enemy> e) {
+    enemy = move(e);
+}
 
 void Tile::setItem(unique_ptr<Item> i) {
     item = move(i);
