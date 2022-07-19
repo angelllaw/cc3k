@@ -3,13 +3,7 @@
 
 // enum class ItemType { RH, BA, BD, PH, WA, WD, NormalGold, SmallHorde, MerchantHorde, DragonHorde };
 
-Consumable::Consumable(ItemType item) {
-
-    // initialize effect
-    effect->hp = 0;
-    effect->atk = 0;
-    effect->def = 0;
-    effect->gold = 0;
+Consumable::Consumable(ItemType item) : effect{new Info {0, 0 , 0, 0}}{
 
     switch (item)  {
         // potions

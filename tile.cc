@@ -38,6 +38,10 @@ unique_ptr<Enemy> &Tile::getEnemy() {
     return enemy;
 }
 
+unique_ptr<Item> &Tile::getItem() {
+    return item;
+}
+
 State Tile::getState() {
     return *pos;
 }
@@ -83,17 +87,11 @@ std::ostream &operator<<(std::ostream &out, const Tile &td) {
             } else if (td.item.get() == nullptr) {
                 out << 'E'; // HAVEN'T ADDED ENEMY IDENTIFYING ENUMS YET, update!
             } else {
-                out << 'I'; // UPDATE with item enum later
+                out << *td.item;
+                // out << 'I'; // UPDATE with item enum later
             }
             break;
     }
     return out;
 }
 
-void Tile::setEnemy(unique_ptr<Enemy> e) {
-    enemy = move(e);
-}
-
-void Tile::setItem(unique_ptr<Item> i) {
-    item = move(i);
-}
