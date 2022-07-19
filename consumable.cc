@@ -61,4 +61,15 @@ Consumable::Consumable(ItemType item) {
     }
 }
 
+void Consumable::useOn(Human *p) {
 
+}
+void Consumable::useOn(Elf *p) {
+    
+}
+void Consumable::useOn(Dwarf *p) {
+
+} 
+void Consumable::useOn(Orc *p) {
+
+}

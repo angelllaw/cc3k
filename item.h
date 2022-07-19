@@ -24,7 +24,7 @@ class Item {
     virtual void useOn(Dwarf *p) = 0; 
     virtual void useOn(Orc *p) = 0; 
     // UML has getState (says item should know its coords, is this unnecessary?)
-    virtual ~Item() = 0;
+    virtual ~Item();
 };
 
 #endif
