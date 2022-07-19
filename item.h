@@ -19,12 +19,12 @@ class Item {
     ItemType id;
 
     public:
-    /* virtual void useOn(Human *p);
-    virtual void useOn(Elf *p); 
-    virtual void useOn(Dwarf *p); 
-    virtual void useOn(Orc *p);  */
+    virtual void useOn(Human *p) = 0;
+    virtual void useOn(Elf *p) = 0; 
+    virtual void useOn(Dwarf *p) = 0; 
+    virtual void useOn(Orc *p) = 0; 
     // UML has getState (says item should know its coords, is this unnecessary?)
-    virtual ~Item() = 0;
+    virtual ~Item();
 };
 
 #endif
