@@ -29,8 +29,9 @@ class Tile {
     State getState();
     void moveEnemy(std::unique_ptr<Enemy> &other);
     void moveItem(std::unique_ptr<Item> &other);
-    void setEnemy(unique_ptr<Enemy> e);
-    void setItem(unique_ptr<Item> i);
+    
+    void setEnemy(std::unique_ptr<Enemy> e);
+    void setItem(std::unique_ptr<Item> i);
 
     friend std::ostream &operator<<(std::ostream &out, const Tile &td);
 };
