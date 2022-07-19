@@ -10,6 +10,7 @@
 #include <vector>
 #include <iostream>
 #include <string>
+#include <cstdlib>
 
 using namespace std;
 
@@ -34,14 +35,20 @@ TileType getTileId(char c) {
 // reads in a string map and sets "theFloor" tile IDs
 void Floor::init(string map) {
 
+    // generate the actual floor & tiles
     for (int row = 0; row < height; row++) {
         vector<Tile *> tmp;
         for (int col = 0; col < width; col++) {
             char c = map[row * width + col];
-            tmp.push_back(new Tile(row, col, getTileId(c)));
+            tmp.emplace_back(new Tile(row, col, getTileId(c)));
         }
-        theFloor.push_back(tmp);
+        theFloor.emplace_back(tmp);
     }
+    // 1. spawn player character location
+    // 2. spawn stairway location
+    // 3. a) spawn potions & gold
+    // 3. b) spawn enemies
+
 }
 
 void Floor::print() {
@@ -145,3 +152,25 @@ bool Floor::isValidMove(State &pos) {
     Tile *t = theFloor[pos.y][pos.x];
     return t->getType() == TileType::MoveableTile && !t->hasEnemy() && !t->hasItem(); 
 }
+
+int Floor::getChamberSize(int idx) {
+    return chambers.at(idx)->getSize();
+}
+
+int Floor::getStringIdx(int chamber, int idx) {
+    return chambers.at(chamber)->getStrIdx(idx);
+}
+
+Tile* Floor::getTile(int idxNum) {
+    int x = idxNum % width;
+    int y = (idxNum - x) / height;
+    return theFloor.at(y).at(x);
+}
+
+bool Floor::isValidMove(int idxNum) {
+    int x = idxNum % width;
+    int y = (idxNum - x) / height;
+    State s{x, y};
+    return isValidMove(s);
+}
+
