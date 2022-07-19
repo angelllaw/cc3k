@@ -8,36 +8,38 @@
 
 using namespace std;
 
-// enum class ItemType { RH, BA, BD, PH, WA, WD, NormalGold, SmallHorde, MerchantHorde, DragonHorde };
 
 ItemFactory::ItemFactory(Floor* floor) {
     Random r;
-
     // 1. generate 10 potions
     vector<ItemType> potions { ItemType::RH, ItemType::BA, ItemType::BD, ItemType::PH, ItemType::WA, ItemType::WD };
 
     for (int i = 0; i < 10; i++) {
-        int idx = r.randomNum(6);
-        ItemType cur = potions[idx]; // the potion to be placed
+        int idx = r.randomNum(6); // random potion
+        ItemType cur = potions[idx];
 
-        while (true) {
-            int cIdx = r.randomNum(5);
-            int sizeOfChamber = floor->getChamberSize(cIdx);
-            int tileIdx = r.randomNum(sizeOfChamber);
-            int stringIdx = floor->getStringIdx(cIdx, tileIdx); // now we have the string index of a specific tile
-            
-            if (floor->isValidMove(stringIdx)) { // tile is empty
-                // construct a new cur
-                unique_ptr<Item> i;
-                i = unique_ptr<Item> (new Consumable(cur));
-                
-                // still need to set the tile to hold i =====
-                // - get a reference to the tile ============
-                break;
-            }
-        }
+        int stringIdx = r.randomStrIdx(floor); // get random valid string index
+        Tile *toPlace = floor->getTile(stringIdx); // get tile
+        toPlace->setItem(unique_ptr<Item> (new Consumable(cur))); // place item
     }
 
     // 2. generate 10 treasures
+    vector<ItemType> treasures { ItemType::NormalGold, ItemType::NormalGold, ItemType::NormalGold, ItemType::NormalGold,  
+                                ItemType::NormalGold, ItemType::DragonHorde, ItemType::SmallHorde, ItemType::SmallHorde };
+
+    for (int i = 0; i < 10; i++) {
+        int idx = r.randomNum(8); // random treasure
+        ItemType cur = treasures[idx];
+
+        int stringIdx = r.randomStrIdx(floor);
+        Tile *toPlace = floor->getTile(stringIdx);
+        toPlace->setItem(unique_ptr<Item> (new Consumable(cur))); 
+    }
+
+    // 3. place compass
+    int compassStrIdx = r.randomStrIdx(floor);
+    Tile *toPlace = floor->getTile(compassStrIdx);
+    toPlace->setItem(unique_ptr<Item> (new Consumable(ItemType::Compass)));
+
 }
 

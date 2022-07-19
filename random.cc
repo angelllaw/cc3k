@@ -1,4 +1,5 @@
 #include "random.h"
+#include "floor.h"
 
 #include <vector>
 #include <iostream>
@@ -32,6 +33,17 @@ int Random::randomNum(int top) {
 	default_random_engine rng{seed};
     std::shuffle( v.begin(), v.end(), rng );
     return v[0];
+}
+
+int Random::randomStrIdx(Floor *floor) {
+    while (true) {
+        int cIdx = randomNum(5); // random chamber
+        int sizeOfChamber = floor->getChamberSize(cIdx);
+        int tileIdx = randomNum(sizeOfChamber); // random tile in chamber
+        int stringIdx = floor->getStringIdx(cIdx, tileIdx); // get string index of a specific tile
+
+        if (floor->isValidMove(stringIdx)) return stringIdx;
+    }
 }
 
 vector<int> Random::randomArr(int top) {

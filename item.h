@@ -12,11 +12,11 @@ class Elf;
 class Dwarf;
 class Orc;
 
-enum class ItemType { RH, BA, BD, PH, WA, WD, NormalGold, SmallHorde, MerchantHorde, DragonHorde };
-enum class ItemClass { Consumable, DragonBaby, Compass };
+enum class ItemType { RH, BA, BD, PH, WA, WD, NormalGold, SmallHorde, MerchantHorde, DragonHorde, DragonBaby, Compass };
 
 class Item {
-    ItemClass id;
+    protected:
+    ItemType id;
 
     public:
     virtual void useOn(Human *p);
