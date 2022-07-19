@@ -3,11 +3,24 @@
 #include "enemy.h"
 #include "state.h"
 #include <iostream>
+#include <memory>
+
+#include <cassert>
+
 using namespace std;
 
-Tile::Tile(int x, int y, TileType type) : pos{new State{x, y}}, type{type} {}
+Tile::Tile(int x, int y, TileType type) : pos{make_unique<State>(State{x, y})}, type{type} {}
 
 Tile::~Tile() {}
+
+void Tile::removeEntities() {
+    item.reset(nullptr); // deletes item and sets item to nullptr
+    enemy.reset(nullptr); // delete enemy
+}
+
+void Tile::setId(TileType type) {
+    this->type = type;
+}
 
 TileType Tile::getType() {
     return type;
@@ -15,6 +28,35 @@ TileType Tile::getType() {
 
 bool Tile::hasEnemy() {
     return (type == TileType::MoveableTile) && (enemy.get() != nullptr);
+}
+
+bool Tile::hasItem() {
+    return (type == TileType::MoveableTile) && (item.get() != nullptr);
+}
+
+unique_ptr<Enemy> &Tile::getEnemy() {
+    return enemy;
+}
+
+State Tile::getState() {
+    return *pos;
+}
+
+void Tile::moveEnemy(unique_ptr<Enemy> &other) {
+    assert (enemy.get() == nullptr); // DELETE
+    assert (other.get() != nullptr); 
+    // what is currently at enemy is delete
+    // but it should be okay since enemy should b nullptr
+    enemy = move(other);
+    // other.enemy is set to nullptr
+    assert (other.get() == nullptr); // DELETE
+}
+
+void Tile::moveItem(unique_ptr<Item> &other) {
+    assert (item.get() == nullptr);
+    assert (other.get() != nullptr);
+    item = move(other);
+    assert (other.get() == nullptr);
 }
 
 std::ostream &operator<<(std::ostream &out, const Tile &td) {
