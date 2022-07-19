@@ -90,6 +90,8 @@ class Floor {
 
         void spawnCoords();
         void setChambers(string map);
+
+        State idxToPos(int idx);
     public:
         Floor(int width, int height);
         void updateFloor();
@@ -97,8 +99,10 @@ class Floor {
         void print();
         bool isValidMove(State &newPos);
         // needed functions for factory, going to try to reduce later
+        int getNumChambers();
         int getChamberSize(int chamberIdx);
         int getStringIdx(int chamberIdx, int arrIdx);
+
         Tile* getTile(int strIdxNum); // STRING index num
         bool isValidMove(int strIdxNum);
 };
