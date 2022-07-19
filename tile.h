@@ -26,12 +26,12 @@ class Tile {
     bool hasItem();
 
     std::unique_ptr<Enemy> &getEnemy();
+    std::unique_ptr<Item> &getItem();
+    
     State getState();
     void moveEnemy(std::unique_ptr<Enemy> &other);
     void moveItem(std::unique_ptr<Item> &other);
     
-    void setEnemy(std::unique_ptr<Enemy> e);
-    void setItem(std::unique_ptr<Item> i);
     friend std::ostream &operator<<(std::ostream &out, const Tile &td);
 };
 

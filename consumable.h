@@ -2,9 +2,11 @@
 #define CONSUMABLE_H
 
 #include "item.h"
+#include <memory>
+
 
 class Consumable : public Item {
-    Info *effect;
+    std::unique_ptr<Info> effect;
 
     public:
     Consumable(ItemType i);

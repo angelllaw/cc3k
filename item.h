@@ -6,6 +6,8 @@
 // - merchant hoards are implicitly there when merchants are spawned (1/9 prob.)
 //      - no item (merchant hoard) actually appears until the merchant is dead
 
+#include <iostream>
+
 struct Info;
 class Human;
 class Elf;
@@ -23,8 +25,11 @@ class Item {
     virtual void useOn(Elf *p) = 0; 
     virtual void useOn(Dwarf *p) = 0; 
     virtual void useOn(Orc *p) = 0; 
+    ItemType getId();
     // UML has getState (says item should know its coords, is this unnecessary?)
     virtual ~Item();
+
+    friend std::ostream &operator<<(std::ostream &out, const Item &i);
 };
 
 #endif

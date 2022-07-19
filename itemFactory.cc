@@ -32,13 +32,12 @@ void ItemFactory::generatePotions(Floor &floor) {
         Tile *toPlace = floor.getTile(stringIdx); // get tile
         cout << "tile x: " << toPlace->getState().x << endl;
         cout << "tile y: " << toPlace->getState().y << endl;
-        
         assert (toPlace->getType() == TileType::MoveableTile);
 
         /// ERROR WITH MAKING UNIQUE OAFLJANFLJANFLJNADNKS
         
-        toPlace->setItem(make_unique<Item>(Consumable(cur))); // place item
-        
+        unique_ptr<Item> item (new Consumable{cur});
+        toPlace->moveItem(item); // place item
         
     }
 }
