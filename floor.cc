@@ -6,6 +6,7 @@
 #include "enemy.h"
 #include "random.h"
 #include "direction.h"
+#include "itemFactory.h"
 
 #include <vector>
 #include <iostream>
@@ -22,6 +23,7 @@ using namespace std;
 // make the string into a stringstream, and read off one char at a time to populate the vector we want to initialize
 
 Floor::Floor(int width, int height) : width{width}, height{height} {
+    
     init(floorMap);
 }
 
@@ -47,9 +49,15 @@ void Floor::init(string map) {
         }
         theFloor.emplace_back(tmp);
     }
+
     // 1. spawn player character location
     // 2. spawn stairway location
-    // 3. a) spawn potions & gold
+    // 3. a) spawn potions, gold, compass
+    unique_ptr<ItemFactory> iFactory (new ItemFactory(this));
+    iFactory->generatePotions();
+    iFactory->generateTreasures();
+    iFactory->generateCompass();
+    
     // 3. b) spawn enemies
 
 }
@@ -72,7 +80,7 @@ void Floor::setChambers(string map) {
             if ('0' <= c && c <= '9') {
                 if ((c - '0') > chambers.size()) {
                     chambers.emplace_back(new Chamber{});
-                    // cout << "created new chamber" << endl;
+                    cout << "created new chamber" << endl;
                 }
                 chambers[c - '0' - 1]->addTile(idx);
                 // cout << "added (" << col << ", " << row << ") to chamber " << c - '0' - 1 << endl;
@@ -84,7 +92,7 @@ void Floor::setChambers(string map) {
 bool shouldAttack(const State &myPos, const State &otherPos) {
     int xDist = myPos.x - otherPos.x;
     int yDist = myPos.y - otherPos.y;
-    return abs(xDist) <= 1 && abs(yDist) <= 1;
+    return (xDist*xDist <= 1 && yDist*yDist <= 1);
 }
 
 // TODO: Check the arithmetic is right for each dir

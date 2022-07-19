@@ -54,6 +54,10 @@ Consumable::Consumable(ItemType item) {
             id = ItemType::DragonHorde;
             effect->gold = 6;
             break;
+        default:
+            // just to get rid of warning, if it's anything other than a consumable
+            // ... something went wrong 
+            break;
     }
 }
 
