@@ -10,7 +10,7 @@ class Player : public Character {
     void getAttacked(int damage) override; 
 
     public:
-        State getState();
+        State &getState();
 };
 
 #endif

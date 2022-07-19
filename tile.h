@@ -11,7 +11,7 @@ enum class TileType { Empty, VWall, HWall, Passage, Door, MoveableTile };
 
 // Since tiles "own" the enemy and item, tiles must be responsible for freeing the item / enemy after they die
 class Tile {
-    const State *pos;
+    const std::unique_ptr<State> pos;
     TileType type;
     std::unique_ptr<Item> item;
     std::unique_ptr<Enemy> enemy;
@@ -20,13 +20,15 @@ class Tile {
     Tile(int x, int y, TileType type);
     ~Tile();
     void removeEntities(); // frees the *item AND *enemy (calls clear). Set tile id back to 0.
-    void setId(TileType newType);
+    void setId(TileType type);
     TileType getType();
     bool hasEnemy();
     bool hasItem();
 
-    Enemy *getEnemy();
+    std::unique_ptr<Enemy> &getEnemy();
     State getState();
+    void moveEnemy(std::unique_ptr<Enemy> &other);
+    void moveItem(std::unique_ptr<Item> &other);
     void setEnemy(Enemy *e);
     void setItem(unique_ptr<Item> i);
 

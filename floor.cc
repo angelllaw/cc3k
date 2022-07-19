@@ -12,6 +12,8 @@
 #include <string>
 #include <cstdlib>
 
+#include <cassert>
+
 using namespace std;
 
 // how do we initialize our floor to have the default map.
@@ -139,9 +141,17 @@ void Floor::updateFloor() {
                     // move enemy to state s.
                     // set hasMoved to true
                     tile->getEnemy()->toggleMove(); // set hasMoved to true
+
+                    assert (0 <= newPos.y && newPos.y < height);
+                    assert (0 <= newPos.x && newPos.x < width);
+
                     Tile *newTile = theFloor[newPos.y][newPos.x];
-                    newTile->setEnemy(tile->getEnemy()); // newTile points to this enemy
-                    tile->setEnemy(nullptr); // set this tile to point to nothing
+
+                    assert (newTile->getType() == TileType::MoveableTile);
+
+                    newTile->moveEnemy(tile->getEnemy());
+                    // newTile points to this enemy
+                    // set this tile to point to nothing
                 }
             } // else if
         }

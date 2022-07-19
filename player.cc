@@ -11,3 +11,7 @@ void Player::getAttacked(int damage) {
     // 50% chance player takes damage
     if (r.randomNum(2) == 1) setHp(max(0, newHp));
 } 
+
+State &Player::getState() {
+    return *pos;
+}
