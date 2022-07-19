@@ -4,7 +4,7 @@
 struct Info;
 struct State;
 
-enum class Direction { N, NE, E, SE, S, SW, W, NW };
+enum class Direction;
 
 class Character {
     const int atk = 20; // human default
@@ -12,7 +12,6 @@ class Character {
     Info *stats;
     State *pos;
 
-    bool hasMoved = false;
 
     virtual void getAttacked(int damage) = 0; 
 
@@ -28,6 +27,7 @@ class Character {
 
         bool isDead();
         void toggleMove();
+        bool hasMoved = false;
 
         virtual void attack(Character &victim);
         virtual bool move(Direction dir);

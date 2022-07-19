@@ -24,12 +24,13 @@ METHODS:
 class Player;
 class Tile;
 class Chamber;
+struct State;
 
 class Floor {
         // TODO: add these fields to UML
         const int width = 79;
         const int height = 25;
-        Player* PC;
+        Player* pc;
         vector<vector<Tile *>> theFloor;
         vector<Chamber *> chambers;
 
@@ -94,7 +95,7 @@ class Floor {
         void updateFloor();
         void init(string map);
         void print();
-        bool isValidMove(int x, int y);
+        bool isValidMove(State &newPos);
 };
 
 #endif

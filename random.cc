@@ -33,3 +33,12 @@ int Random::randomNum(int top) {
     std::shuffle( v.begin(), v.end(), rng );
     return v[0];
 }
+
+vector<int> Random::randomArr(int top) {
+    vector<int> v;
+    for (int i = 0; i < top; i++) { v.push_back(i); }
+    unsigned seed = chrono::system_clock::now().time_since_epoch().count();
+	default_random_engine rng{seed};
+    std::shuffle( v.begin(), v.end(), rng );
+    return v;
+}
