@@ -1,12 +1,21 @@
 #include "tile.h"
 #include "item.h"
 #include "enemy.h"
+#include "state.h"
 #include <iostream>
 using namespace std;
 
-Tile::Tile(int x, int y, TileType type) : x{x}, y{y}, type{type} {}
+Tile::Tile(int x, int y, TileType type) : pos{new State{x, y}}, type{type} {}
 
 Tile::~Tile() {}
+
+TileType Tile::getType() {
+    return type;
+}
+
+bool Tile::hasEnemy() {
+    return (type == TileType::MoveableTile) && (enemy.get() != nullptr);
+}
 
 std::ostream &operator<<(std::ostream &out, const Tile &td) {
     TileType cur = td.type;

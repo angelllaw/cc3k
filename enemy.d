@@ -1,1 +1,1 @@
-enemy.o: enemy.cc enemy.h character.h
+enemy.o: enemy.cc enemy.h character.h info.h

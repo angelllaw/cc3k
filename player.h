@@ -4,6 +4,13 @@
 #include "character.h"
 
 class Player : public Character {
+    State *pos;
+    bool hasBarrierSuit = false;
+
+    void getAttacked(int damage) override; 
+
+    public:
+        State getState();
 };
 
 #endif

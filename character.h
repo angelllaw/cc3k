@@ -1,8 +1,39 @@
 #ifndef CHARACTER_H
 #define CHARACTER_H
 
+struct Info;
+struct State;
+
+enum class Direction;
+
 class Character {
-    
+    const int atk = 20; // human default
+    const int def = 20; // human defualt
+    Info *stats;
+    State *pos;
+
+
+    virtual void getAttacked(int damage) = 0; 
+
+    public:
+        Info getInfo();
+        void setHp(int newHp);
+        void setAtk(int newAtk);
+        void setDef(int newDef);
+        void setGold(int newGold);
+
+        State getState();
+        void setState(State newPos);
+
+        bool isDead();
+        void toggleMove();
+        bool hasMoved = false;
+
+        virtual void attack(Character &victim);
+        virtual bool move(Direction dir);
+
+        // virtual ~Character(); // causing issues with make for some reason
+
 };
 
 #endif
