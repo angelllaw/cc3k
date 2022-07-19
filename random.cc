@@ -10,6 +10,8 @@
 #include <random>
 #include <chrono>
 
+#include <cassert>
+
 using namespace std;
 
 // This is an extremely expensive and dumb way of generating random numbers
@@ -35,14 +37,24 @@ int Random::randomNum(int top) {
     return v[0];
 }
 
-int Random::randomStrIdx(Floor *floor) {
+int Random::randomStrIdx(Floor &floor) {
     while (true) {
-        int cIdx = randomNum(5); // random chamber
-        int sizeOfChamber = floor->getChamberSize(cIdx);
-        int tileIdx = randomNum(sizeOfChamber); // random tile in chamber
-        int stringIdx = floor->getStringIdx(cIdx, tileIdx); // get string index of a specific tile
+        assert (floor.getNumChambers());
+        int cIdx = randomNum(floor.getNumChambers()); // random chamber
 
-        if (floor->isValidMove(stringIdx)) return stringIdx;
+        int sizeOfChamber = floor.getChamberSize(cIdx);
+        
+        int tileIdx = randomNum(sizeOfChamber); // random tile in chamber
+
+        
+        int stringIdx = floor.getStringIdx(cIdx, tileIdx); // get string index of a specific tile
+        cout << "chamber idx: " << cIdx << endl;
+        cout << "tile idx: " << tileIdx << endl; 
+        cout << "string idx: " << stringIdx << endl;
+        if (floor.isValidMove(stringIdx)) {
+            // cout << "valid idx" << endl;
+            return stringIdx;
+        }
     }
 }
 

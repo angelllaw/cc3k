@@ -32,7 +32,6 @@ class Tile {
     
     void setEnemy(std::unique_ptr<Enemy> e);
     void setItem(std::unique_ptr<Item> i);
-
     friend std::ostream &operator<<(std::ostream &out, const Tile &td);
 };
 

@@ -23,7 +23,7 @@ using namespace std;
 // make the string into a stringstream, and read off one char at a time to populate the vector we want to initialize
 
 Floor::Floor(int width, int height) : width{width}, height{height} {
-    
+    setChambers(numberedMap);
     init(floorMap);
 }
 
@@ -39,13 +39,12 @@ TileType getTileId(char c) {
 
 // reads in a string map and sets "theFloor" tile IDs
 void Floor::init(string map) {
-
     // generate the actual floor & tiles
     for (int row = 0; row < height; row++) {
         vector<Tile *> tmp;
         for (int col = 0; col < width; col++) {
             char c = map[row * width + col];
-            tmp.emplace_back(new Tile(row, col, getTileId(c)));
+            tmp.emplace_back(new Tile(col, row, getTileId(c)));
         }
         theFloor.emplace_back(tmp);
     }
@@ -53,13 +52,17 @@ void Floor::init(string map) {
     // 1. spawn player character location
     // 2. spawn stairway location
     // 3. a) spawn potions, gold, compass
-    unique_ptr<ItemFactory> iFactory (new ItemFactory(this));
-    iFactory->generatePotions();
+    // unique_ptr<ItemFactory> iFactory (new ItemFactory(this));
+
+    ItemFactory iFactory;
+
+    iFactory.generatePotions(*this);
+/*
     iFactory->generateTreasures();
     iFactory->generateCompass();
     
     // 3. b) spawn enemies
-
+*/
 }
 
 void Floor::print() {
@@ -78,9 +81,9 @@ void Floor::setChambers(string map) {
             int idx = row * width + col;
             char c = map[idx];
             if ('0' <= c && c <= '9') {
-                if ((c - '0') > chambers.size()) {
+                if ((c - '0') > (int)chambers.size()) {
                     chambers.emplace_back(new Chamber{});
-                    cout << "created new chamber" << endl;
+                    // cout << "created new chamber" << endl;
                 }
                 chambers[c - '0' - 1]->addTile(idx);
                 // cout << "added (" << col << ", " << row << ") to chamber " << c - '0' - 1 << endl;
@@ -142,7 +145,7 @@ void Floor::updateFloor() {
                     State newPos;
                     vector<int> neighbors = Random{}.randomArr(8);
 
-                    for (int i = 0; i < neighbors.size(); ++i) {
+                    for (int i = 0; i < (int)neighbors.size(); ++i) {
                         Direction dir = Direction(neighbors[i]);
                         newPos = getCoords(curPos, dir);
                         if (isValidMove(newPos)) break; // tile is empty movable tile
@@ -173,23 +176,32 @@ bool Floor::isValidMove(State &pos) {
 }
 
 int Floor::getChamberSize(int idx) {
-    return chambers.at(idx)->getSize();
+    return chambers[idx]->getSize();
+}
+
+int Floor::getNumChambers() {
+    return chambers.size();
 }
 
 int Floor::getStringIdx(int chamber, int idx) {
-    return chambers.at(chamber)->getStrIdx(idx);
+    return chambers[chamber]->getStrIdx(idx);
 }
 
-Tile* Floor::getTile(int idxNum) {
-    int x = idxNum % width;
-    int y = (idxNum - x) / height;
-    return theFloor.at(y).at(x);
+State Floor::idxToPos(int idx) {
+    int x = idx % width;
+    int y = (idx - x) / width;
+    // cout << "x: " << x << endl;
+    // cout << "y: " << y << endl;
+    return {x, y};
+}
+
+Tile *Floor::getTile(int idxNum) {
+    State pos = idxToPos(idxNum);
+    return theFloor[pos.y][pos.x];
 }
 
 bool Floor::isValidMove(int idxNum) {
-    int x = idxNum % width;
-    int y = (idxNum - x) / height;
-    State s{x, y};
-    return isValidMove(s);
+    State pos = idxToPos(idxNum);
+    return isValidMove(pos);
 }
 

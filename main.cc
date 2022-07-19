@@ -10,7 +10,7 @@ int main (int argc, char *argv[]) {
     const int height = 25; // 25
     
     Floor f{width, height};
-    f.print();
+    // f.print();
 
     if (argc == 2) { // optional cmd line arg
 
