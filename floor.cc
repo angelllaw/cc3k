@@ -2,6 +2,7 @@
 #include "tile.h"
 #include "chamber.h"
 #include "state.h"
+#include "info.h"
 #include "player.h"
 #include "enemy.h"
 #include "random.h"
@@ -11,6 +12,7 @@
 
 #include <vector>
 #include <iostream>
+#include <iomanip>
 #include <string>
 #include <cstdlib>
 
@@ -23,9 +25,18 @@ using namespace std;
 // idea: have a string with our default map
 // make the string into a stringstream, and read off one char at a time to populate the vector we want to initialize
 
-Floor::Floor(int width, int height) : width{width}, height{height} {
+int Floor::floorNum = 0;
+
+Floor::Floor(int width, int height, shared_ptr<Player> pc) : width{width}, height{height}, pc{pc} {
     setChambers(numberedMap);
     init(floorMap);
+    floorNum++;
+}
+
+Floor::Floor(shared_ptr<Player> pc) : pc{pc} {
+    setChambers(numberedMap);
+    init(floorMap);
+    floorNum++;
 }
 
 TileType getTileId(char c) {
@@ -67,13 +78,44 @@ void Floor::init(string map) {
 
 }
 
-void Floor::print() {
+void Floor::printFloor() {
     for (auto &row : theFloor) {
         for (auto &col : row) {
-            cout << *col;
+            if (col->getState().x == pc->getState().x && col->getState().y == pc->getState().y) {
+                cout << '@';
+            } else {
+                cout << *col;
+            }
         }
         cout << endl;
     }
+}
+
+string printRace(Race race) {
+    switch (race) {
+        case Race::Human:
+            return "Human";
+            break;
+        case Race::Dwarf:
+            return "Dwarf";
+            break;
+        case Race::Elf:
+            return "Elf";
+            break;
+        case Race::Orc:
+            return "Orc";
+            break;
+    }
+    return "";
+}
+
+void Floor::printMessage() {
+    cout << "Race: " << printRace(pc->getRace());
+    cout << " Gold: " << pc->getInfo().gold; 
+    cout << setw(50) << right << "Floor " << floorNum << endl;
+    cout << "HP: " << pc->getInfo().hp << endl;
+    cout << "Atk: " << pc->getInfo().atk << endl;
+    cout << "Def: " << pc->getInfo().def << endl;
 }
 
 // invariant: chambers are numbered 1...x
@@ -174,7 +216,17 @@ void Floor::updateFloor() {
 
 bool Floor::isValidMove(State &pos) {
     Tile *t = theFloor[pos.y][pos.x];
+    State &pcPos = pc->getState();
+    if (pcPos.y == pos.y && pcPos.x == pos.x) {
+        cout << "Player is on (" << pcPos.x << ", " << pcPos.y << ")" << endl; 
+        return false; // if player is on that spot
+    }
     return t->getType() == TileType::MoveableTile && !t->hasEnemy() && !t->hasItem(); 
+}
+
+bool Floor::isValidMove(int idxNum) {
+    State pos = idxToPos(idxNum);
+    return isValidMove(pos);
 }
 
 int Floor::getChamberSize(int idx) {
@@ -200,8 +252,5 @@ Tile *Floor::getTile(int idxNum) {
     return theFloor[pos.y][pos.x];
 }
 
-bool Floor::isValidMove(int idxNum) {
-    State pos = idxToPos(idxNum);
-    return isValidMove(pos);
-}
+
 

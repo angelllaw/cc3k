@@ -5,6 +5,7 @@
 
 class Human : public Player {
     public:
+    Human();
     ~Human() override;
 };
 
