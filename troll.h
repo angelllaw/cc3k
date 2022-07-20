@@ -6,6 +6,8 @@
 class Troll : public Enemy {
     
     public:
+    Troll();
+    ~Troll();
 };
 
 #endif

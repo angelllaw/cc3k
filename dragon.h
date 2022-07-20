@@ -4,10 +4,10 @@
 #include "enemy.h"
 
 class Dragon : public Enemy {
-    
+    // still need to implement pointer to DragonBaby
     public:
     Dragon();
-    ~Dragon() override;
+    ~Dragon();
 };
 
 #endif
