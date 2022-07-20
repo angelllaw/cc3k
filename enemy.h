@@ -11,7 +11,7 @@ class Enemy : public Character {
 
     public:
     void getAttacked(int damage) override;
-    // virtual ~Enemy();
+    virtual ~Enemy();
 };
 
 #endif

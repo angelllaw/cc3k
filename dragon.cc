@@ -5,9 +5,11 @@
 using namespace std;
 
 Dragon::Dragon() {
-    init(unique_ptr<Info> (new Info {150, 20, 20, 0})); // initializes the stats?
+    // init(unique_ptr<Info> (new Info {150, 20, 20, 0})); // initializes the stats?
     id = EnemyType::Dragon;
 }
+
+Dragon::~Dragon() {}
 
 
 // we have to initialize it by calling the character and enemy component

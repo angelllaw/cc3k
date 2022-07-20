@@ -4,6 +4,8 @@
 #include "player.h"
 
 class Human : public Player {
+    public:
+    ~Human() override;
 };
 
 #endif
