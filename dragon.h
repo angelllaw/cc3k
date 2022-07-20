@@ -7,6 +7,7 @@ class Dragon : public Enemy {
     
     public:
     Dragon();
+    ~Dragon() override;
 };
 
 #endif

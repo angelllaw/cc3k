@@ -51,3 +51,5 @@ bool Character::move(Direction dir) {
 void Character::init(std::unique_ptr<Info> infoToMove) {
     stats = std::move(infoToMove);
 }
+
+Character::~Character() {}

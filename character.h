@@ -34,7 +34,7 @@ class Character {
 
         void init(std::unique_ptr<Info> infoToMove);
 
-       //  virtual ~Character(); // causing issues with make for some reason
+       virtual ~Character(); // causing issues with make for some reason
 
 };
 

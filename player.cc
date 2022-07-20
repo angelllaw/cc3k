@@ -20,3 +20,5 @@ State &Player::getState() {
 void Player::setState(State newPos) {
     *pos = newPos;
 } 
+
+Player::~Player() {}

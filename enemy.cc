@@ -10,3 +10,5 @@ void Enemy::getAttacked(int damage) {
     int newHp = getInfo().hp - damage;
     setHp(max(0, newHp));
 }
+
+Enemy::~Enemy() {}
