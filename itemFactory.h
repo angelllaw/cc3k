@@ -12,7 +12,6 @@ class ItemFactory {
     // ItemFactory(); // this randomly generates the items and changes floor (adds directly)
     void generatePotions(Floor &floor);
     void generateTreasures(Floor &floor);
-    void generateCompass(Floor &floor);
 };
 
 #endif

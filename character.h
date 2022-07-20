@@ -7,10 +7,8 @@ struct State;
 enum class Direction;
 
 class Character {
-    const int atk = 20; // human default
-    const int def = 20; // human defualt
+    protected:
     Info *stats;
-    State *pos;
 
 
     virtual void getAttacked(int damage) = 0; 

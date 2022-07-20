@@ -41,18 +41,11 @@ int Random::randomStrIdx(Floor &floor) {
     while (true) {
         assert (floor.getNumChambers());
         int cIdx = randomNum(floor.getNumChambers()); // random chamber
-
         int sizeOfChamber = floor.getChamberSize(cIdx);
-        
         int tileIdx = randomNum(sizeOfChamber); // random tile in chamber
-
-        
         int stringIdx = floor.getStringIdx(cIdx, tileIdx); // get string index of a specific tile
-        cout << "chamber idx: " << cIdx << endl;
-        cout << "tile idx: " << tileIdx << endl; 
-        cout << "string idx: " << stringIdx << endl;
+
         if (floor.isValidMove(stringIdx)) {
-            // cout << "valid idx" << endl;
             return stringIdx;
         }
     }

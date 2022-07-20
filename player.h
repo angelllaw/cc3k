@@ -4,6 +4,8 @@
 #include "character.h"
 
 class Player : public Character {
+    const int atk = 20; // human default
+    const int def = 20; // human defualt
     State *pos;
     bool hasBarrierSuit = false;
 
