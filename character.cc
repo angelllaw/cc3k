@@ -2,6 +2,7 @@
 #include "info.h"
 #include "state.h"
 #include <cmath>
+#include <memory>
 
 Info Character::getInfo() {
     return *stats;
@@ -20,13 +21,13 @@ void Character::setGold(int newGold) {
     stats->gold = newGold;
 }
 
-State Character::getState() {
+/* State Character::getState() {
     return *pos;
 }
 
 void Character::setState(State newPos) {
     *pos = newPos;
-}
+} */
 
 void Character::toggleMove() {
     hasMoved = !hasMoved;
@@ -45,4 +46,8 @@ void Character::attack(Character &victim) {
 
 bool Character::move(Direction dir) {
     return false;
+}
+
+void Character::init(std::unique_ptr<Info> infoToMove) {
+    stats = std::move(infoToMove);
 }
