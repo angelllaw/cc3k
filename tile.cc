@@ -85,7 +85,8 @@ std::ostream &operator<<(std::ostream &out, const Tile &td) {
             if (td.item.get() == nullptr && td.enemy.get() == nullptr) {
                 out << '.';
             } else if (td.item.get() == nullptr) {
-                out << 'E'; // HAVEN'T ADDED ENEMY IDENTIFYING ENUMS YET, update!
+                out << *td.enemy;
+                // out << 'E'; // HAVEN'T ADDED ENEMY IDENTIFYING ENUMS YET, update!
             } else {
                 out << *td.item;
             }

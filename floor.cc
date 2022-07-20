@@ -7,6 +7,7 @@
 #include "random.h"
 #include "direction.h"
 #include "itemFactory.h"
+#include "enemyFactory.h"
 
 #include <vector>
 #include <iostream>
@@ -60,6 +61,9 @@ void Floor::init(string map) {
     iFactory.generateTreasures(*this);
     
     // 3. b) spawn enemies
+    EnemyFactory eFactory;
+
+    eFactory.generateEnemies(*this);
 
 }
 
