@@ -4,6 +4,7 @@
 #include <string>
 #include <vector>
 #include <map>
+#include <memory>
 using namespace std;
 
 /* 
@@ -30,7 +31,7 @@ class Floor {
         // TODO: add these fields to UML
         const int width = 79;
         const int height = 25;
-        Player* pc;
+        std::shared_ptr<Player> pc;
         vector<vector<Tile *>> theFloor;
         vector<Chamber *> chambers;
 
@@ -92,11 +93,15 @@ class Floor {
         void setChambers(string map);
 
         State idxToPos(int idx);
+
+        static int floorNum;
     public:
-        Floor(int width, int height);
+        Floor(int width, int height, std::shared_ptr<Player> pc);
+        Floor(std::shared_ptr<Player> pc);
         void updateFloor();
         void init(string map);
-        void print();
+        void printFloor();
+        void printMessage();
         bool isValidMove(State &newPos);
         // needed functions for factory, going to try to reduce later
         int getNumChambers();
