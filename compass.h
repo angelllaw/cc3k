@@ -8,9 +8,9 @@ class Compass : public Item {
     public:
     Compass();
     void useOn(Human* p);
-   /*  void useOn(Elf* p);
+    void useOn(Elf* p);
     void useOn(Dwarf* p);
-    void useOn(Orc* p); */
+    void useOn(Orc* p);
 };
 
 #endif

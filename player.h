@@ -4,6 +4,8 @@
 #include "character.h"
 #include <memory>
 
+class Item;
+
 enum class Race{ Human, Dwarf, Elf, Orc };
 
 class Player : public Character {
@@ -30,6 +32,7 @@ class Player : public Character {
         void setCompassTrue();
         bool hasCompass();
         void addGold(int amount);
+        virtual void useItem(Item *i) = 0;
         ~Player();
 };
 

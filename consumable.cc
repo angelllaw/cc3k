@@ -1,12 +1,15 @@
 #include "consumable.h"
 #include "info.h"
+#include "human.h"
+#include "elf.h"
+#include "dwarf.h"
+#include "orc.h"
+using namespace std;
 
-// enum class ItemType { RH, BA, BD, PH, WA, WD, NormalGold, SmallHorde, MerchantHorde, DragonHorde };
-
-Consumable::Consumable(ItemType item) : effect{new Info {0, 0 , 0, 0}}{
+// MIL IS THERE A DIFFERENCE IF: effect{unique_ptr<Info> (new Info {0, 0, 0, 0})effect{new Info {0, 0 , 0, 0}
+Consumable::Consumable(ItemType item) : effect{new Info {0, 0 , 0, 0}} {
 
     switch (item)  {
-        // potions
         case ItemType::RH: // +10 HP (cannot exceed max)*
             id = ItemType::RH;
             effect->hp = 10;
@@ -31,7 +34,6 @@ Consumable::Consumable(ItemType item) : effect{new Info {0, 0 , 0, 0}}{
             id = ItemType::WD;
             effect->def = -5;
             break;
-        // gold
         case ItemType::NormalGold: // +1 Gold
             id = ItemType::NormalGold;
             effect->gold = 1;
@@ -56,14 +58,25 @@ Consumable::Consumable(ItemType item) : effect{new Info {0, 0 , 0, 0}}{
 }
 
 void Consumable::useOn(Human *p) {
-
+    p->getInfo().add(*effect);
 }
+
+// gold is doubled in value
 void Consumable::useOn(Elf *p) {
-    
+    effect->gold *= 2;
+    p->getInfo().add(*effect);
 }
+
+// negative positions have the opposite effect
 void Consumable::useOn(Dwarf *p) {
-
+    if (effect->hp < 0) effect->hp * -1;
+    if (effect->atk < 0) effect->atk * -1;
+    if (effect->def < 0) effect->def * -1;
+    p->getInfo().add(*effect);
 } 
-void Consumable::useOn(Orc *p) {
 
+// gold is halved in value
+void Consumable::useOn(Orc *p) {
+    effect->gold /= 2;
+    p->getInfo().add(*effect);
 }

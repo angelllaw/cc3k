@@ -1,14 +1,14 @@
 #include "compass.h"
 #include "human.h"
-/* #include "elf.h"
+#include "elf.h"
 #include "dwarf.h"
-#include "orc.h" */
+#include "orc.h"
 
 void Compass::useOn(Human *p) {
     p->setCompassTrue();
 }
 
-/* void Compass::useOn(Elf *p) {
+void Compass::useOn(Elf *p) {
     p->setCompassTrue();
 }
 
@@ -18,4 +18,4 @@ void Compass::useOn(Dwarf *p) {
 
 void Compass::useOn(Orc *p) {
     p->setCompassTrue();
-} */
+}
