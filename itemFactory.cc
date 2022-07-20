@@ -24,21 +24,14 @@ void ItemFactory::generatePotions(Floor &floor) {
 
     for (int i = 0; i < 10; i++) {
         int idx = r.randomNum(6); // random potion
-
         ItemType cur = potions[idx];
         
         int stringIdx = r.randomStrIdx(floor); // get random string index in a random chamber
-        
         Tile *toPlace = floor.getTile(stringIdx); // get tile
-        cout << "tile x: " << toPlace->getState().x << endl;
-        cout << "tile y: " << toPlace->getState().y << endl;
         assert (toPlace->getType() == TileType::MoveableTile);
-
-        /// ERROR WITH MAKING UNIQUE OAFLJANFLJANFLJNADNKS
         
         unique_ptr<Item> item (new Consumable{cur});
         toPlace->moveItem(item); // place item
-        
     }
 }
 
@@ -51,19 +44,14 @@ void ItemFactory::generateTreasures(Floor &floor) {
     for (int i = 0; i < 10; i++) {
         int idx = r.randomNum(8); // random treasure
         ItemType cur = treasures[idx];
-
-        int stringIdx = r.randomStrIdx(floor);
-        Tile *toPlace = floor.getTile(stringIdx);
-        // toPlace->setItem(unique_ptr<Item> (new Consumable(cur))); 
+        
+        int stringIdx = r.randomStrIdx(floor); // get random string index in a random chamber
+        Tile *toPlace = floor.getTile(stringIdx); // get tile
+        assert (toPlace->getType() == TileType::MoveableTile);
+        
+        unique_ptr<Item> item (new Consumable{cur});
+        toPlace->moveItem(item); // place item
     }
-}
-
-void ItemFactory::generateCompass(Floor &floor) {
-    Random r;
-    // 3. place compass
-    int compassStrIdx = r.randomStrIdx(floor);
-    Tile *toPlace = floor.getTile(compassStrIdx);
-    // toPlace->setItem(unique_ptr<Item> (new Consumable(ItemType::Compass))); 
 }
 
 

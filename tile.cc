@@ -88,7 +88,6 @@ std::ostream &operator<<(std::ostream &out, const Tile &td) {
                 out << 'E'; // HAVEN'T ADDED ENEMY IDENTIFYING ENUMS YET, update!
             } else {
                 out << *td.item;
-                // out << 'I'; // UPDATE with item enum later
             }
             break;
     }

@@ -57,12 +57,10 @@ void Floor::init(string map) {
     ItemFactory iFactory;
 
     iFactory.generatePotions(*this);
-/*
-    iFactory->generateTreasures();
-    iFactory->generateCompass();
+    iFactory.generateTreasures(*this);
     
     // 3. b) spawn enemies
-*/
+
 }
 
 void Floor::print() {
@@ -190,8 +188,6 @@ int Floor::getStringIdx(int chamber, int idx) {
 State Floor::idxToPos(int idx) {
     int x = idx % width;
     int y = (idx - x) / width;
-    // cout << "x: " << x << endl;
-    // cout << "y: " << y << endl;
     return {x, y};
 }
 
