@@ -36,3 +36,19 @@ Race Player::getRace() {
     return race;
 }
 
+void Player::setBarrierSuitTrue() {
+    hasBarrierSuit = true;
+}
+
+void Player::setCompassTrue() {
+    compass = true;
+}
+
+bool Player::hasCompass() {
+    return compass;
+}
+
+void Player::addGold(int amount) {
+    stats->gold = stats->gold + amount;
+}
+

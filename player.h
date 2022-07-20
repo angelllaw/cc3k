@@ -14,6 +14,7 @@ class Player : public Character {
         Race race;
         std::unique_ptr<State> pos;
         bool hasBarrierSuit = false;
+        bool compass = false;
 
         
 
@@ -25,6 +26,10 @@ class Player : public Character {
         State &getState();
         void setState(State newPos);
         Race getRace();
+        void setBarrierSuitTrue();
+        void setCompassTrue();
+        bool hasCompass();
+        void addGold(int amount);
         ~Player();
 };
 
