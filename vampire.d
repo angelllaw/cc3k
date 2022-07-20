@@ -1,1 +1,1 @@
-vampire.o: vampire.cc vampire.h enemy.h character.h
+vampire.o: vampire.cc vampire.h enemy.h character.h info.h

@@ -81,7 +81,11 @@ void Floor::init(string map) {
 void Floor::printFloor() {
     for (auto &row : theFloor) {
         for (auto &col : row) {
-            cout << *col;
+            if (col->getState().x == pc->getState().x && col->getState().y == pc->getState().y) {
+                cout << '@';
+            } else {
+                cout << *col;
+            }
         }
         cout << endl;
     }
@@ -108,7 +112,7 @@ string printRace(Race race) {
 void Floor::printMessage() {
     cout << "Race: " << printRace(pc->getRace());
     cout << " Gold: " << pc->getInfo().gold; 
-    cout << setw(20) << right << "Floor " << floorNum << endl;
+    cout << setw(50) << right << "Floor " << floorNum << endl;
     cout << "HP: " << pc->getInfo().hp << endl;
     cout << "Atk: " << pc->getInfo().atk << endl;
     cout << "Def: " << pc->getInfo().def << endl;
@@ -212,6 +216,11 @@ void Floor::updateFloor() {
 
 bool Floor::isValidMove(State &pos) {
     Tile *t = theFloor[pos.y][pos.x];
+    State &pcPos = pc->getState();
+    if (pcPos.y == pos.y && pcPos.x == pos.x) {
+        cout << "Player is on (" << pcPos.x << ", " << pcPos.y << ")" << endl; 
+        return false; // if player is on that spot
+    }
     return t->getType() == TileType::MoveableTile && !t->hasEnemy() && !t->hasItem(); 
 }
 

@@ -10,10 +10,12 @@ class Player : public Character {
     protected:
         const int atk = 20; // human default
         const int def = 20; // human defualt
+        
+        Race race;
         std::unique_ptr<State> pos;
         bool hasBarrierSuit = false;
 
-        Race race;
+        
 
         void getAttacked(int damage) override; 
 

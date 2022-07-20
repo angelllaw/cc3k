@@ -1,1 +1,1 @@
-goblin.o: goblin.cc goblin.h enemy.h character.h
+goblin.o: goblin.cc goblin.h enemy.h character.h info.h

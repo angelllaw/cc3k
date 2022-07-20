@@ -1,1 +1,1 @@
-troll.o: troll.cc troll.h enemy.h character.h
+troll.o: troll.cc troll.h enemy.h character.h info.h
