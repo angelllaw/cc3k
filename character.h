@@ -1,5 +1,6 @@
 #ifndef CHARACTER_H
 #define CHARACTER_H
+#include <memory>
 
 struct Info;
 struct State;
@@ -8,7 +9,7 @@ enum class Direction;
 
 class Character {
     protected:
-    Info *stats;
+    std::unique_ptr<Info> stats;
 
 
     virtual void getAttacked(int damage) = 0; 
@@ -20,8 +21,9 @@ class Character {
         void setDef(int newDef);
         void setGold(int newGold);
 
-        State getState();
-        void setState(State newPos);
+        
+        /* State getState();
+        void setState(State newPos); */
 
         bool isDead();
         void toggleMove();
@@ -30,7 +32,9 @@ class Character {
         virtual void attack(Character &victim);
         virtual bool move(Direction dir);
 
-        // virtual ~Character(); // causing issues with make for some reason
+        void init(std::unique_ptr<Info> infoToMove);
+
+       //  virtual ~Character(); // causing issues with make for some reason
 
 };
 

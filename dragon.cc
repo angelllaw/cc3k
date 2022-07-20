@@ -1,9 +1,14 @@
 #include "dragon.h"
 #include "enemy.h"
+#include "info.h"
+
+using namespace std;
 
 Dragon::Dragon() {
-    stats = new {150, 20, 20, 0}; // CHANGE TO UNIQUE POINTER
+    init(unique_ptr<Info> (new Info {150, 20, 20, 0})); // initializes the stats?
+    id = EnemyType::Dragon;
 }
+
 
 // we have to initialize it by calling the character and enemy component
 

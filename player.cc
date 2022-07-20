@@ -2,6 +2,7 @@
 #include <algorithm>
 #include "random.h"
 #include "info.h"
+#include "state.h"
 using namespace std;
 
 void Player::getAttacked(int damage) {
@@ -15,3 +16,7 @@ void Player::getAttacked(int damage) {
 State &Player::getState() {
     return *pos;
 }
+
+void Player::setState(State newPos) {
+    *pos = newPos;
+} 

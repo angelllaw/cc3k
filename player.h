@@ -13,6 +13,7 @@ class Player : public Character {
 
     public:
         State &getState();
+        void setState(State newPos);
 };
 
 #endif
