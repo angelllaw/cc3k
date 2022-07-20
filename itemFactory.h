@@ -1,6 +1,7 @@
 #ifndef ITEMFACTORY_H
 #define ITEMFACTORY_H
 
+class Floor;
 
 class ItemFactory {
     // UML ALSO HAS:

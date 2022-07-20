@@ -6,6 +6,8 @@
 class Vampire : public Enemy {
     
     public:
+    Vampire();
+    ~Vampire();
 };
 
 #endif

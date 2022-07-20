@@ -6,6 +6,8 @@
 class Merchant : public Enemy {
     
     public:
+    Merchant();
+    ~Merchant();
 };
 
 #endif

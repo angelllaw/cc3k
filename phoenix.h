@@ -6,6 +6,8 @@
 class Phoenix : public Enemy {
     
     public:
+    Phoenix();
+    ~Phoenix();
 };
 
 #endif

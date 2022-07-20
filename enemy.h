@@ -12,6 +12,8 @@ class Enemy : public Character {
     public:
     void getAttacked(int damage) override;
     virtual ~Enemy();
+
+    friend std::ostream &operator<<(std::ostream &out, const Enemy &e);
 };
 
 #endif
