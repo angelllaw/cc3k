@@ -1,20 +1,29 @@
 #include <iostream>
 #include <fstream>
+#include <iomanip>
+#include <memory>
 #include "floor.h"
 #include "item.h"
 #include "enemy.h"
+#include "player.h"
+#include "human.h"
 using namespace std;
 
+
 int main (int argc, char *argv[]) {
-    const int width = 79; // 79
-    const int height = 25; // 25
+
+    shared_ptr<Player> pc = make_shared<Human>();
+
+
+    Floor f{pc};
     
-    Floor f{width, height};
-    f.print();
 
     if (argc == 2) { // optional cmd line arg
 
     } else {
 
     }
+
+    f.printFloor();
+    f.printMessage();
 }
