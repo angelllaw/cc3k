@@ -3,13 +3,15 @@
 
 #include "character.h"
 
+enum class EnemyType { Dragon, Vampire, Werewolf, Troll, Goblin, Merchant, Phoenix };
+
 class Enemy : public Character {
-    
-    void getAttacked(int damage) override;
+    protected:
+    EnemyType id;
 
     public:
-
-    // ~Enemy(); // should be virtual, just for now
+    void getAttacked(int damage) override;
+    virtual ~Enemy();
 };
 
 #endif
