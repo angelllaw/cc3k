@@ -1,7 +1,10 @@
 #include "info.h"
+#include <iostream>
+using namespace std;
 
 
 void Info::add(const Info toAdd) {
+
     hp += toAdd.hp;
     atk += toAdd.atk;
     def += toAdd.def;

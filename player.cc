@@ -4,6 +4,7 @@
 #include "random.h"
 #include "info.h"
 #include "state.h"
+#include "direction.h"
 using namespace std;
 
 Player::~Player() {}
@@ -28,8 +29,7 @@ State &Player::getState() {
 
 void Player::setState(State newPos) {
     pos->x = newPos.x;
-    pos->y = newPos.y; 
-    cout << "successfully set state" << endl;   
+    pos->y = newPos.y;
 } 
 
 Race Player::getRace() {
@@ -50,5 +50,44 @@ bool Player::hasCompass() {
 
 void Player::addGold(int amount) {
     stats->gold = stats->gold + amount;
+}
+
+bool Player::move(Direction dir) {
+    int curX = this->getState().x;
+    int curY = this->getState().y;
+    int newX = curX;
+    int newY = curY;
+
+    switch(dir) {
+        case Direction::N:
+            newY -= 1;
+            break;
+        case Direction::NE:
+            newX += 1;
+            newY -= 1;
+            break;
+        case Direction::E:
+            newX += 1;
+            break;
+        case Direction::SE:
+            newX += 1;
+            newY += 1;
+            break;
+        case Direction::S:
+            newY += 1;
+            break;
+        case Direction::SW:
+            newX -= 1;
+            newY += 1;
+            break;
+        case Direction::W:
+            newX -= 1;
+            break;
+        case Direction::NW:
+            newX -= 1;
+            newY -= 1;
+            break;
+    }
+    setState(State {newX, newY});
 }
 

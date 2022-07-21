@@ -2,6 +2,7 @@
 #include "info.h"
 #include "item.h"
 #include <memory>
+#include <iostream>
 
 Human::Human() : Player(Race::Human, Info{140, 20, 20, 0}) {}
 

@@ -33,6 +33,7 @@ class Player : public Character {
         bool hasCompass();
         void addGold(int amount);
         virtual void useItem(Item *i) = 0;
+        bool move(Direction dir) override;
         ~Player();
 };
 

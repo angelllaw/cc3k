@@ -7,8 +7,7 @@
 using namespace std;
 
 // MIL IS THERE A DIFFERENCE IF: effect{unique_ptr<Info> (new Info {0, 0, 0, 0})effect{new Info {0, 0 , 0, 0}
-Consumable::Consumable(ItemType item) : effect{new Info {0, 0 , 0, 0}} {
-
+Consumable::Consumable(ItemType item) : effect{new Info {0, 0 ,0, 0}} {
     switch (item)  {
         case ItemType::RH: // +10 HP (cannot exceed max)*
             id = ItemType::RH;
@@ -58,6 +57,7 @@ Consumable::Consumable(ItemType item) : effect{new Info {0, 0 , 0, 0}} {
 }
 
 void Consumable::useOn(Human *p) {
+    // cout << "the potion's effect INFO:" << effect->atk << " " << effect->def << " " << effect->hp << " " << effect->gold << endl;
     p->getInfo().add(*effect);
 }
 
@@ -69,9 +69,9 @@ void Consumable::useOn(Elf *p) {
 
 // negative positions have the opposite effect
 void Consumable::useOn(Dwarf *p) {
-    if (effect->hp < 0) effect->hp * -1;
-    if (effect->atk < 0) effect->atk * -1;
-    if (effect->def < 0) effect->def * -1;
+    if (effect->hp < 0) effect->hp *= -1;
+    if (effect->atk < 0) effect->atk *= -1;
+    if (effect->def < 0) effect->def *= -1;
     p->getInfo().add(*effect);
 } 
 

@@ -4,7 +4,7 @@
 #include <cmath>
 #include <memory>
 
-Info Character::getInfo() {
+Info &Character::getInfo() {
     return *stats;
 }
 
@@ -20,14 +20,6 @@ void Character::setDef(int newDef) {
 void Character::setGold(int newGold) {
     stats->gold = newGold;
 }
-
-/* State Character::getState() {
-    return *pos;
-}
-
-void Character::setState(State newPos) {
-    *pos = newPos;
-} */
 
 void Character::toggleMove() {
     hasMoved = !hasMoved;
