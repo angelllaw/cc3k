@@ -13,6 +13,7 @@ class Merchant : public Enemy {
 
     bool shouldAttack(State &myPos, State &otherPos) override;
     void getAttacked(int damage) override;
+    // void attack(Character &victim) override;
 };
 
 #endif

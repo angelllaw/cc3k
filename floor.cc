@@ -78,7 +78,7 @@ void Floor::init(string map) {
 
 }
 
-void Floor::print() {
+void Floor::print(string action) {
     for (auto &row : theFloor) {
         for (auto &col : row) {
             if (col->getState().x == pc->getState().x && col->getState().y == pc->getState().y) {
@@ -98,6 +98,7 @@ void Floor::print() {
     cout << "Atk: " << pc->getInfo().atk << endl;
     cout << "Def: " << pc->getInfo().def << endl;
 
+    cout << action << endl;
 }
 
 // invariant: chambers are numbered 1...x
@@ -151,7 +152,7 @@ State getCoords(State &curPos, Direction dir) {
     return s;
 }
 
-void Floor::updateFloor() {
+void Floor::updateFloor(string action) {
     for (auto &row : theFloor) {
         for (auto &tile : row) {
             // update floor tile by tile
@@ -202,6 +203,7 @@ void Floor::updateFloor() {
             }
         }
     }
+    print(action);
 }
 
 bool Floor::isValidMove(State &pos) {

@@ -88,33 +88,61 @@ int main (int argc, char *argv[]) {
     // 2. Spawn Player
     pc->setState(State{7, 5}); 
     
+    string action = "Action: ";
+
     Floor f{pc};
-    f.print();
+    action += "Player character has spawned.";
+    f.print(action);
     // we need to randomly generate a spawn point for Player AFTER we initialize floor.
     // (this is because we have to make sure Player does not spawn on top of Stairs or an Item or Enemy)
 
     while (cin >> cmd) {
+        action = "Action: ";
         switch(cmd) {
             // MOVE
             case 'n':
                 cin >> cmd;
-                if (cmd == 'o') pc->move(Direction::N);
-                if (cmd == 'e') pc->move(Direction::NE);
-                if (cmd == 'w') pc->move(Direction::NW);
+                if (cmd == 'o') {
+                    pc->move(Direction::N);
+                    action += "PC moves North";
+                }
+                if (cmd == 'e') {
+                    pc->move(Direction::NE);
+                    action += "PC moves Northeast";
+                }
+                if (cmd == 'w') {
+                    pc->move(Direction::NW);
+                    action += "PC moves Northwest";
+                }
                 break;
             case 'e':
                 cin >> cmd;
-                if (cmd == 'a') pc->move(Direction::E);
+                if (cmd == 'a') {
+                    pc->move(Direction::E);
+                    action += "PC moves East";
+                }
                 break;
             case 's':
                 cin >> cmd;
-                if (cmd == 'o') pc->move(Direction::S);
-                if (cmd == 'e') pc->move(Direction::SE);
-                if (cmd == 'w') pc->move(Direction::SW);
+                if (cmd == 'o') {
+                    pc->move(Direction::S);
+                    action += "PC moves South";
+                }
+                if (cmd == 'e') {
+                    pc->move(Direction::SE);
+                    action += "PC moves Southeast";
+                }
+                if (cmd == 'w') {
+                    pc->move(Direction::SW);
+                    action += "PC moves Southwest";
+                }
                 break;
             case 'w':
                 cin >> cmd;
-                if (cmd == 'e') pc->move(Direction::W);
+                if (cmd == 'e') {
+                    pc->move(Direction::W);
+                    action += "PC moves West";
+                }
                 break;
             // USE ITEM
             case 'u':
@@ -125,19 +153,20 @@ int main (int argc, char *argv[]) {
                     pc->useItem(i); // before using the item, should do some kind of error checking to ensure
                     // we're not "using" a nullptr, that gives us seg fault
                     f.removeItem(itemLoc);
+                    action += "PC uses Potion";
                     break;
                 }
             case 'a':
                 {
                     // attack
+                    action += "PC attacks";
                     break;
                 }
             default:
                 cout << "invalid cmd" << endl;
                 continue;
         }
-        f.updateFloor();
-        f.print();
+        f.updateFloor(action); // print is called inside here
     }
     
 
