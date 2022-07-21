@@ -19,11 +19,17 @@ Player::Player(Race race, Info stats) : atk{stats.atk}, def{stats.def}, race{rac
 }
 */
 void Player::getAttacked(int damage) {
+    cout << "Player is attacked, damage: " << damage << endl;
     Random r;
     if (hasBarrierSuit) damage /= 2;
     int newHp = getInfo().hp - damage;
     // 50% chance player takes damage
-    if (r.randomNum(2) == 1) setHp(max(0, newHp));
+    if (r.randomNum(2) == 0) {
+        setHp(max(0, newHp));
+        cout << "attack lands on player. New hp: " << getInfo().hp << endl;
+    } else {
+        cout << "attack misses" << endl;
+    }
 } 
 
 State &Player::getState() {

@@ -118,12 +118,6 @@ void Floor::setChambers(string map) {
     }
 }
 
-bool shouldAttack(const State &myPos, const State &otherPos) {
-    int xDist = myPos.x - otherPos.x;
-    int yDist = myPos.y - otherPos.y;
-    return (xDist*xDist <= 1 && yDist*yDist <= 1);
-}
-
 // TODO: Check the arithmetic is right for each dir
 // Olivia: I checked, looks good
 State getCoords(State &curPos, Direction dir) {
@@ -163,11 +157,16 @@ void Floor::updateFloor() {
             // update floor tile by tile
 
             // 1. if enemy, try to attack, if can't, then move
-            if (tile->hasEnemy() && !tile->getEnemy()->hasMoved) {
+            if (tile->hasEnemy() && !tile->getEnemy()->hasMoved) { // if tile has an enemy and enemy has not moved
+                unique_ptr<Enemy> &curEnemy = tile->getEnemy();
+                cout << "tile " << tile->getState().x << ", " << tile->getState().y << " has enemy " << *tile << endl;
                 State curPos = tile->getState();
-                if (shouldAttack(curPos, pc->getState())) {
-                    tile->getEnemy()->attack(*pc);
+                cout << "Can enemy attack? ";
+                if (curEnemy->shouldAttack(curPos, pc->getState())) { // checks if it can attack
+                    cout << "Yes" << endl;
+                    curEnemy->attack(*pc);
                 } else {
+                    cout << "No" << endl;
                     // randomly move
                     State newPos;
                     vector<int> neighbors = Random{}.randomArr(8);
@@ -179,7 +178,7 @@ void Floor::updateFloor() {
                     }
                     // move enemy to state s.
                     // set hasMoved to true
-                    tile->getEnemy()->toggleMove(); // set hasMoved to true
+                    curEnemy->toggleMove(); // set hasMoved to true
 
                     assert (0 <= newPos.y && newPos.y < height);
                     assert (0 <= newPos.x && newPos.x < width);
@@ -188,11 +187,19 @@ void Floor::updateFloor() {
 
                     assert (newTile->getType() == TileType::MoveableTile);
 
-                    newTile->moveEnemy(tile->getEnemy());
+                    newTile->moveEnemy(curEnemy);
                     // newTile points to this enemy
                     // set this tile to point to nothing
                 }
-            } // else if
+            }
+        }
+    }
+    // loop through again to reset hasMoved boolean
+    for (auto &row : theFloor) {
+        for (auto &tile : row) {
+            if (tile->hasEnemy() && tile->getEnemy()->hasMoved) { // if tile has enemy and hasMoved=true
+                tile->getEnemy()->toggleMove();
+            }
         }
     }
 }

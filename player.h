@@ -7,8 +7,6 @@
 
 class Item;
 
-enum class Race{ Human, Dwarf, Elf, Orc };
-
 class Player : public Character {
     protected:
         const int atk = 20; // human default

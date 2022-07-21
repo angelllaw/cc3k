@@ -2,6 +2,7 @@
 #include <algorithm>
 #include <iostream>
 #include "info.h"
+#include "state.h"
 
 using namespace std;
 
@@ -39,4 +40,10 @@ std::ostream &operator<<(std::ostream &out, const Enemy &e) {
             break;
     }
     return out;
+}
+
+bool Enemy::shouldAttack(State &myPos, State &otherPos) {
+    int xDist = myPos.x - otherPos.x;
+    int yDist = myPos.y - otherPos.y;
+    return (xDist*xDist <= 1 && yDist*yDist <= 1);
 }

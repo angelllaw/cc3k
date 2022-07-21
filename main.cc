@@ -136,6 +136,7 @@ int main (int argc, char *argv[]) {
                 cout << "invalid cmd" << endl;
                 continue;
         }
+        f.updateFloor();
         f.print();
     }
     
