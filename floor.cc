@@ -78,7 +78,7 @@ void Floor::init(string map) {
 
 }
 
-void Floor::printFloor() {
+void Floor::print() {
     for (auto &row : theFloor) {
         for (auto &col : row) {
             if (col->getState().x == pc->getState().x && col->getState().y == pc->getState().y) {
@@ -89,33 +89,15 @@ void Floor::printFloor() {
         }
         cout << endl;
     }
-}
 
-string printRace(Race race) {
-    switch (race) {
-        case Race::Human:
-            return "Human";
-            break;
-        case Race::Dwarf:
-            return "Dwarf";
-            break;
-        case Race::Elf:
-            return "Elf";
-            break;
-        case Race::Orc:
-            return "Orc";
-            break;
-    }
-    return "";
-}
-
-void Floor::printMessage() {
-    cout << "Race: " << printRace(pc->getRace());
+    // print message
+    cout << "Race: " << pc->printRace();
     cout << " Gold: " << pc->getInfo().gold; 
-    cout << setw(50) << right << "Floor " << floorNum << endl;
+    cout << setw(55) << right << "Floor " << floorNum << endl;
     cout << "HP: " << pc->getInfo().hp << endl;
     cout << "Atk: " << pc->getInfo().atk << endl;
     cout << "Def: " << pc->getInfo().def << endl;
+
 }
 
 // invariant: chambers are numbered 1...x

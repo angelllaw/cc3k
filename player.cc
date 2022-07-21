@@ -9,12 +9,15 @@ using namespace std;
 
 Player::~Player() {}
 
+Player::Player(const int atk, const int def) : atk{atk}, def{def}, pos{make_unique<State>()} {}
+
+/*
 Player::Player(Race race, Info stats) : atk{stats.atk}, def{stats.def}, race{race}, pos{make_unique<State>()} {
     this->stats = make_unique<Info>(Info{140, 20, 20, 0});
     pos->x = 0;
     pos->y = 0;
 }
-
+*/
 void Player::getAttacked(int damage) {
     Random r;
     if (hasBarrierSuit) damage /= 2;
@@ -32,9 +35,11 @@ void Player::setState(State newPos) {
     pos->y = newPos.y;
 } 
 
+/*
 Race Player::getRace() {
     return race;
 }
+*/
 
 void Player::setBarrierSuitTrue() {
     hasBarrierSuit = true;

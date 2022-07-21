@@ -8,6 +8,7 @@ class Orc : public Player {
     Orc();
     ~Orc() override;
     void useItem(Item *i) override;
+    std::string printRace() override;
 };
 
 #endif

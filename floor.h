@@ -87,8 +87,7 @@ class Floor {
         Floor(std::shared_ptr<Player> pc);
         void updateFloor();
         void init(string map);
-        void printFloor();
-        void printMessage();
+        void print();
         bool isValidMove(State &newPos);
         // needed functions for factory, going to try to reduce later
         int getNumChambers();

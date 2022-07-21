@@ -40,7 +40,6 @@ Direction getDirection() {
     return Direction::N;
 }
 
-
 int main (int argc, char *argv[]) {
 
     cout << endl << endl << "GAME START" << endl << endl;
@@ -90,6 +89,7 @@ int main (int argc, char *argv[]) {
     pc->setState(State{7, 5}); 
     
     Floor f{pc};
+    f.print();
     // we need to randomly generate a spawn point for Player AFTER we initialize floor.
     // (this is because we have to make sure Player does not spawn on top of Stairs or an Item or Enemy)
 
@@ -136,8 +136,7 @@ int main (int argc, char *argv[]) {
                 cout << "invalid cmd" << endl;
                 continue;
         }
-        f.printFloor();
-        f.printMessage();
+        f.print();
     }
     
 

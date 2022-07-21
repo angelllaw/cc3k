@@ -8,6 +8,7 @@ class Human : public Player {
     Human();
     ~Human() override;
     void useItem(Item *i) override;
+    std::string printRace() override;
 };
 
 #endif
