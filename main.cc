@@ -159,7 +159,7 @@ int main (int argc, char *argv[]) {
             case 'a':
                 {
                     // attack
-                    action += "PC attacks";
+                    action += "PC attacks. ";
                     break;
                 }
             default:

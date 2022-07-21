@@ -160,14 +160,27 @@ void Floor::updateFloor(string action) {
             // 1. if enemy, try to attack, if can't, then move
             if (tile->hasEnemy() && !tile->getEnemy()->hasMoved) { // if tile has an enemy and enemy has not moved
                 unique_ptr<Enemy> &curEnemy = tile->getEnemy();
-                cout << "tile " << tile->getState().x << ", " << tile->getState().y << " has enemy " << *tile << endl;
+                // cout << "tile " << tile->getState().x << ", " << tile->getState().y << " has enemy " << *tile << endl;
                 State curPos = tile->getState();
-                cout << "Can enemy attack? ";
+                //cout << "Can enemy attack? ";
                 if (curEnemy->shouldAttack(curPos, pc->getState())) { // checks if it can attack
-                    cout << "Yes" << endl;
-                    curEnemy->attack(*pc);
+                    //cout << "Yes" << endl;
+                    action += curEnemy->getChar();
+                    Random r;
+                    if (r.randomNum(2) == 0) {
+                        action += " deals ";
+
+                        int damage = curEnemy->attack(*pc);
+                        stringstream ss;
+                        ss << damage;
+                        action += ss.str();
+
+                        action += " damage to PC. ";
+                    } else {
+                        action += " misses. ";
+                    }
                 } else {
-                    cout << "No" << endl;
+                    // cout << "No" << endl;
                     // randomly move
                     State newPos;
                     vector<int> neighbors = Random{}.randomArr(8);

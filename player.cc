@@ -1,7 +1,7 @@
 #include "player.h"
 #include <algorithm>
 #include <iostream>
-#include "random.h"
+#include <cmath>
 #include "info.h"
 #include "state.h"
 #include "direction.h"
@@ -18,18 +18,12 @@ Player::Player(Race race, Info stats) : atk{stats.atk}, def{stats.def}, race{rac
     pos->y = 0;
 }
 */
-void Player::getAttacked(int damage) {
-    cout << "Player is attacked, damage: " << damage << endl;
-    Random r;
+int Player::getAttacked(int damage) {
     if (hasBarrierSuit) damage /= 2;
+    int oldHp = getInfo().hp;
     int newHp = getInfo().hp - damage;
-    // 50% chance player takes damage
-    if (r.randomNum(2) == 0) {
-        setHp(max(0, newHp));
-        cout << "attack lands on player. New hp: " << getInfo().hp << endl;
-    } else {
-        cout << "attack misses" << endl;
-    }
+    setHp(max(0, newHp));
+    return min(damage, oldHp);
 } 
 
 State &Player::getState() {

@@ -10,9 +10,11 @@ class Enemy : public Character {
     EnemyType id;
 
     public:
-    void getAttacked(int damage) override;
+    int getAttacked(int damage) override;
     virtual bool shouldAttack(State &myPos, State &otherPos);
     virtual ~Enemy();
+
+    virtual char getChar() = 0;
 
     friend std::ostream &operator<<(std::ostream &out, const Enemy &e);
 };

@@ -16,7 +16,7 @@ class Player : public Character {
         bool hasBarrierSuit = false;
         bool compass = false;
 
-        void getAttacked(int damage) override; 
+        int getAttacked(int damage) override; 
 
         Player(const int atk, const int def);
 

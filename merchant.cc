@@ -4,7 +4,7 @@
 
 using namespace std;
 
-bool Merchant::hostile = true;
+bool Merchant::hostile = false;
 
 Merchant::Merchant() {
     init(unique_ptr<Info> (new Info {30, 70, 5, 0}));
@@ -24,7 +24,9 @@ bool Merchant::shouldAttack(State &myPos, State &otherPos) {
     }
 }
 
-void Merchant::getAttacked(int damage) {
+int Merchant::getAttacked(int damage) {
     hostile = true;
-    Enemy::getAttacked(damage);
+    return Enemy::getAttacked(damage);
 }
+
+char Merchant::getChar() { return 'M'; }
