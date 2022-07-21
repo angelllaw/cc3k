@@ -4,6 +4,8 @@
 #include "character.h"
 #include <memory>
 
+class Item;
+
 enum class Race{ Human, Dwarf, Elf, Orc };
 
 class Player : public Character {
@@ -14,6 +16,7 @@ class Player : public Character {
         Race race;
         std::unique_ptr<State> pos;
         bool hasBarrierSuit = false;
+        bool compass = false;
 
         
 
@@ -25,6 +28,12 @@ class Player : public Character {
         State &getState();
         void setState(State newPos);
         Race getRace();
+        void setBarrierSuitTrue();
+        void setCompassTrue();
+        bool hasCompass();
+        void addGold(int amount);
+        virtual void useItem(Item *i) = 0;
+        bool move(Direction dir) override;
         ~Player();
 };
 

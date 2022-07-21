@@ -15,7 +15,7 @@ class Character {
     virtual void getAttacked(int damage) = 0; 
 
     public:
-        Info getInfo();
+        Info &getInfo();
         void setHp(int newHp);
         void setAtk(int newAtk);
         void setDef(int newDef);

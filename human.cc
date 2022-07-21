@@ -1,8 +1,14 @@
 #include "human.h"
 #include "info.h"
+#include "item.h"
 #include <memory>
+#include <iostream>
+
+Human::Human() : Player(Race::Human, Info{140, 20, 20, 0}) {}
 
 Human::~Human() {}
 
-Human::Human() : Player(Race::Human, Info{140, 20, 20, 0}) {}
+void Human::useItem(Item *i) {
+    i->useOn(this);
+}
 

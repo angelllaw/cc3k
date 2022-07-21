@@ -7,6 +7,7 @@ class Human : public Player {
     public:
     Human();
     ~Human() override;
+    void useItem(Item *i) override;
 };
 
 #endif

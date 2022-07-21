@@ -6,9 +6,9 @@
 #include "player.h"
 #include "enemy.h"
 #include "random.h"
-#include "direction.h"
 #include "itemFactory.h"
 #include "enemyFactory.h"
+#include "direction.h"
 
 #include <vector>
 #include <iostream>
@@ -143,6 +143,7 @@ bool shouldAttack(const State &myPos, const State &otherPos) {
 }
 
 // TODO: Check the arithmetic is right for each dir
+// Olivia: I checked, looks good
 State getCoords(State &curPos, Direction dir) {
     State s;
     switch(dir) {
@@ -252,5 +253,21 @@ Tile *Floor::getTile(int idxNum) {
     return theFloor[pos.y][pos.x];
 }
 
+Tile *Floor::getTile(State pos) {
+    return theFloor[pos.y][pos.x];
+}
 
+
+State Floor::getState(State &curPos, Direction dir) {
+    return getCoords(curPos, dir);
+}
+
+Item* Floor::getItem(State &itemPos) {
+    Item *i = getTile(itemPos)->getItem().get();
+    return i;
+}
+
+void Floor::removeItem(State pos) {
+    getTile(pos)->removeEntities();
+}
 
