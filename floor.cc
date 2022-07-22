@@ -43,17 +43,7 @@ TileType getTileId(char c) {
 }
 
 // reads in a string map and sets "theFloor" tile IDs
-void Floor::init(string map) {
-    // generate the actual floor & tiles
-    for (int row = 0; row < height; row++) {
-        vector<Tile *> tmp;
-        for (int col = 0; col < width; col++) {
-            char c = map[row * width + col];
-            tmp.emplace_back(new Tile(col, row, getTileId(c)));
-        }
-        theFloor.emplace_back(tmp);
-    }
-
+void Floor::spawn() {
     // 2. spawn stairway location
     // 3. a) spawn potions, gold, compass
     // unique_ptr<ItemFactory> iFactory (new ItemFactory(this));

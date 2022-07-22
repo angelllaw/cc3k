@@ -1,1 +1,1 @@
-tile.o: tile.cc tile.h item.h enemy.h character.h state.h
+tile.o: tile.cc tile.h item.h enemy.h character.h compass.h state.h
