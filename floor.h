@@ -78,8 +78,7 @@ class Floor {
 
         void spawnCoords();
         void setChambers(string map);
-
-        State idxToPos(int idx);
+        State idxToPos(int strIdx);
 
         static int floorNum;
     public:
@@ -89,6 +88,7 @@ class Floor {
         void init(string map);
         void print(string action);
         bool isValidMove(State &newPos);
+        bool isValidMove(int strIdxNum);
         // needed functions for factory, going to try to reduce later
         int getNumChambers();
         int getChamberSize(int chamberIdx);
@@ -99,7 +99,7 @@ class Floor {
         State getState(State &curPos, Direction dir);
         Item* getItem(State &itemPos);
         void removeItem(State pos); 
-        bool isValidMove(int strIdxNum);
+        int rNeighbourStrIdx(int strIdx, Floor &floor);
 };
 
 #endif
