@@ -26,8 +26,6 @@ class Character {
         void setState(State newPos); */
 
         bool isDead();
-        void toggleMove();
-        bool hasMoved = false;
 
         virtual int attack(Character &victim);
         virtual bool move(Direction dir);

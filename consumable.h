@@ -14,6 +14,7 @@ class Consumable : public Item {
     void useOn(Elf *p) override; 
     void useOn(Dwarf *p) override; 
     void useOn(Orc *p) override; 
+    char getChar() override;
 };
 
 #endif

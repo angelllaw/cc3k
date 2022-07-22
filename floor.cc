@@ -61,19 +61,22 @@ void Floor::init(string map) {
         theFloor.emplace_back(tmp);
     }
 
-    // 1. spawn player character location
     // 2. spawn stairway location
     // 3. a) spawn potions, gold, compass
     // unique_ptr<ItemFactory> iFactory (new ItemFactory(this));
+    // 1. spawn stairway location
+    Random r;
+    int stairsIdx = r.randomStrIdx(*this);
+    stairs = idxToPos(stairsIdx);
+    cout << "stairs at: " << stairs.x << ", " << stairs.y << endl;
 
+    // 3. a) spawn potions and treasures
     ItemFactory iFactory;
-
     iFactory.generatePotions(*this);
     iFactory.generateTreasures(*this);
     
     // 3. b) spawn enemies
     EnemyFactory eFactory;
-
     eFactory.generateEnemies(*this);
 
 }
@@ -226,6 +229,7 @@ bool Floor::isValidMove(State &pos) {
         cout << "Player is on (" << pcPos.x << ", " << pcPos.y << ")" << endl; 
         return false; // if player is on that spot
     }
+    if (pos.x == stairs.x && pos.y == stairs.y) return false; // if on stairs
     return t->getType() == TileType::MoveableTile && !t->hasEnemy() && !t->hasItem(); 
 }
 

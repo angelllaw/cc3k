@@ -14,6 +14,9 @@ Tile::Tile(int x, int y, TileType type) : pos{make_unique<State>(State{x, y})}, 
 Tile::~Tile() {}
 
 void Tile::removeEntities() {
+    // need to check if enemy is holding the compass
+    // if the enemy is holding the compass when it dies, item should now point to compass
+    // enemy should have a pointer to compass
     item.reset(nullptr); // deletes item and sets item to nullptr
     enemy.reset(nullptr); // delete enemy
 }
@@ -87,7 +90,7 @@ std::ostream &operator<<(std::ostream &out, const Tile &td) {
             } else if (td.item.get() == nullptr) {
                 out << td.enemy->getChar();
             } else {
-                out << *td.item;
+                out << td.item->getChar();
             }
             break;
     }

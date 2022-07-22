@@ -21,3 +21,7 @@ void DragonHorde::useOn(Dwarf *p) {
 void DragonHorde::useOn(Orc *p) {
     p->addGold(gold);
 }
+
+char DragonHorde::getChar() {
+    return 'G';
+}

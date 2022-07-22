@@ -3,6 +3,7 @@
 #include <iostream>
 #include "info.h"
 #include "state.h"
+#include "compass.h"
 
 using namespace std;
 
@@ -15,37 +16,23 @@ int Enemy::getAttacked(int damage) {
     return min(damage, oldHp);
 }
 
-Enemy::~Enemy() {}
-
-std::ostream &operator<<(std::ostream &out, const Enemy &e) {
-    switch (e.id) {
-        case EnemyType::Werewolf:
-            out << 'W';
-            break;
-        case EnemyType::Vampire:
-            out << 'V';
-            break;
-        case EnemyType::Goblin:
-            out << 'N';
-            break;
-        case EnemyType::Troll:
-            out << 'T';
-            break;
-        case EnemyType::Phoenix:
-            out << 'X';
-            break;
-        case EnemyType::Merchant:
-            out << 'M';
-            break;
-        default: // Dragon
-            out << 'D';
-            break;
-    }
-    return out;
+void Enemy::toggleMove() {
+    hasMoved = !hasMoved;
 }
+
+Enemy::~Enemy() {}
 
 bool Enemy::shouldAttack(State &myPos, State &otherPos) {
     int xDist = myPos.x - otherPos.x;
     int yDist = myPos.y - otherPos.y;
     return (xDist*xDist <= 1 && yDist*yDist <= 1);
+}
+
+bool Enemy::hasCompass() {
+    if (c.get() == nullptr) return false;
+    return true;
+}
+
+void Enemy::setCompass(unique_ptr<Compass> &c) {
+    this->c = std::move(c);
 }

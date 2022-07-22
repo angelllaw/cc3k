@@ -6,12 +6,12 @@
 #include <map>
 #include <memory>
 #include "direction.h" // likley wrong, delete
+#include "state.h"
 using namespace std;
 
 class Player;
 class Tile;
 class Chamber;
-struct State;
 class Item;
 
 class Floor {
@@ -21,6 +21,7 @@ class Floor {
         std::shared_ptr<Player> pc;
         vector<vector<Tile *>> theFloor;
         vector<Chamber *> chambers;
+        State stairs;
 
         string floorMap = 
             "|-----------------------------------------------------------------------------|"
