@@ -14,6 +14,18 @@ Tile::Tile(int x, int y, TileType type) : pos{make_unique<State>(State{x, y})}, 
 Tile::~Tile() {}
 
 void Tile::removeEntities() {
+    if (enemy.get() != nullptr) {
+        if (enemy->hasCompass()) {
+            item = move(enemy->getCompass());
+            cout << "the enemy with the compass has been slain" << endl;
+        }
+        enemy.reset(nullptr);
+        cout << "item now points at compass" << endl;
+        cout << "is (item.get() == nullptr)" << (item.get() == nullptr) << " coords are: " << getState().x << ", " << getState().y << endl;
+        if (item.get()) {
+            cout << 'C';
+        }
+    }
     // need to check if enemy is holding the compass
     // if the enemy is holding the compass when it dies, item should now point to compass
     // enemy should have a pointer to compass

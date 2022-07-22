@@ -4,6 +4,8 @@
 #include "dwarf.h"
 #include "orc.h"
 
+#include <iostream>
+
 void Compass::useOn(Human *p) {
     p->setCompassTrue();
 }
@@ -21,7 +23,7 @@ void Compass::useOn(Orc *p) {
 }
 
 char Compass::getChar() {
-    return 'c';
+    return 'C';
 }
 
 Compass::~Compass() {}

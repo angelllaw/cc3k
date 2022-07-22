@@ -36,3 +36,7 @@ bool Enemy::hasCompass() {
 void Enemy::setCompass(unique_ptr<Compass> &c) {
     this->c = std::move(c);
 }
+
+std::unique_ptr<Compass>& Enemy::getCompass() {
+    return c; // bruh i got no idea if this is valid
+}
