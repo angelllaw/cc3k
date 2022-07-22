@@ -18,6 +18,7 @@ class Enemy : public Character {
     bool hasMoved = false;
     bool hasCompass();
     void setCompass(std::unique_ptr<Compass> &c);
+    std::unique_ptr<Compass>& getCompass();
 
     virtual char getChar() = 0;
 
