@@ -275,3 +275,17 @@ void Floor::removeItem(State pos) {
     getTile(pos)->removeEntities();
 }
 
+// Returns a random neighbour tile's string index. If there are none, returns -1.
+int Floor::rNeighbourStrIdx(int strIdx, Floor &floor) {
+    vector<int> v = Random{}.randomArr(8); // shuffle an array from 1-7
+
+    for (int i = 0; i < 8; i++) {
+        Direction d = Direction(v[i]); // random direction
+        State givenPos = idxToPos(strIdx); // convert to State
+        State candidatePos = getState(givenPos, d); // current state + direction
+        if (isValidMove(candidatePos)) { // is empty?
+            return candidatePos.x + candidatePos.y * width;
+        }
+    }
+    return -1;
+}
