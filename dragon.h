@@ -11,6 +11,7 @@ class Dragon : public Enemy {
     public:
     Dragon();
     ~Dragon();
+    void toggleMove() override;
     void setDragonBaby(DragonBaby *baby);
     char getChar() override;
 };

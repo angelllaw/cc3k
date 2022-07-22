@@ -2,17 +2,22 @@
 #define ENEMY_H
 
 #include "character.h"
+#include "compass.h"
 
 enum class EnemyType { Dragon, Vampire, Werewolf, Troll, Goblin, Merchant, Phoenix };
 
 class Enemy : public Character {
     protected:
-    EnemyType id;
+    std::unique_ptr<Compass> c;
 
     public:
     int getAttacked(int damage) override;
     virtual bool shouldAttack(State &myPos, State &otherPos);
     virtual ~Enemy();
+    virtual void toggleMove();
+    bool hasMoved = false;
+    bool hasCompass();
+    void setCompass(std::unique_ptr<Compass> &c);
 
     virtual char getChar() = 0;
 

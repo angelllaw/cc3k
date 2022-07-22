@@ -42,19 +42,34 @@ TileType getTileId(char c) {
     return TileType::MoveableTile; // if (0 < c < 6) ?
 }
 
-void Floor::spawn() {
-    // 1. spawn player character location
+// reads in a string map and sets "theFloor" tile IDs
+void Floor::init(string map) {
+    // generate the actual floor & tiles
+    for (int row = 0; row < height; row++) {
+        vector<Tile *> tmp;
+        for (int col = 0; col < width; col++) {
+            char c = map[row * width + col];
+            tmp.emplace_back(new Tile(col, row, getTileId(c)));
+        }
+        theFloor.emplace_back(tmp);
+    }
+
     // 2. spawn stairway location
     // 3. a) spawn potions, gold, compass
     // unique_ptr<ItemFactory> iFactory (new ItemFactory(this));
-    ItemFactory iFactory;
+    // 1. spawn stairway location
+    Random r;
+    int stairsIdx = r.randomStrIdx(*this);
+    stairs = idxToPos(stairsIdx);
+    cout << "stairs at: " << stairs.x << ", " << stairs.y << endl;
 
+    // 3. a) spawn potions and treasures
+    ItemFactory iFactory;
     iFactory.generatePotions(*this);
     iFactory.generateTreasures(*this);
     
     // 3. b) spawn enemies
     EnemyFactory eFactory;
-
     eFactory.generateEnemies(*this);
 }
 
@@ -280,6 +295,7 @@ bool Floor::isValidMove(State &pos) {
         // cout << "Player is on (" << pcPos.x << ", " << pcPos.y << ")" << endl; 
         return false; // if player is on that spot
     }
+    if (pos.x == stairs.x && pos.y == stairs.y) return false; // if on stairs
     return t->getType() == TileType::MoveableTile && !t->hasEnemy() && !t->hasItem(); 
 }
 

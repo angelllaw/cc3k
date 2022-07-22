@@ -6,11 +6,12 @@
 class Compass : public Item {
 
     public:
-    Compass();
     void useOn(Human* p);
     void useOn(Elf* p);
     void useOn(Dwarf* p);
     void useOn(Orc* p);
+    char getChar() override;
+    ~Compass();
 };
 
 #endif

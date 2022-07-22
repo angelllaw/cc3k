@@ -24,10 +24,6 @@ void Character::setGold(int newGold) {
     stats->gold = newGold;
 }
 
-void Character::toggleMove() {
-    hasMoved = !hasMoved;
-}
-
 bool Character::isDead() {
     return getInfo().hp == 0;
 }

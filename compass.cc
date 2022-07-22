@@ -19,3 +19,9 @@ void Compass::useOn(Dwarf *p) {
 void Compass::useOn(Orc *p) {
     p->setCompassTrue();
 }
+
+char Compass::getChar() {
+    return 'c';
+}
+
+Compass::~Compass() {}
