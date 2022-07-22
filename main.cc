@@ -1,5 +1,7 @@
 #include <iostream>
 #include <fstream>
+#include <string>
+#include <sstream>
 #include <iomanip>
 #include <memory>
 #include "floor.h"
@@ -13,6 +15,7 @@
 #include "orc.h"
 #include "direction.h"
 #include "state.h"
+#include "info.h"
 using namespace std;
 
 Direction getDirection() {
@@ -41,6 +44,9 @@ Direction getDirection() {
 }
 
 int main (int argc, char *argv[]) {
+
+    const int width = 79;
+    const int height = 25;
 
     cout << endl << endl << "GAME START" << endl << endl;
     cout << "Select your player's race." << endl;
@@ -85,95 +91,146 @@ int main (int argc, char *argv[]) {
         if (validRace) break;
     }
 
-    // 2. Spawn Player
-    pc->setState(State{7, 5}); 
-    
-    string action = "Action: ";
+    ifstream floorFile;
+    ifstream numFile;
 
-    Floor f{pc};
-    action += "Player character has spawned.";
-    f.print(action);
-    // we need to randomly generate a spawn point for Player AFTER we initialize floor.
-    // (this is because we have to make sure Player does not spawn on top of Stairs or an Item or Enemy)
-
-    while (cin >> cmd) {
-        action = "Action: ";
-        switch(cmd) {
-            // MOVE
-            case 'n':
-                cin >> cmd;
-                if (cmd == 'o') {
-                    pc->move(Direction::N);
-                    action += "PC moves North";
-                }
-                if (cmd == 'e') {
-                    pc->move(Direction::NE);
-                    action += "PC moves Northeast";
-                }
-                if (cmd == 'w') {
-                    pc->move(Direction::NW);
-                    action += "PC moves Northwest";
-                }
-                break;
-            case 'e':
-                cin >> cmd;
-                if (cmd == 'a') {
-                    pc->move(Direction::E);
-                    action += "PC moves East";
-                }
-                break;
-            case 's':
-                cin >> cmd;
-                if (cmd == 'o') {
-                    pc->move(Direction::S);
-                    action += "PC moves South";
-                }
-                if (cmd == 'e') {
-                    pc->move(Direction::SE);
-                    action += "PC moves Southeast";
-                }
-                if (cmd == 'w') {
-                    pc->move(Direction::SW);
-                    action += "PC moves Southwest";
-                }
-                break;
-            case 'w':
-                cin >> cmd;
-                if (cmd == 'e') {
-                    pc->move(Direction::W);
-                    action += "PC moves West";
-                }
-                break;
-            // USE ITEM
-            case 'u':
-                {
-                    Direction d = getDirection(); // reads the next to chars from stdIn
-                    State itemLoc = f.getState(pc->getState(), d);
-                    Item *i = f.getItem(itemLoc);
-                    pc->useItem(i); // before using the item, should do some kind of error checking to ensure
-                    // we're not "using" a nullptr, that gives us seg fault
-                    f.removeItem(itemLoc);
-                    action += "PC uses Potion";
-                    break;
-                }
-            case 'a':
-                {
-                    // attack
-                    action += "PC attacks. ";
-                    break;
-                }
-            default:
-                cout << "invalid cmd" << endl;
-                continue;
-        }
-        f.updateFloor(action); // print is called inside here
-    }
-    
+    bool hasArg = false;
 
     if (argc == 2) { // optional cmd line arg
+        floorFile.open(argv[1]);
+        hasArg = true;
+    } 
 
-    } else {
+    for (int floorNum = 0; floorNum < 5; ++floorNum) {
+        string floorMap;
+        string numMap;
+        string line;
 
+        if (!hasArg) {
+            floorFile.open("defaultMap.txt"); // reopens defaultmap if no cmd line arg
+        }
+        numFile.open("defaultNumMap.txt"); // reopens numMap for every new floor
+
+        // gets one floor
+        for (int i = 0; i < height; ++i) {
+            getline(floorFile, line);
+            floorMap += line;
+
+            getline(numFile, line);
+            numMap += line;
+        }
+
+        
+
+        Floor f{pc, numMap, floorMap, hasArg};
+
+        // 2. Spawn Player
+        pc->setState(State{7, 5}); 
+        
+        
+        string action = "Action: ";
+        
+        action += "Player character has spawned.";
+        f.print(action);
+        // we need to randomly generate a spawn point for Player AFTER we initialize floor.
+        // (this is because we have to make sure Player does not spawn on top of Stairs or an Item or Enemy)
+
+        while (cin >> cmd) {
+            action = "Action: ";
+            switch(cmd) {
+                // MOVE
+                case 'n':
+                    cin >> cmd;
+                    if (cmd == 'o') {
+                        pc->move(Direction::N);
+                        action += "PC moves North";
+                    }
+                    if (cmd == 'e') {
+                        pc->move(Direction::NE);
+                        action += "PC moves Northeast";
+                    }
+                    if (cmd == 'w') {
+                        pc->move(Direction::NW);
+                        action += "PC moves Northwest";
+                    }
+                    break;
+                case 'e':
+                    cin >> cmd;
+                    if (cmd == 'a') {
+                        pc->move(Direction::E);
+                        action += "PC moves East";
+                    }
+                    break;
+                case 's':
+                    cin >> cmd;
+                    if (cmd == 'o') {
+                        pc->move(Direction::S);
+                        action += "PC moves South";
+                    }
+                    if (cmd == 'e') {
+                        pc->move(Direction::SE);
+                        action += "PC moves Southeast";
+                    }
+                    if (cmd == 'w') {
+                        pc->move(Direction::SW);
+                        action += "PC moves Southwest";
+                    }
+                    break;
+                case 'w':
+                    cin >> cmd;
+                    if (cmd == 'e') {
+                        pc->move(Direction::W);
+                        action += "PC moves West";
+                    }
+                    break;
+                // USE ITEM
+                case 'u':
+                    {
+                        Direction d = getDirection(); // reads the next to chars from stdIn
+                        State itemLoc = f.getState(pc->getState(), d);
+                        Item *i = f.getItem(itemLoc);
+                        pc->useItem(i); // before using the item, should do some kind of error checking to ensure
+                        // we're not "using" a nullptr, that gives us seg fault
+                        f.removeItem(itemLoc);
+                        action += "PC uses Potion";
+                        break;
+                    }
+                case 'a': // attack
+                    {
+                        Direction d = getDirection();
+                        State enemyLoc = f.getState(pc->getState(), d);
+                        Tile *t = f.getTile(enemyLoc);
+                        if (t->hasEnemy()) {
+                            int damage = pc->attack(*t->getEnemy()); // enemy is not null
+                            stringstream ss;
+                            ss << damage;
+
+                            action += "PC deals " + ss.str() + " damage to ";
+
+                            action += t->getEnemy()->getChar();
+
+                            int hp = t->getEnemy()->getInfo().hp;
+                            ss.str("");
+                            ss << hp;
+                            cout << "HP:" << hp << endl;
+                            action += " (" + ss.str() + " HP). ";
+                        } else {
+                            action += "PC attacks nothing. ";
+                        }
+                        break;
+                    }
+                default:
+                    cout << "invalid cmd" << endl;
+                    continue;
+            }
+            f.updateFloor(action); // print is called inside here
+        }
     }
+    
+
+    
+    
+
+    
 
 }
