@@ -13,7 +13,6 @@ class DragonHorde : public DragonBaby {
     int gold = 6;
 
     public:
-    DragonHorde();
     void useOn(Human *p) override;
     void useOn(Elf *p) override; 
     void useOn(Dwarf *p) override; 

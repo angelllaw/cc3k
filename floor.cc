@@ -27,30 +27,89 @@ using namespace std;
 
 int Floor::floorNum = 0;
 
-Floor::Floor(int width, int height, shared_ptr<Player> pc) : width{width}, height{height}, pc{pc} {
-    setChambers(numberedMap);
-    init(floorMap);
+Floor::Floor(shared_ptr<Player> pc, string numMap, string floorMap, bool hasLayout) : pc{pc} {
+    setChambers(numMap);
     floorNum++;
-}
-
-Floor::Floor(shared_ptr<Player> pc) : pc{pc} {
-    setChambers(numberedMap);
-    init(floorMap);
-    floorNum++;
+    init(floorMap, hasLayout);
 }
 
 TileType getTileId(char c) {
-    TileType type = TileType::Empty;
-    if (c == '-') type = TileType::HWall;
-    if (c == '|') type = TileType::VWall;
-    if (c == '#') type = TileType::Passage; 
-    if (c == '+') type = TileType::Door; 
-    if (c == '.') type = TileType::MoveableTile; // if (0 < c < 6) ?
-    return type;
+    if (c == ' ') return TileType::Empty;
+    if (c == '-') return TileType::HWall;
+    if (c == '|') return TileType::VWall;
+    if (c == '#') return TileType::Passage; 
+    if (c == '+') return TileType::Door; 
+    return TileType::MoveableTile; // if (0 < c < 6) ?
+}
+
+void Floor::spawn() {
+    // 1. spawn player character location
+    // 2. spawn stairway location
+    // 3. a) spawn potions, gold, compass
+    // unique_ptr<ItemFactory> iFactory (new ItemFactory(this));
+    ItemFactory iFactory;
+
+    iFactory.generatePotions(*this);
+    iFactory.generateTreasures(*this);
+    
+    // 3. b) spawn enemies
+    EnemyFactory eFactory;
+
+    eFactory.generateEnemies(*this);
+}
+
+void Floor::layout(string map) {
+    for (int row = 0; row < height; ++row) {
+        for (int col = 0; col < width; ++col) {
+            char c = map[row * width + col];
+            switch(c) {
+                case '@':
+                    pc->setState(State{col, row}); // might cause error (check)
+                    break;
+                case '0': // RH potion
+                    break;
+                case '1': // BA potion
+                    break;
+                case '2': // BD potion
+                    break;
+                case '3': // PH potion
+                    break;
+                case '4': // WA potion
+                    break;
+                case '5': // WD potion
+                    break;
+                case '6': // normal gold pile
+                    break;
+                case '7': // small gold pile
+                    break;
+                case '8': // merchant horde
+                    break;
+                case '9': // dragon horde
+                    break;
+                // enemies
+                case 'V':
+                    break;
+                case 'W':
+                    break;
+                case 'T':
+                    break;
+                case 'N':
+                    break;
+                case 'M':
+                    break;
+                case 'D':
+                    break;
+                case 'X':
+                    break;
+                default:
+                    cout << "what the fuck is this L symbol" << endl;
+            }
+        }
+    }
 }
 
 // reads in a string map and sets "theFloor" tile IDs
-void Floor::init(string map) {
+void Floor::init(string map, bool hasLayout) {
     // generate the actual floor & tiles
     for (int row = 0; row < height; row++) {
         vector<Tile *> tmp;
@@ -61,21 +120,11 @@ void Floor::init(string map) {
         theFloor.emplace_back(tmp);
     }
 
-    // 1. spawn player character location
-    // 2. spawn stairway location
-    // 3. a) spawn potions, gold, compass
-    // unique_ptr<ItemFactory> iFactory (new ItemFactory(this));
-
-    ItemFactory iFactory;
-
-    iFactory.generatePotions(*this);
-    iFactory.generateTreasures(*this);
-    
-    // 3. b) spawn enemies
-    EnemyFactory eFactory;
-
-    eFactory.generateEnemies(*this);
-
+    if (!hasLayout) {
+        spawn();
+    } else {
+        layout(map);
+    }
 }
 
 void Floor::print(string action) {
@@ -119,8 +168,7 @@ void Floor::setChambers(string map) {
     }
 }
 
-// TODO: Check the arithmetic is right for each dir
-// Olivia: I checked, looks good
+// returns the coordinates of the 
 State getCoords(State &curPos, Direction dir) {
     State s;
     switch(dir) {
@@ -158,8 +206,14 @@ void Floor::updateFloor(string action) {
             // update floor tile by tile
 
             // 1. if enemy, try to attack, if can't, then move
-            if (tile->hasEnemy() && !tile->getEnemy()->hasMoved) { // if tile has an enemy and enemy has not moved
+            if (tile->hasEnemy()) { // if tile has an enemy and enemy has not moved
                 unique_ptr<Enemy> &curEnemy = tile->getEnemy();
+                if (curEnemy->isDead()) {
+                    tile->removeEntities();
+                    continue;
+                } else if (curEnemy->hasMoved) {
+                    continue;
+                }
                 // cout << "tile " << tile->getState().x << ", " << tile->getState().y << " has enemy " << *tile << endl;
                 State curPos = tile->getState();
                 //cout << "Can enemy attack? ";
@@ -223,7 +277,7 @@ bool Floor::isValidMove(State &pos) {
     Tile *t = theFloor[pos.y][pos.x];
     State &pcPos = pc->getState();
     if (pcPos.y == pos.y && pcPos.x == pos.x) {
-        cout << "Player is on (" << pcPos.x << ", " << pcPos.y << ")" << endl; 
+        // cout << "Player is on (" << pcPos.x << ", " << pcPos.y << ")" << endl; 
         return false; // if player is on that spot
     }
     return t->getType() == TileType::MoveableTile && !t->hasEnemy() && !t->hasItem(); 

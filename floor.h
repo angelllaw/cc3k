@@ -22,7 +22,9 @@ class Floor {
         vector<vector<Tile *>> theFloor;
         vector<Chamber *> chambers;
 
-        string floorMap = 
+        string floorMap;
+/*
+        const string defaultMap = 
             "|-----------------------------------------------------------------------------|"
             "|                                                                             |"
             "| |--------------------------|        |-----------------------|               |"
@@ -49,7 +51,7 @@ class Floor {
             "|                                                                             |"
             "|-----------------------------------------------------------------------------|";
 
-        string numberedMap = 
+        string numMap = 
             "|-----------------------------------------------------------------------------|"
             "|                                                                             |"
             "| |--------------------------|        |-----------------------|               |"
@@ -75,17 +77,22 @@ class Floor {
             "|  |---------------------|          |---------------------------------------| |"
             "|                                                                             |"
             "|-----------------------------------------------------------------------------|";
-
+*/
         void spawnCoords();
         void setChambers(string map);
         State idxToPos(int strIdx);
 
         static int floorNum;
+
+        void spawn();
+        void layout(string map);
+
     public:
-        Floor(int width, int height, std::shared_ptr<Player> pc);
-        Floor(std::shared_ptr<Player> pc);
+        // ctors
+        Floor(std::shared_ptr<Player> pc, string numMap, string floorMap, bool hasLayout);
+
         void updateFloor(string action);
-        void init(string map);
+        void init(string map, bool hasLayout);
         void print(string action);
         bool isValidMove(State &newPos);
         bool isValidMove(int strIdxNum);
