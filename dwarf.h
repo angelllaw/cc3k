@@ -8,6 +8,7 @@ class Dwarf : public Player {
     Dwarf();
     ~Dwarf() override;
     void useItem(Item *i) override;
+    std::string printRace() override;
 };
 
 #endif

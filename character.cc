@@ -3,6 +3,9 @@
 #include "state.h"
 #include <cmath>
 #include <memory>
+#include <iostream>
+
+using namespace std;
 
 Info &Character::getInfo() {
     return *stats;
@@ -29,9 +32,11 @@ bool Character::isDead() {
     return getInfo().hp == 0;
 }
 
-void Character::attack(Character &victim) {
-    int damage = ceil((100 / (100 + victim.getInfo().def)) * getInfo().atk);
-    victim.getAttacked(damage);
+int Character::attack(Character &victim) {
+    int damage = ceil((100.0 / (100 + victim.getInfo().def)) * getInfo().atk);
+    cout << "player def: " << victim.getInfo().def << endl;
+    cout << "enemy atk: " << getInfo().atk << endl;
+    return victim.getAttacked(damage);
     // enemies take damage normally
     // players have to check if they have barrier suit + 50% miss rate
 }

@@ -3,31 +3,27 @@
 
 #include "character.h"
 #include <memory>
+#include <string>
 
 class Item;
-
-enum class Race{ Human, Dwarf, Elf, Orc };
 
 class Player : public Character {
     protected:
         const int atk = 20; // human default
         const int def = 20; // human defualt
         
-        Race race;
         std::unique_ptr<State> pos;
         bool hasBarrierSuit = false;
         bool compass = false;
 
-        
+        int getAttacked(int damage) override; 
 
-        void getAttacked(int damage) override; 
-
-        Player(Race race, Info stats);
+        Player(const int atk, const int def);
 
     public:
         State &getState();
         void setState(State newPos);
-        Race getRace();
+        virtual std::string printRace() = 0;
         void setBarrierSuitTrue();
         void setCompassTrue();
         bool hasCompass();

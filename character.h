@@ -12,7 +12,7 @@ class Character {
     std::unique_ptr<Info> stats;
 
 
-    virtual void getAttacked(int damage) = 0; 
+    virtual int getAttacked(int damage) = 0; 
 
     public:
         Info &getInfo();
@@ -29,12 +29,14 @@ class Character {
         void toggleMove();
         bool hasMoved = false;
 
-        virtual void attack(Character &victim);
+        virtual int attack(Character &victim);
         virtual bool move(Direction dir);
 
         void init(std::unique_ptr<Info> infoToMove);
 
        virtual ~Character(); // causing issues with make for some reason
+
+       
 
 };
 

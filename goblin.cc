@@ -9,3 +9,5 @@ Goblin::Goblin() {
 }
 
 Goblin::~Goblin() {}
+
+char Goblin::getChar() { return 'G'; }

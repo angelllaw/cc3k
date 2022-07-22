@@ -8,6 +8,7 @@ class Elf : public Player {
     Elf();
     ~Elf() override;
     void useItem(Item *i) override;
+    std::string printRace() override;
 };
 
 #endif

@@ -9,3 +9,5 @@ Werewolf::Werewolf() {
 }
 
 Werewolf::~Werewolf() {}
+
+char Werewolf::getChar() { return 'W'; }

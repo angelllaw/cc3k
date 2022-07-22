@@ -9,3 +9,5 @@ Troll::Troll() {
 }
 
 Troll::~Troll() {}
+
+char Troll::getChar() { return 'T'; }

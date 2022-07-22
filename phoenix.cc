@@ -9,3 +9,5 @@ Phoenix::Phoenix() {
 }
 
 Phoenix::~Phoenix() {}
+
+char Phoenix::getChar() { return 'X'; }

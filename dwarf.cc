@@ -1,13 +1,24 @@
 #include "dwarf.h"
 #include "info.h"
 #include "item.h"
+#include "state.h"
+
 #include <memory>
+
+using namespace std;
 
 Dwarf::~Dwarf() {}
 
-Dwarf::Dwarf() : Player(Race::Dwarf, Info{100, 20, 30, 0}) {}
+Dwarf::Dwarf() : Player{20, 30} {
+    stats = make_unique<Info>(Info{100, 20, 30, 0});
+}
 
 void Dwarf::useItem(Item *i) {
     i->useOn(this);
 }
+
+string Dwarf::printRace() {
+    return "Dwarf";
+}
+
 

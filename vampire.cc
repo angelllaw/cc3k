@@ -9,3 +9,5 @@ Vampire::Vampire() {
 }
 
 Vampire::~Vampire() {}
+
+char Vampire::getChar() { return 'V'; }

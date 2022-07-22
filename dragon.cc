@@ -9,3 +9,5 @@ Dragon::Dragon() {
 }
 
 Dragon::~Dragon() {}
+
+char Dragon::getChar() { return 'D'; }

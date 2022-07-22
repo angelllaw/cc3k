@@ -8,6 +8,8 @@ class Werewolf: public Enemy {
     public:
     Werewolf();
     ~Werewolf();
+
+    char getChar() override;
 };
 
 #endif

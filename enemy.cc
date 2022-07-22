@@ -2,14 +2,17 @@
 #include <algorithm>
 #include <iostream>
 #include "info.h"
+#include "state.h"
 
 using namespace std;
 
 // Enemy::~Enemy() {};
 
-void Enemy::getAttacked(int damage) {
-    int newHp = getInfo().hp - damage;
+int Enemy::getAttacked(int damage) {
+    int oldHp = getInfo().hp;
+    int newHp = oldHp - damage;
     setHp(max(0, newHp));
+    return min(damage, oldHp);
 }
 
 Enemy::~Enemy() {}
@@ -39,4 +42,10 @@ std::ostream &operator<<(std::ostream &out, const Enemy &e) {
             break;
     }
     return out;
+}
+
+bool Enemy::shouldAttack(State &myPos, State &otherPos) {
+    int xDist = myPos.x - otherPos.x;
+    int yDist = myPos.y - otherPos.y;
+    return (xDist*xDist <= 1 && yDist*yDist <= 1);
 }
