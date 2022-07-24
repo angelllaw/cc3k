@@ -288,17 +288,35 @@ void Floor::updateFloor(string action) {
 bool Floor::isValidMove(State &pos) {
     Tile *t = theFloor[pos.y][pos.x];
     State &pcPos = pc->getState();
-    if (pcPos.y == pos.y && pcPos.x == pos.x) {
-        // cout << "Player is on (" << pcPos.x << ", " << pcPos.y << ")" << endl; 
-        return false; // if player is on that spot
-    }
-    // if (stairs->onStairs(&pos)) return false; // if on stairs
+    if (pcPos.y == pos.y && pcPos.x == pos.x) return false; // on player
+    if (pos.x == stairs.x && pos.y == stairs.y) return false; // on stairs
     return t->getType() == TileType::MoveableTile && !t->hasEnemy() && !t->hasItem(); 
 }
 
 bool Floor::isValidMove(int idxNum) {
     State pos = idxToPos(idxNum);
     return isValidMove(pos);
+}
+
+int Floor::validPlayerTile(State &pos) {
+    Tile *t = theFloor[pos.y][pos.x];
+    TileType type = t->getType();
+    // Empty, VWall, HWall
+    if (type == TileType::Empty || type == TileType::VWall || type == TileType::HWall) {
+        return 0;
+    // Moveable Tile, Potion or Enemy is on it
+    } else if (type == TileType::MoveableTile) { 
+        if (t->hasEnemy()) return -1;
+        if (t->hasItem()) {
+            if (t->hasGold()) {
+                // pc->useItem(t->getItem());
+            }
+        }
+    } else if (pos.x == stairs.x && pos.y == stairs.y) {
+        // STAIRS
+    } else {
+        return 1; // must be valid Passage, Door, MoveableTile 
+    }
 }
 
 int Floor::getChamberSize(int idx) {

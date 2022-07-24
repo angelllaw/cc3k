@@ -97,6 +97,7 @@ class Floor {
         void print(string action);
         bool isValidMove(State &newPos);
         bool isValidMove(int strIdxNum);
+        int validPlayerTile(State &newPos);
         
         int getNumChambers();
         int getChamberSize(int chamberIdx);

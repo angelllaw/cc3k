@@ -33,6 +33,13 @@ TileType Tile::getType() {
     return type;
 }
 
+bool Tile::hasGold() {
+    if (hasItem()) {
+        return item->isGold();
+    }
+    return false;
+}
+
 bool Tile::hasEnemy() {
     return (type == TileType::MoveableTile) && (enemy.get() != nullptr);
 }

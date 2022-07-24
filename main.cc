@@ -135,6 +135,7 @@ int main (int argc, char *argv[]) {
         // we need to randomly generate a spawn point for Player AFTER we initialize floor.
         // (this is because we have to make sure Player does not spawn on top of Stairs or an Item or Enemy)
 
+        // validate move, pick up gold by walking over it, recognize stairs
         while (cin >> cmd) {
             action = "Action: ";
             switch(cmd) {

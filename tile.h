@@ -14,7 +14,7 @@ class Tile {
     TileType type;
     std::unique_ptr<Item> item;
     std::unique_ptr<Enemy> enemy;
-    
+
     public:
     Tile(int x, int y, TileType type);
     ~Tile();
@@ -22,6 +22,7 @@ class Tile {
     void setId(TileType type);
     TileType getType();
     State getState();
+    bool hasGold();
 
     bool hasEnemy();
     bool hasItem();
