@@ -29,10 +29,17 @@ bool Enemy::shouldAttack(State &myPos, State &otherPos) {
 }
 
 bool Enemy::hasCompass() {
-    if (c.get() == nullptr) return false;
-    return true;
+    return compass;
 }
 
-void Enemy::setCompass(unique_ptr<Compass> &c) {
-    this->c = std::move(c);
+void Enemy::setCompass(bool status) {
+    compass = status;
+}
+
+int Enemy::goldUponDead() {
+    return stats->gold;
+}
+
+bool Enemy::dropsMerchantHorde() {
+    return false;
 }

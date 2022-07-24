@@ -18,6 +18,7 @@ class DragonHorde : public DragonBaby {
     void useOn(Dwarf *p) override; 
     void useOn(Orc *p) override;
     char getChar() override;
+    bool isGold() override;
 };
 
 #endif

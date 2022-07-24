@@ -10,7 +10,6 @@
 #include "troll.h"
 #include "phoenix.h"
 #include "merchant.h"
-#include "compass.h"
 
 #include <memory>
 #include <iostream>
@@ -45,7 +44,6 @@ void EnemyFactory::generateEnemies(Floor &floor) {
                                 EnemyType::Troll, EnemyType::Troll, 
                                 EnemyType::Phoenix, EnemyType::Phoenix,
                                 EnemyType::Merchant, EnemyType::Merchant };
-    int idxOfCompass = r.randomNum(20);
     // 20 enemies spawned per floor.
     for (int i = 0; i < 20; i++) {
         int idx = r.randomNum(18); // random enemy
@@ -57,8 +55,11 @@ void EnemyFactory::generateEnemies(Floor &floor) {
 
         unique_ptr<Enemy> enemy = initializeEnemy(type);
 
-        unique_ptr<Compass> c (new Compass);
-        if (idxOfCompass == 1) enemy->setCompass(c);
+        if (i == 0) {
+            cout << "Compass with enemy at :" << toPlace->getState().x << " " << toPlace->getState().y << endl;
+            enemy->setCompass(true);
+        }
         toPlace->moveEnemy(enemy);
+        
     }
 }

@@ -21,10 +21,6 @@
 
 using namespace std;
 
-// how do we initialize our floor to have the default map.
-// idea: have a string with our default map
-// make the string into a stringstream, and read off one char at a time to populate the vector we want to initialize
-
 int Floor::floorNum = 0;
 
 Floor::Floor(shared_ptr<Player> pc, string numMap, string floorMap, bool hasLayout) : pc{pc} {
@@ -39,36 +35,23 @@ TileType getTileId(char c) {
     if (c == '|') return TileType::VWall;
     if (c == '#') return TileType::Passage; 
     if (c == '+') return TileType::Door; 
-    return TileType::MoveableTile; // if (0 < c < 6) ?
+    return TileType::MoveableTile;
 }
 
-// reads in a string map and sets "theFloor" tile IDs
-void Floor::init(string map) {
-    // generate the actual floor & tiles
-    for (int row = 0; row < height; row++) {
-        vector<Tile *> tmp;
-        for (int col = 0; col < width; col++) {
-            char c = map[row * width + col];
-            tmp.emplace_back(new Tile(col, row, getTileId(c)));
-        }
-        theFloor.emplace_back(tmp);
-    }
 
-    // 2. spawn stairway location
-    // 3. a) spawn potions, gold, compass
-    // unique_ptr<ItemFactory> iFactory (new ItemFactory(this));
-    // 1. spawn stairway location
+void Floor::spawn() {
+    
+    // 1. spawn stairs
     Random r;
     int stairsIdx = r.randomStrIdx(*this);
     stairs = idxToPos(stairsIdx);
-    cout << "stairs at: " << stairs.x << ", " << stairs.y << endl;
 
-    // 3. a) spawn potions and treasures
+    // 2. spawn potions and treasures
     ItemFactory iFactory;
     iFactory.generatePotions(*this);
     iFactory.generateTreasures(*this);
     
-    // 3. b) spawn enemies
+    // 3. spawn enemies
     EnemyFactory eFactory;
     eFactory.generateEnemies(*this);
 }
@@ -145,11 +128,22 @@ void Floor::init(string map, bool hasLayout) {
 void Floor::print(string action) {
     for (auto &row : theFloor) {
         for (auto &col : row) {
-            if (col->getState().x == pc->getState().x && col->getState().y == pc->getState().y) {
-                cout << '@';
+            int curX = col->getState().x;
+            int curY = col->getState().y;
+
+            if (curX == pc->getState().x && curY == pc->getState().y) { // player
+                cout << "\033[36m" << '@' << "\033[0m";
+            } else if (curX == stairs.x && curY == stairs.y) { // stairs
+                if (pc->hasCompass()) {
+                    cout << "\033[32m" << '\\' << "\033[0m";
+                } else {
+                    cout << "\033[33m" << '\\' << "\033[0m";
+                }
+                // char print = pc->hasCompass() ? '.' : '\\'; cout << print;
             } else {
                 cout << *col;
             }
+
         }
         cout << endl;
     }
@@ -224,7 +218,10 @@ void Floor::updateFloor(string action) {
             if (tile->hasEnemy()) { // if tile has an enemy and enemy has not moved
                 unique_ptr<Enemy> &curEnemy = tile->getEnemy();
                 if (curEnemy->isDead()) {
-                    tile->removeEntities();
+                    int goldReward = curEnemy->goldUponDead();
+                    pc->addGold(goldReward);
+                    cout << "Earned " << goldReward << " from killing " << curEnemy->getChar() << endl;
+                    tile->removeEntities(); // drops gold? adds gold?
                     continue;
                 } else if (curEnemy->hasMoved) {
                     continue;
@@ -291,17 +288,36 @@ void Floor::updateFloor(string action) {
 bool Floor::isValidMove(State &pos) {
     Tile *t = theFloor[pos.y][pos.x];
     State &pcPos = pc->getState();
-    if (pcPos.y == pos.y && pcPos.x == pos.x) {
-        // cout << "Player is on (" << pcPos.x << ", " << pcPos.y << ")" << endl; 
-        return false; // if player is on that spot
-    }
-    if (pos.x == stairs.x && pos.y == stairs.y) return false; // if on stairs
+    if (pcPos.y == pos.y && pcPos.x == pos.x) return false; // on player
+    if (pos.x == stairs.x && pos.y == stairs.y) return false; // on stairs
     return t->getType() == TileType::MoveableTile && !t->hasEnemy() && !t->hasItem(); 
 }
 
 bool Floor::isValidMove(int idxNum) {
     State pos = idxToPos(idxNum);
     return isValidMove(pos);
+}
+
+int Floor::validPlayerTile(State &pos) {
+    Tile *t = theFloor[pos.y][pos.x];
+    TileType type = t->getType();
+
+    if (type == TileType::Empty || type == TileType::VWall || type == TileType::HWall) {
+        return 0;
+    } else if (type == TileType::MoveableTile) {
+        if (t->hasEnemy()) return -1;
+        if (t->hasItem()) {
+            if (t->hasGold() && t->getItem()->validUse()) {
+                pc->useItem(getItem(pos));
+                t->removeEntities();
+                return 1;
+            }
+            return -1; // has a potion or barrierSuit
+        }
+    } else if (pos.x == stairs.x && pos.y == stairs.y) {
+        // STAIRS
+    }
+    return 1; // must be valid Passage, Door, MoveableTile 
 }
 
 int Floor::getChamberSize(int idx) {
@@ -342,7 +358,7 @@ Item* Floor::getItem(State &itemPos) {
 }
 
 void Floor::removeItem(State pos) {
-    getTile(pos)->removeEntities();
+    if (getTile(pos)->getItem()->validUse()) getTile(pos)->removeEntities();
 }
 
 // Returns a random neighbour tile's string index. If there are none, returns -1.

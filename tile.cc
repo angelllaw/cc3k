@@ -1,5 +1,6 @@
 #include "tile.h"
 #include "item.h"
+#include "consumable.h"
 #include "enemy.h"
 #include "state.h"
 #include <iostream>
@@ -14,9 +15,12 @@ Tile::Tile(int x, int y, TileType type) : pos{make_unique<State>(State{x, y})}, 
 Tile::~Tile() {}
 
 void Tile::removeEntities() {
-    // need to check if enemy is holding the compass
-    // if the enemy is holding the compass when it dies, item should now point to compass
-    // enemy should have a pointer to compass
+    if (hasEnemy()) {
+        if (enemy->hasCompass()) item = unique_ptr<Compass> (new Compass);
+        if (enemy->dropsMerchantHorde()) item = unique_ptr<Item> (new Consumable(ItemType::MerchantHorde));
+        enemy.reset(nullptr);
+        return;
+    }
     item.reset(nullptr); // deletes item and sets item to nullptr
     enemy.reset(nullptr); // delete enemy
 }
@@ -27,6 +31,13 @@ void Tile::setId(TileType type) {
 
 TileType Tile::getType() {
     return type;
+}
+
+bool Tile::hasGold() {
+    if (hasItem()) {
+        return item->isGold();
+    }
+    return false;
 }
 
 bool Tile::hasEnemy() {

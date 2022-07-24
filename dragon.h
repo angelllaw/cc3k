@@ -11,9 +11,11 @@ class Dragon : public Enemy {
     public:
     Dragon();
     ~Dragon();
+    bool shouldAttack(State &myPos, State &otherPos) override;
     void toggleMove() override;
     void setDragonBaby(DragonBaby *baby);
     char getChar() override;
+    int goldUponDead() override;
 };
 
 #endif

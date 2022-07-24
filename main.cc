@@ -18,30 +18,9 @@
 #include "info.h"
 using namespace std;
 
-Direction getDirection() {
-    char first;
-    char second;
-    cin >> first;
-    cin >> second;
+Direction getDirection();
 
-    switch(first) {
-            case 'n':
-                if (second == 'o') return Direction::N;
-                if (second == 'e') return Direction::NE;
-                if (second == 'w') return Direction::NW;
-            case 'e':
-                if (second == 'a') return Direction::E;
-            case 's':
-                if (second == 'o') return Direction::S;
-                if (second == 'e') return Direction::SE;
-                if (second == 'w') return Direction::SW;
-            case 'w':
-                if (second == 'e') return Direction::W;
-            default:
-                cout << "invalid direction" << endl;
-    }
-    return Direction::N;
-}
+string directionString(Direction dir);
 
 int main (int argc, char *argv[]) {
 
@@ -135,84 +114,113 @@ int main (int argc, char *argv[]) {
         // we need to randomly generate a spawn point for Player AFTER we initialize floor.
         // (this is because we have to make sure Player does not spawn on top of Stairs or an Item or Enemy)
 
+        // validate move, pick up gold by walking over it, recognize stairs
         while (cin >> cmd) {
             action = "Action: ";
+            Direction dir;
+            State nextPos;
             switch(cmd) {
                 // MOVE
                 case 'n':
+                {   
                     cin >> cmd;
-                    if (cmd == 'o') {
-                        pc->move(Direction::N);
-                        action += "PC moves North";
-                    }
-                    if (cmd == 'e') {
-                        pc->move(Direction::NE);
-                        action += "PC moves Northeast";
-                    }
-                    if (cmd == 'w') {
-                        pc->move(Direction::NW);
-                        action += "PC moves Northwest";
+                    if (cmd == 'o') dir = Direction::N;
+                    if (cmd == 'e') dir = Direction::NE;
+                    if (cmd == 'w') dir = Direction::NW;
+                    nextPos = f.getState(pc->getState(), dir);
+                    if (f.validPlayerTile(nextPos) == 1) {
+                        pc->move(dir);
+                        action += "PC moves " + directionString(dir);
+                    } else {
+                        cout << "Invalid Move." << endl;
+                        continue;
                     }
                     break;
+                } 
                 case 'e':
+                {
                     cin >> cmd;
-                    if (cmd == 'a') {
-                        pc->move(Direction::E);
-                        action += "PC moves East";
+                    if (cmd == 'a') dir = Direction::E;
+                    State nextPos = f.getState(pc->getState(), dir);
+                    if (f.validPlayerTile(nextPos) == 1) {
+                        pc->move(dir);
+                        action += "PC moves " + directionString(dir);
+                    } else {
+                        cout << "Invalid Move." << endl;
+                        continue;
                     }
                     break;
+                }
                 case 's':
+                {
                     cin >> cmd;
-                    if (cmd == 'o') {
-                        pc->move(Direction::S);
-                        action += "PC moves South";
-                    }
-                    if (cmd == 'e') {
-                        pc->move(Direction::SE);
-                        action += "PC moves Southeast";
-                    }
-                    if (cmd == 'w') {
-                        pc->move(Direction::SW);
-                        action += "PC moves Southwest";
+                    if (cmd == 'o') dir = Direction::S;
+                    if (cmd == 'e') dir = Direction::SE;
+                    if (cmd == 'w') dir = Direction::SW;
+                    nextPos = f.getState(pc->getState(), dir);
+                    if (f.validPlayerTile(nextPos) == 1) {
+                        pc->move(dir);
+                        action += "PC moves " + directionString(dir);
+                    } else {
+                        cout << "Invalid Move." << endl;
+                        continue;
                     }
                     break;
+                }
                 case 'w':
+                {
                     cin >> cmd;
-                    if (cmd == 'e') {
-                        pc->move(Direction::W);
-                        action += "PC moves West";
+                    if (cmd == 'e') dir = Direction::W;
+                    nextPos = f.getState(pc->getState(), dir);
+                    if (f.validPlayerTile(nextPos) == 1) {
+                        pc->move(dir);
+                        action += "PC moves " + directionString(dir);
+                    } else {
+                        cout << "Invalid Move." << endl;
+                        continue;
                     }
                     break;
+                }
                 // USE ITEM
                 case 'u':
                     {
                         Direction d = getDirection(); // reads the next to chars from stdIn
                         State itemLoc = f.getState(pc->getState(), d);
-                        Item *i = f.getItem(itemLoc);
-                        pc->useItem(i); // before using the item, should do some kind of error checking to ensure
-                        // we're not "using" a nullptr, that gives us seg fault
+                        if (f.getTile(itemLoc)->hasItem() == false) {
+                            cout << "Invalid Cmd. No item to use." << endl;
+                            continue;
+                        } else if (f.getTile(itemLoc)->hasGold()) {
+                            cout << "Invalid Cmd. Pick up Gold by walking over it." << endl;
+                            continue;
+                        }
+                        // There is a valid item to use
+                        if (f.getTile(itemLoc)->getItem()->getChar() == 'C') {
+                            action += "PC uses Compass. Stairs Appear.";
+                        } else {
+                            action += "PC uses Potion";
+                        }
+                        pc->useItem(f.getItem(itemLoc));
                         f.removeItem(itemLoc);
-                        action += "PC uses Potion";
                         break;
                     }
-                case 'a': // attack
+                // ATTACK
+                case 'a':
                     {
                         Direction d = getDirection();
                         State enemyLoc = f.getState(pc->getState(), d);
                         Tile *t = f.getTile(enemyLoc);
                         if (t->hasEnemy()) {
                             int damage = pc->attack(*t->getEnemy()); // enemy is not null
+
                             stringstream ss;
                             ss << damage;
-
                             action += "PC deals " + ss.str() + " damage to ";
-
                             action += t->getEnemy()->getChar();
 
                             int hp = t->getEnemy()->getInfo().hp;
                             ss.str("");
                             ss << hp;
-                            cout << "HP:" << hp << endl;
+                            // cout << "HP:" << hp << endl;
                             action += " (" + ss.str() + " HP). ";
                         } else {
                             action += "PC attacks nothing. ";
@@ -223,6 +231,7 @@ int main (int argc, char *argv[]) {
                     cout << "invalid cmd" << endl;
                     continue;
             }
+
             f.updateFloor(action); // print is called inside here
         }
     }
@@ -231,6 +240,44 @@ int main (int argc, char *argv[]) {
     
     
 
-    
 
+}
+
+Direction getDirection() {
+    char first;
+    char second;
+    cin >> first;
+    cin >> second;
+
+    switch(first) {
+            case 'n':
+                if (second == 'o') return Direction::N;
+                if (second == 'e') return Direction::NE;
+                if (second == 'w') return Direction::NW;
+            case 'e':
+                if (second == 'a') return Direction::E;
+            case 's':
+                if (second == 'o') return Direction::S;
+                if (second == 'e') return Direction::SE;
+                if (second == 'w') return Direction::SW;
+            case 'w':
+                if (second == 'e') return Direction::W;
+            default:
+                cout << "invalid direction" << endl;
+    }
+    return Direction::N;
+}
+
+// get direction string
+string directionString(Direction dir) {
+    switch(dir) {
+        case Direction::N:     return "North";
+        case Direction::NE:    return "North East";
+        case Direction::E:     return "East";
+        case Direction::SE:    return "South East";
+        case Direction::S:     return "South";
+        case Direction::SW:    return "South West";
+        case Direction::W:     return "West";
+        default:               return "North West";
+    }
 }

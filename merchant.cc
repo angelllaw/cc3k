@@ -29,3 +29,8 @@ int Merchant::getAttacked(int damage) {
 }
 
 char Merchant::getChar() { return 'M'; }
+
+bool Merchant::dropsMerchantHorde() {
+    return true;
+}
+
