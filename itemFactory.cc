@@ -43,7 +43,6 @@ void ItemFactory::generateTreasures(Floor &floor) {
         ItemType cur = treasures[idx];
 
         if (cur == ItemType::DragonHorde) {
-            cout << "about to make dragonHorde" << endl;
             int itemIdx;
             int dragonIdx;
             while (true) {
@@ -56,7 +55,7 @@ void ItemFactory::generateTreasures(Floor &floor) {
             assert (toPlaceItem->getType() == TileType::MoveableTile);
             assert (toPlaceDragon->getType() == TileType::MoveableTile);
 
-            DragonBaby *db = new DragonHorde; // have to set the identifier!
+            DragonBaby *db = new DragonHorde;
             Dragon *dragon = new Dragon;
             dragon->setDragonBaby(db);
             db->setDragonMomma(dragon);

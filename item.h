@@ -21,9 +21,10 @@ class Item {
     virtual void useOn(Elf *p) = 0; 
     virtual void useOn(Dwarf *p) = 0; 
     virtual void useOn(Orc *p) = 0;
+    virtual bool validUse();
+    virtual bool isGold();
     virtual ~Item();
     virtual char getChar() = 0;
-    // friend std::ostream &operator<<(std::ostream &out, const Item &i);
 };
 
 #endif

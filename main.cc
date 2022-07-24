@@ -135,6 +135,7 @@ int main (int argc, char *argv[]) {
         // we need to randomly generate a spawn point for Player AFTER we initialize floor.
         // (this is because we have to make sure Player does not spawn on top of Stairs or an Item or Enemy)
 
+        // validate move, pick up gold by walking over it, recognize stairs
         while (cin >> cmd) {
             action = "Action: ";
             switch(cmd) {
@@ -191,28 +192,31 @@ int main (int argc, char *argv[]) {
                         Item *i = f.getItem(itemLoc);
                         pc->useItem(i); // before using the item, should do some kind of error checking to ensure
                         // we're not "using" a nullptr, that gives us seg fault
+                        // what if we try to use a DragonHorde/barrierSuit but the Dragon is still guarding it?
+                        // how do we know we didn't succesfully us it?
+                        // what if removeItem checks if the item was valid to remove
                         f.removeItem(itemLoc);
-                        action += "PC uses Potion";
+                        action += "PC uses Potion"; // change this to work with compass
                         break;
                     }
-                case 'a': // attack
+                // ATTACK
+                case 'a':
                     {
                         Direction d = getDirection();
                         State enemyLoc = f.getState(pc->getState(), d);
                         Tile *t = f.getTile(enemyLoc);
                         if (t->hasEnemy()) {
                             int damage = pc->attack(*t->getEnemy()); // enemy is not null
+
                             stringstream ss;
                             ss << damage;
-
                             action += "PC deals " + ss.str() + " damage to ";
-
                             action += t->getEnemy()->getChar();
 
                             int hp = t->getEnemy()->getInfo().hp;
                             ss.str("");
                             ss << hp;
-                            cout << "HP:" << hp << endl;
+                            // cout << "HP:" << hp << endl;
                             action += " (" + ss.str() + " HP). ";
                         } else {
                             action += "PC attacks nothing. ";

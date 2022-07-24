@@ -8,7 +8,7 @@ enum class EnemyType { Dragon, Vampire, Werewolf, Troll, Goblin, Merchant, Phoen
 
 class Enemy : public Character {
     protected:
-    bool compass;
+    bool compass = false;
 
     public:
     int getAttacked(int damage) override;
@@ -18,6 +18,11 @@ class Enemy : public Character {
     bool hasMoved = false;
     bool hasCompass();
     void setCompass(bool status);
+    virtual int goldUponDead();
+    virtual bool dropsMerchantHorde();
+    // dragons need to tell their dragon babies they're dead
+    // tile needs to know merchants will drop a gold
+    // 
 
     virtual char getChar() = 0;
 

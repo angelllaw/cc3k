@@ -21,10 +21,6 @@
 
 using namespace std;
 
-// how do we initialize our floor to have the default map.
-// idea: have a string with our default map
-// make the string into a stringstream, and read off one char at a time to populate the vector we want to initialize
-
 int Floor::floorNum = 0;
 
 Floor::Floor(shared_ptr<Player> pc, string numMap, string floorMap, bool hasLayout) : pc{pc} {
@@ -39,7 +35,7 @@ TileType getTileId(char c) {
     if (c == '|') return TileType::VWall;
     if (c == '#') return TileType::Passage; 
     if (c == '+') return TileType::Door; 
-    return TileType::MoveableTile; // if (0 < c < 6) ?
+    return TileType::MoveableTile;
 }
 
 
@@ -222,7 +218,10 @@ void Floor::updateFloor(string action) {
             if (tile->hasEnemy()) { // if tile has an enemy and enemy has not moved
                 unique_ptr<Enemy> &curEnemy = tile->getEnemy();
                 if (curEnemy->isDead()) {
-                    tile->removeEntities();
+                    int goldReward = curEnemy->goldUponDead();
+                    pc->addGold(goldReward);
+                    cout << "Earned " << goldReward << " from killing " << curEnemy->getChar() << endl;
+                    tile->removeEntities(); // drops gold? adds gold?
                     continue;
                 } else if (curEnemy->hasMoved) {
                     continue;
@@ -289,17 +288,35 @@ void Floor::updateFloor(string action) {
 bool Floor::isValidMove(State &pos) {
     Tile *t = theFloor[pos.y][pos.x];
     State &pcPos = pc->getState();
-    if (pcPos.y == pos.y && pcPos.x == pos.x) {
-        // cout << "Player is on (" << pcPos.x << ", " << pcPos.y << ")" << endl; 
-        return false; // if player is on that spot
-    }
-    // if (stairs->onStairs(&pos)) return false; // if on stairs
+    if (pcPos.y == pos.y && pcPos.x == pos.x) return false; // on player
+    if (pos.x == stairs.x && pos.y == stairs.y) return false; // on stairs
     return t->getType() == TileType::MoveableTile && !t->hasEnemy() && !t->hasItem(); 
 }
 
 bool Floor::isValidMove(int idxNum) {
     State pos = idxToPos(idxNum);
     return isValidMove(pos);
+}
+
+int Floor::validPlayerTile(State &pos) {
+    Tile *t = theFloor[pos.y][pos.x];
+    TileType type = t->getType();
+    // Empty, VWall, HWall
+    if (type == TileType::Empty || type == TileType::VWall || type == TileType::HWall) {
+        return 0;
+    // Moveable Tile, Potion or Enemy is on it
+    } else if (type == TileType::MoveableTile) { 
+        if (t->hasEnemy()) return -1;
+        if (t->hasItem()) {
+            if (t->hasGold()) {
+                // pc->useItem(t->getItem());
+            }
+        }
+    } else if (pos.x == stairs.x && pos.y == stairs.y) {
+        // STAIRS
+    } else {
+        return 1; // must be valid Passage, Door, MoveableTile 
+    }
 }
 
 int Floor::getChamberSize(int idx) {
@@ -340,7 +357,7 @@ Item* Floor::getItem(State &itemPos) {
 }
 
 void Floor::removeItem(State pos) {
-    getTile(pos)->removeEntities();
+    if (getTile(pos)->getItem()->validUse()) getTile(pos)->removeEntities();
 }
 
 // Returns a random neighbour tile's string index. If there are none, returns -1.
