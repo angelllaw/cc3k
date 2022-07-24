@@ -19,7 +19,6 @@
 using namespace std;
 
 Direction getDirection();
-
 string directionString(Direction dir);
 
 int main (int argc, char *argv[]) {
@@ -98,23 +97,14 @@ int main (int argc, char *argv[]) {
             getline(numFile, line);
             numMap += line;
         }
+ 
 
-        
-
-        Floor f{pc, numMap, floorMap, hasArg};
-
-        // 2. Spawn Player
-        pc->setState(State{7, 5}); 
-        
+        Floor f{pc, numMap, floorMap, hasArg}; // spawns player location (state) in ctor
         
         string action = "Action: ";
-        
         action += "Player character has spawned.";
         f.print(action);
-        // we need to randomly generate a spawn point for Player AFTER we initialize floor.
-        // (this is because we have to make sure Player does not spawn on top of Stairs or an Item or Enemy)
 
-        // validate move, pick up gold by walking over it, recognize stairs
         while (cin >> cmd) {
             action = "Action: ";
             Direction dir;
@@ -122,7 +112,6 @@ int main (int argc, char *argv[]) {
             switch(cmd) {
                 // MOVE
                 case 'n':
-                {   
                     cin >> cmd;
                     if (cmd == 'o') dir = Direction::N;
                     if (cmd == 'e') dir = Direction::NE;
@@ -136,12 +125,10 @@ int main (int argc, char *argv[]) {
                         continue;
                     }
                     break;
-                } 
                 case 'e':
-                {
                     cin >> cmd;
                     if (cmd == 'a') dir = Direction::E;
-                    State nextPos = f.getState(pc->getState(), dir);
+                    nextPos = f.getState(pc->getState(), dir);
                     if (f.validPlayerTile(nextPos) == 1) {
                         pc->move(dir);
                         action += "PC moves " + directionString(dir);
@@ -150,9 +137,7 @@ int main (int argc, char *argv[]) {
                         continue;
                     }
                     break;
-                }
                 case 's':
-                {
                     cin >> cmd;
                     if (cmd == 'o') dir = Direction::S;
                     if (cmd == 'e') dir = Direction::SE;
@@ -166,9 +151,7 @@ int main (int argc, char *argv[]) {
                         continue;
                     }
                     break;
-                }
                 case 'w':
-                {
                     cin >> cmd;
                     if (cmd == 'e') dir = Direction::W;
                     nextPos = f.getState(pc->getState(), dir);
@@ -180,7 +163,6 @@ int main (int argc, char *argv[]) {
                         continue;
                     }
                     break;
-                }
                 // USE ITEM
                 case 'u':
                     {

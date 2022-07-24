@@ -27,6 +27,10 @@ Floor::Floor(shared_ptr<Player> pc, string numMap, string floorMap, bool hasLayo
     setChambers(numMap);
     floorNum++;
     init(floorMap, hasLayout);
+    // spawn pc's location
+    Random r;
+    int strIdx = r.randomStrIdx(*this);
+    pc->setState(idxToPos(strIdx));
 }
 
 TileType getTileId(char c) {
@@ -308,7 +312,8 @@ int Floor::validPlayerTile(State &pos) {
         if (t->hasEnemy()) return -1;
         if (t->hasItem()) {
             if (t->hasGold() && t->getItem()->validUse()) {
-                pc->useItem(getItem(pos));
+                cout << "player stepping on gold" << endl;
+                pc->useItem(t->getItem().get());
                 t->removeEntities();
                 return 1;
             }

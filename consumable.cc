@@ -79,6 +79,6 @@ char Consumable::getChar() {
 }
 
 bool Consumable::isGold() {
-    if (effect->gold != 0) return true;
+    if (effect->gold > 0) return true;
     return false;
 }
