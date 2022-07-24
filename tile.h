@@ -15,7 +15,6 @@ class Tile {
     TileType type;
     std::unique_ptr<Item> item;
     std::unique_ptr<Enemy> enemy;
-
     public:
     Tile(int x, int y, TileType type);
     ~Tile();

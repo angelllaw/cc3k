@@ -8,7 +8,7 @@ enum class EnemyType { Dragon, Vampire, Werewolf, Troll, Goblin, Merchant, Phoen
 
 class Enemy : public Character {
     protected:
-    std::unique_ptr<Compass> c;
+    bool compass;
 
     public:
     int getAttacked(int damage) override;
@@ -17,8 +17,7 @@ class Enemy : public Character {
     virtual void toggleMove();
     bool hasMoved = false;
     bool hasCompass();
-    void setCompass(std::unique_ptr<Compass> &c);
-    std::unique_ptr<Compass>& getCompass();
+    void setCompass(bool status);
 
     virtual char getChar() = 0;
 

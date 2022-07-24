@@ -29,14 +29,9 @@ bool Enemy::shouldAttack(State &myPos, State &otherPos) {
 }
 
 bool Enemy::hasCompass() {
-    if (c.get() == nullptr) return false;
-    return true;
+    return compass;
 }
 
-void Enemy::setCompass(unique_ptr<Compass> &c) {
-    this->c = std::move(c);
-}
-
-std::unique_ptr<Compass>& Enemy::getCompass() {
-    return c; // bruh i got no idea if this is valid
+void Enemy::setCompass(bool status) {
+    compass = status;
 }

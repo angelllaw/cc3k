@@ -10,7 +10,6 @@
 #include "troll.h"
 #include "phoenix.h"
 #include "merchant.h"
-#include "compass.h"
 
 #include <memory>
 #include <iostream>
@@ -57,14 +56,10 @@ void EnemyFactory::generateEnemies(Floor &floor) {
         unique_ptr<Enemy> enemy = initializeEnemy(type);
 
         if (i == 0) {
-            unique_ptr<Compass> c (new Compass);
-            cout << "enemy has compass. enemy at :" << toPlace->getState().x << " " << toPlace->getState().y << endl;
-            enemy->setCompass(c);
+            cout << "Compass with enemy at :" << toPlace->getState().x << " " << toPlace->getState().y << endl;
+            enemy->setCompass(true);
         }
         toPlace->moveEnemy(enemy);
         
     }
-    Tile *toTest = floor.getTile(240); // get tile
-    unique_ptr<Item> c (new Compass);
-    toTest->moveItem(c);
 }
