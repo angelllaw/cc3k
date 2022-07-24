@@ -130,7 +130,11 @@ int main (int argc, char *argv[]) {
         Floor f{pc, numMap, floorMap, hasArg};
 
         // 2. Spawn Player
-        pc->setState(State{7, 5}); 
+        if (!hasArg) {
+            cout << "random spawn" << endl;
+            pc->setState(State{7, 5}); 
+        }
+        
         
         
         string action = "Action: ";
@@ -241,6 +245,9 @@ int main (int argc, char *argv[]) {
             }
 
             f.updateFloor(action); // print is called inside here
+        }
+        if (cin.fail()) {
+            break;
         }
     }
     cout << "You've reached the end" << endl;

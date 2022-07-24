@@ -61,9 +61,9 @@ State Tile::getState() {
 }
 
 void Tile::moveEnemy(unique_ptr<Enemy> &other) {
-    assert (enemy.get() == nullptr); // DELETE
+    // assert (enemy.get() == nullptr); // DELETE
     assert (other.get() != nullptr); 
-    // what is currently at enemy is delete
+    // what is currently at enemy is deleted
     // but it should be okay since enemy should b nullptr
     enemy = move(other);
     // other.enemy is set to nullptr

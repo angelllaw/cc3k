@@ -1,26 +1,30 @@
 #include "dragon.h"
 #include "info.h"
 #include "state.h"
+#include "dragonBaby.h"
+#include <memory>
 
 using namespace std;
 
-Dragon::Dragon() : baby{nullptr} {
+Dragon::Dragon(DragonBaby *baby) : baby{baby} {
     hasMoved = true;
     init(unique_ptr<Info> (new Info {150, 20, 20, 0}));
 }
 
 Dragon::~Dragon() {}
 
+/*
 void Dragon::setDragonBaby(DragonBaby *baby) {
     this->baby = baby;
 }
+*/
 
 void Dragon::toggleMove() {}
 
 char Dragon::getChar() { return 'D'; }
 
 int Dragon::goldUponDead() {
-    baby->setDragonMomma(nullptr);
+    baby->setDeadMom();
     return stats->gold;
 }
 
