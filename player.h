@@ -31,6 +31,8 @@ class Player : public Character {
         virtual void useItem(Item *i) = 0;
         bool move(Direction dir) override;
         ~Player();
+
+        void reset();
 };
 
 #endif

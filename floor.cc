@@ -374,3 +374,8 @@ int Floor::rNeighbourStrIdx(int strIdx, Floor &floor) {
     }
     return -1;
 }
+
+bool Floor::onStairs() {
+    State pos = pc->getState();
+    return stairs.x == pos.x && stairs.y == pos.y;
+}
