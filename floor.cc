@@ -42,23 +42,20 @@ TileType getTileId(char c) {
     return TileType::MoveableTile; // if (0 < c < 6) ?
 }
 
-// reads in a string map and sets "theFloor" tile IDs
+
 void Floor::spawn() {
-    // 2. spawn stairway location
-    // 3. a) spawn potions, gold, compass
-    // unique_ptr<ItemFactory> iFactory (new ItemFactory(this));
-    // 1. spawn stairway location
+    
+    // 1. spawn stairs
     Random r;
     int stairsIdx = r.randomStrIdx(*this);
     stairs = idxToPos(stairsIdx);
-    cout << "stairs at: " << stairs.x << ", " << stairs.y << endl;
 
-    // 3. a) spawn potions and treasures
+    // 2. spawn potions and treasures
     ItemFactory iFactory;
     iFactory.generatePotions(*this);
     iFactory.generateTreasures(*this);
     
-    // 3. b) spawn enemies
+    // 3. spawn enemies
     EnemyFactory eFactory;
     eFactory.generateEnemies(*this);
 }
@@ -135,11 +132,22 @@ void Floor::init(string map, bool hasLayout) {
 void Floor::print(string action) {
     for (auto &row : theFloor) {
         for (auto &col : row) {
-            if (col->getState().x == pc->getState().x && col->getState().y == pc->getState().y) {
-                cout << '@';
+            int curX = col->getState().x;
+            int curY = col->getState().y;
+
+            if (curX == pc->getState().x && curY == pc->getState().y) { // player
+                cout << "\033[36m" << '@' << "\033[0m";
+            } else if (curX == stairs.x && curY == stairs.y) { // stairs
+                if (pc->hasCompass()) {
+                    cout << "\033[32m" << '\\' << "\033[0m";
+                } else {
+                    cout << "\033[33m" << '\\' << "\033[0m";
+                }
+                // char print = pc->hasCompass() ? '.' : '\\'; cout << print;
             } else {
                 cout << *col;
             }
+
         }
         cout << endl;
     }
@@ -285,7 +293,7 @@ bool Floor::isValidMove(State &pos) {
         // cout << "Player is on (" << pcPos.x << ", " << pcPos.y << ")" << endl; 
         return false; // if player is on that spot
     }
-    if (pos.x == stairs.x && pos.y == stairs.y) return false; // if on stairs
+    // if (stairs->onStairs(&pos)) return false; // if on stairs
     return t->getType() == TileType::MoveableTile && !t->hasEnemy() && !t->hasItem(); 
 }
 

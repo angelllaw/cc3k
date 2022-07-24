@@ -6,8 +6,6 @@
 // - merchant hoards are implicitly there when merchants are spawned (1/9 prob.)
 //      - no item (merchant hoard) actually appears until the merchant is dead
 
-#include <iostream>
-
 struct Info;
 class Human;
 class Elf;
