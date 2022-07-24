@@ -301,22 +301,23 @@ bool Floor::isValidMove(int idxNum) {
 int Floor::validPlayerTile(State &pos) {
     Tile *t = theFloor[pos.y][pos.x];
     TileType type = t->getType();
-    // Empty, VWall, HWall
+
     if (type == TileType::Empty || type == TileType::VWall || type == TileType::HWall) {
         return 0;
-    // Moveable Tile, Potion or Enemy is on it
-    } else if (type == TileType::MoveableTile) { 
+    } else if (type == TileType::MoveableTile) {
         if (t->hasEnemy()) return -1;
         if (t->hasItem()) {
-            if (t->hasGold()) {
-                // pc->useItem(t->getItem());
+            if (t->hasGold() && t->getItem()->validUse()) {
+                pc->useItem(getItem(pos));
+                t->removeEntities();
+                return 1;
             }
+            return -1; // has a potion or barrierSuit
         }
     } else if (pos.x == stairs.x && pos.y == stairs.y) {
         // STAIRS
-    } else {
-        return 1; // must be valid Passage, Door, MoveableTile 
     }
+    return 1; // must be valid Passage, Door, MoveableTile 
 }
 
 int Floor::getChamberSize(int idx) {

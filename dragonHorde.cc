@@ -42,3 +42,8 @@ void DragonHorde::useOn(Orc *p) {
 char DragonHorde::getChar() {
     return 'G';
 }
+
+bool DragonHorde::isGold() {
+    return true;
+}
+
