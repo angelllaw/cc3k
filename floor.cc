@@ -339,7 +339,7 @@ Item* Floor::getItem(State &itemPos) {
 }
 
 void Floor::removeItem(State pos) {
-    getTile(pos)->removeEntities();
+    if (getTile(pos)->getItem()->validUse()) getTile(pos)->removeEntities();
 }
 
 // Returns a random neighbour tile's string index. If there are none, returns -1.

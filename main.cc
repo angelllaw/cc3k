@@ -191,6 +191,9 @@ int main (int argc, char *argv[]) {
                         Item *i = f.getItem(itemLoc);
                         pc->useItem(i); // before using the item, should do some kind of error checking to ensure
                         // we're not "using" a nullptr, that gives us seg fault
+                        // what if we try to use a DragonHorde/barrierSuit but the Dragon is still guarding it?
+                        // how do we know we didn't succesfully us it?
+                        // what if removeItem checks if the item was valid to remove
                         f.removeItem(itemLoc);
                         action += "PC uses Potion"; // change this to work with compass
                         break;

@@ -8,7 +8,7 @@ enum class EnemyType { Dragon, Vampire, Werewolf, Troll, Goblin, Merchant, Phoen
 
 class Enemy : public Character {
     protected:
-    bool compass;
+    bool compass = false;
 
     public:
     int getAttacked(int damage) override;
