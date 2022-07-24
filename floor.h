@@ -97,7 +97,7 @@ class Floor {
         void print(string action);
         bool isValidMove(State &newPos);
         bool isValidMove(int strIdxNum);
-        // needed functions for factory, going to try to reduce later
+        
         int getNumChambers();
         int getChamberSize(int chamberIdx);
         int getStringIdx(int chamberIdx, int arrIdx);

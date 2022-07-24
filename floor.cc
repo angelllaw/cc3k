@@ -21,10 +21,6 @@
 
 using namespace std;
 
-// how do we initialize our floor to have the default map.
-// idea: have a string with our default map
-// make the string into a stringstream, and read off one char at a time to populate the vector we want to initialize
-
 int Floor::floorNum = 0;
 
 Floor::Floor(shared_ptr<Player> pc, string numMap, string floorMap, bool hasLayout) : pc{pc} {
@@ -39,7 +35,7 @@ TileType getTileId(char c) {
     if (c == '|') return TileType::VWall;
     if (c == '#') return TileType::Passage; 
     if (c == '+') return TileType::Door; 
-    return TileType::MoveableTile; // if (0 < c < 6) ?
+    return TileType::MoveableTile;
 }
 
 
@@ -222,7 +218,10 @@ void Floor::updateFloor(string action) {
             if (tile->hasEnemy()) { // if tile has an enemy and enemy has not moved
                 unique_ptr<Enemy> &curEnemy = tile->getEnemy();
                 if (curEnemy->isDead()) {
-                    tile->removeEntities();
+                    int goldReward = curEnemy->goldUponDead();
+                    pc->addGold(goldReward);
+                    cout << "Earned " << goldReward << " from killing " << curEnemy->getChar() << endl;
+                    tile->removeEntities(); // drops gold? adds gold?
                     continue;
                 } else if (curEnemy->hasMoved) {
                     continue;

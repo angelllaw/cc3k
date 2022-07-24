@@ -35,3 +35,11 @@ bool Enemy::hasCompass() {
 void Enemy::setCompass(bool status) {
     compass = status;
 }
+
+int Enemy::goldUponDead() {
+    return stats->gold;
+}
+
+bool Enemy::dropsMerchantHorde() {
+    return false;
+}

@@ -192,27 +192,27 @@ int main (int argc, char *argv[]) {
                         pc->useItem(i); // before using the item, should do some kind of error checking to ensure
                         // we're not "using" a nullptr, that gives us seg fault
                         f.removeItem(itemLoc);
-                        action += "PC uses Potion";
+                        action += "PC uses Potion"; // change this to work with compass
                         break;
                     }
-                case 'a': // attack
+                // ATTACK
+                case 'a':
                     {
                         Direction d = getDirection();
                         State enemyLoc = f.getState(pc->getState(), d);
                         Tile *t = f.getTile(enemyLoc);
                         if (t->hasEnemy()) {
                             int damage = pc->attack(*t->getEnemy()); // enemy is not null
+
                             stringstream ss;
                             ss << damage;
-
                             action += "PC deals " + ss.str() + " damage to ";
-
                             action += t->getEnemy()->getChar();
 
                             int hp = t->getEnemy()->getInfo().hp;
                             ss.str("");
                             ss << hp;
-                            cout << "HP:" << hp << endl;
+                            // cout << "HP:" << hp << endl;
                             action += " (" + ss.str() + " HP). ";
                         } else {
                             action += "PC attacks nothing. ";

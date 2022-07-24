@@ -1,5 +1,6 @@
 #include "tile.h"
 #include "item.h"
+#include "consumable.h"
 #include "enemy.h"
 #include "state.h"
 #include <iostream>
@@ -16,6 +17,7 @@ Tile::~Tile() {}
 void Tile::removeEntities() {
     if (hasEnemy()) {
         if (enemy->hasCompass()) item = unique_ptr<Compass> (new Compass);
+        if (enemy->dropsMerchantHorde()) item = unique_ptr<Item> (new Consumable(ItemType::MerchantHorde));
         enemy.reset(nullptr);
         return;
     }
