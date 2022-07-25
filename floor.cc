@@ -30,13 +30,12 @@ Floor::Floor(shared_ptr<Player> pc, string numMap, string floorMap, bool hasLayo
     setChambers(numMap);
     floorNum++;
     init(floorMap, hasLayout);
-    // spawn pc's location
+
     if (!hasLayout) {
         Random r;
-        int strIdx = r.randomStrIdx(*this);
-        pc->setState(idxToPos(strIdx));
+        int idx = r.randomStrIdx(*this);
+        pc->setState(idxToPos(idx));
     }
-    
 }
 
 TileType getTileId(char c) {

@@ -104,7 +104,13 @@ int main (int argc, char *argv[]) {
         }
  
 
-        Floor f{pc, numMap, floorMap, hasArg}; // spawns player location (state) in ctor
+        
+
+        Floor f{pc, numMap, floorMap, hasArg};
+
+
+        
+        
         
         string action = "Action: ";
         action += "Player character has spawned.";
