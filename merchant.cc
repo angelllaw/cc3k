@@ -18,7 +18,7 @@ bool Merchant::shouldAttack(State &myPos, State &otherPos) {
     if (hostile) {
         return Enemy::shouldAttack(myPos, otherPos); // should call enemy shouldAttack
     } else {
-        cout << "Merchant is not hostile." << endl;
+        // cout << "Merchant is not hostile." << endl;
         return false;
     }
 }

@@ -24,9 +24,7 @@
 
 using namespace std;
 
-int Floor::floorNum = 0;
-
-Floor::Floor(shared_ptr<Player> pc, string numMap, string floorMap, bool hasLayout) : pc{pc} {
+Floor::Floor(shared_ptr<Player> pc, string numMap, string floorMap, bool hasLayout, int floorNum) : pc{pc}, floorNum{floorNum}{
     setChambers(numMap);
     floorNum++;
     init(floorMap, hasLayout);
@@ -298,7 +296,12 @@ void Floor::updateFloor(string action) {
                     Random r;
                     if (r.randomNum(2) == 0) {
                         int damage = curEnemy->attack(*pc);
-                        action += " deals " + intToStr(damage) + " damage to PC. ";
+                        action += intToStr(damage);
+
+                        action += " damage to PC. ";
+                        if (pc->isDead()) {
+                            return;
+                        }
                     } else {
                         action += " misses. ";
                     }

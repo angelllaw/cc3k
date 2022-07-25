@@ -21,3 +21,7 @@ string Human::printRace() {
     return "Human";
 }
 
+int Human::getScore() {
+    return stats->gold * 1.5;
+}
+

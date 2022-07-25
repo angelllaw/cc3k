@@ -20,8 +20,14 @@ using namespace std;
 
 Direction getDirection();
 string directionString(Direction dir);
+void printGoodBye();
 
 int main (int argc, char *argv[]) {
+
+    bool restart;
+
+    do {
+        restart = false;
 
     const int width = 79;
     const int height = 25;
@@ -83,7 +89,9 @@ int main (int argc, char *argv[]) {
     
     numFile.open("defaultNumMap.txt");
 
-    for (int floorNum = 0; floorNum < 5; ++floorNum) {
+    int floorNum = 0;
+
+    for (; floorNum < 5; ++floorNum) {
         string floorMap;
         string numMap;
         string line;
@@ -99,18 +107,18 @@ int main (int argc, char *argv[]) {
         // gets one floor
         for (int i = 0; i < height; ++i) {
             getline(floorFile, line);
-            cout << "floorFile: " << line  << endl;
+            // cout << "floorFile: " << line  << endl;
             floorMap += line;
 
             getline(numFile, line);
-            cout << "numFile:   " << line  << endl;
+            // cout << "numFile:   " << line  << endl;
             numMap += line;
         }
  
 
         
 
-        Floor f{pc, numMap, floorMap, hasArg};
+        Floor f{pc, numMap, floorMap, hasArg, floorNum + 1};
 
 
         
@@ -224,6 +232,14 @@ int main (int argc, char *argv[]) {
                         }
                         break;
                     }
+                case 'r':
+                    restart = true;
+                    break;
+                case 'q':
+                    // destroy stuff?
+                    printGoodBye();
+                    return 0;
+                    break;
                 default:
                     cout << "invalid cmd" << endl;
                     continue;
@@ -235,14 +251,26 @@ int main (int argc, char *argv[]) {
                 // floor shouldn't need to be reset since it is on the stack and has unique-ptr (auto delete)
                 break;
             }
-
+            if (restart) break;
             f.updateFloor(action); // print is called inside here
+            if (pc->isDead()) break;
         }
-        if (cin.fail()) {
+        if (cin.fail() || pc->isDead() || restart) {
             break;
         }
     }
-    cout << "You've reached the end" << endl;
+    if (floorNum == 5) {
+        cout << "Congratulations! You beat the dungeon. Have a cookie." << endl;
+        cout << "Score: " << pc->getScore() << endl;
+    } else if (pc->isDead()) {
+        cout << "You died!" << endl;
+        cout << "Score: " << pc->getScore() << endl;
+        cout << "Do you want to restart? [Y/N]." << endl;
+        cin >> cmd;
+        restart = (cmd == 'Y' || cmd == 'y' ? true : false);
+    }
+    } while (restart);
+    printGoodBye();
 }
 
 Direction getDirection() {
@@ -282,4 +310,9 @@ string directionString(Direction dir) {
         case Direction::W:     return "West";
         default:               return "North West";
     }
+}
+
+void printGoodBye() {
+    cout << "Thanks for playing CC3K+" << endl;
+    cout << "made by Olivia and Angela" << endl;
 }
