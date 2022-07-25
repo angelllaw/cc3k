@@ -47,7 +47,6 @@ TileType getTileId(char c) {
     return TileType::MoveableTile;
 }
 
-
 void Floor::spawn() {
     
     // 1. spawn stairs
