@@ -84,10 +84,10 @@ std::ostream &operator<<(std::ostream &out, const Tile &td) {
             out << ' ';
             break;
         case TileType::VWall:
-            out << '|';
+            out << "\033[47m" <<'|' << "\033[0m";
             break;
         case TileType::HWall:
-            out << '-';
+            out << "\033[47m" <<'-' << "\033[0m";
             break;
         case TileType::Passage:
             out << '#';
@@ -99,9 +99,21 @@ std::ostream &operator<<(std::ostream &out, const Tile &td) {
             if (td.item.get() == nullptr && td.enemy.get() == nullptr) {
                 out << '.';
             } else if (td.item.get() == nullptr) {
-                out << td.enemy->getChar();
+                if (td.enemy->hasCompass()) {
+                    // change this colour to see where compass is
+                    out << "\033[31m" << td.enemy->getChar() << "\033[0m";
+                } else {
+                    out << "\033[31m" << td.enemy->getChar() << "\033[0m";
+                }
             } else {
-                out << td.item->getChar();
+                char item = td.item->getChar();
+                if (item == 'G') {
+                    out << "\033[33m" << item << "\033[0m";
+                } else if (item == 'P') {
+                    out << "\033[35m" << item << "\033[0m";
+                } else {
+                    out << "\033[32m" << item << "\033[0m";
+                }
             }
             break;
     }

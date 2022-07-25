@@ -85,20 +85,18 @@ int main (int argc, char *argv[]) {
 
         bool hasArg = false;
 
+        // opening map txt file
         if (argc == 2) { // optional cmd line arg
             floorFile.open(argv[1]);
             hasArg = true;
         } else {
             floorFile.open("defaultMap.txt");
         }
-        
         numFile.open("defaultNumMap.txt");
 
         Random r;
         int barrierSuitFloor = r.randomNum(5);
-        barrierSuitFloor = 0; // remove later (for testing rn)
-        cout << "going to generate barrierSuit on floor " << barrierSuitFloor << endl;
-
+        // barrierSuitFloor = 0; // remove later (for testing rn)
         
         int floorNum = 0;
 
@@ -110,10 +108,10 @@ int main (int argc, char *argv[]) {
             if (!hasArg) {
                 floorFile.clear();
                 floorFile.seekg(ios::beg);
-                // reopens defaultmap if no cmd line arg
+                // rereads defaultmap if no cmd line arg
             }
             numFile.clear();
-            numFile.seekg(ios::beg); // reopens numMap for every new floor
+            numFile.seekg(ios::beg); // rereads numMap for every new floor
 
             // gets one floor
             for (int i = 0; i < height; ++i) {
@@ -123,19 +121,13 @@ int main (int argc, char *argv[]) {
                 getline(numFile, line);
                 numMap += line;
             }
-    
-
-            
 
             Floor f{pc, numMap, floorMap, hasArg, floorNum + 1};
-
+            
+            // call floor to generate a barrier suit
             if (!hasArg && floorNum == barrierSuitFloor) {
                 f.generateBarrierSuit();
-                cout << "called generateBarrierSuit() on floor." << endl;
-                // call floor to generate a barrier suit
             }
-            
-            
             
             string action = "Action: ";
             action += "Player character has spawned.";

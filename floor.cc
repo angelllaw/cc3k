@@ -66,8 +66,8 @@ void Floor::spawn() {
     eFactory.generateEnemies(*this);
 }
 
-// still have to randomly generate compass
 void Floor::layout(string map) {
+    vector<State> enemyPosArr;
     for (int row = 0; row < height; ++row) {
         for (int col = 0; col < width; ++col) {
             Tile *cur = theFloor[row][col].get();
@@ -112,6 +112,7 @@ void Floor::layout(string map) {
             } else if (c == '\\') { // stairs
                 stairs = {col, row};
             } else if (c == 'D') { // dragon! Invariant: dragon only has one baby
+                enemyPosArr.emplace_back(State{col, row});
                 DragonBaby *baby;
                 bool foundBaby = false;
                 for (int dRow = row - 1; dRow >= 0 && dRow < height && dRow <= row + 1; ++dRow) {
@@ -140,6 +141,7 @@ void Floor::layout(string map) {
                 }
                 assert (foundBaby == true);
             } else if (getTileId(c) == TileType::MoveableTile) { // all other enemies
+                enemyPosArr.emplace_back(State{col, row});
                 EnemyFactory ef;
                 EnemyType type;
                 switch (c) {
@@ -170,6 +172,11 @@ void Floor::layout(string map) {
             }
         }
     }
+    Random r;
+    int idx = r.randomNum(enemyPosArr.size());
+    State compass = enemyPosArr[idx];
+    assert (getTile(compass)->hasEnemy() == true);
+    getTile(compass)->getEnemy()->setCompass(true);
 }
 
 // reads in a string map and sets "theFloor" tile IDs
@@ -221,12 +228,8 @@ void Floor::print(string action) {
 
             if (curX == pc->getState().x && curY == pc->getState().y) { // player
                 cout << "\033[36m" << '@' << "\033[0m";
-            } else if (curX == stairs.x && curY == stairs.y) { // stairs
-                if (pc->hasCompass()) {
-                    cout << "\033[32m" << '\\' << "\033[0m";
-                } else {
-                    cout << "\033[33m" << '\\' << "\033[0m";
-                }
+            } else if (curX == stairs.x && curY == stairs.y && pc->hasCompass()) { // stairs
+                cout << "\033[44m" << '\\' << "\033[0m";
                 // char print = pc->hasCompass() ? '.' : '\\'; cout << print;
             } else {
                 cout << *col;
