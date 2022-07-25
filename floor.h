@@ -84,14 +84,14 @@ class Floor {
         void setChambers(string map);
         State idxToPos(int strIdx);
 
-        static int floorNum;
+        const int floorNum;
 
         void spawn();
         void layout(string map);
 
     public:
         // ctors
-        Floor(std::shared_ptr<Player> pc, string numMap, string floorMap, bool hasLayout);
+        Floor(std::shared_ptr<Player> pc, string numMap, string floorMap, bool hasLayout, int floorNum);
 
         void updateFloor(string action);
         void init(string map, bool hasLayout);

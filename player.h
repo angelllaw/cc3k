@@ -33,6 +33,7 @@ class Player : public Character {
         ~Player();
 
         void reset();
+        virtual int getScore();
 };
 
 #endif

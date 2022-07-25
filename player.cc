@@ -98,3 +98,6 @@ void Player::reset() {
     compass = false;
 }
 
+int Player::getScore() {
+    return stats->gold;
+}
