@@ -202,7 +202,7 @@ int main (int argc, char *argv[]) {
                         if (f.getTile(itemLoc)->getItem()->getChar() == 'C') {
                             action += "PC uses Compass. Stairs Appear.";
                         } else {
-                            action += "PC uses Potion";
+                            action += "PC uses " + f.getTile(itemLoc)->getItem()->getPotion() + ". ";
                         }
                         pc->useItem(f.getItem(itemLoc));
                         f.removeItem(itemLoc);

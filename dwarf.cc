@@ -9,7 +9,7 @@ using namespace std;
 
 Dwarf::~Dwarf() {}
 
-Dwarf::Dwarf() : Player{20, 30} {
+Dwarf::Dwarf() : Player{100, 20, 30} {
     stats = make_unique<Info>(Info{100, 20, 30, 0});
 }
 

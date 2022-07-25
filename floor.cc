@@ -17,7 +17,6 @@
 #include <iostream>
 #include <iomanip>
 #include <string>
-// #include <cstdlib>
 
 #include <cassert>
 #include <cmath>
@@ -30,9 +29,7 @@ Floor::Floor(shared_ptr<Player> pc, string numMap, string floorMap, bool hasLayo
     init(floorMap, hasLayout);
 
     if (!hasLayout) {
-        Random r;
-        int idx = r.randomStrIdx(*this);
-        pc->setState(idxToPos(idx));
+        
     }
 }
 
@@ -52,12 +49,21 @@ void Floor::spawn() {
     int stairsIdx = r.randomStrIdx(*this);
     stairs = idxToPos(stairsIdx);
 
-    // 2. spawn potions and treasures
+    // 2. spawn player
+    State pos;
+    while (true) {
+        int idx = r.randomStrIdx(*this);
+        pos = idxToPos(idx);
+        if (abs(pos.x - stairs.x) > 1 && abs(pos.y - stairs.y) > 1) break;
+    }
+    pc->setState(pos);
+
+    // 3. spawn potions and treasures
     ItemFactory iFactory;
     iFactory.generatePotions(*this);
     iFactory.generateTreasures(*this);
     
-    // 3. spawn enemies
+    // 4. spawn enemies
     EnemyFactory eFactory;
     eFactory.generateEnemies(*this);
 }
@@ -291,14 +297,12 @@ void Floor::updateFloor(string action) {
 
                 State curPos = tile->getState();
                 if (curEnemy->shouldAttack(curPos, pc->getState())) {
-                    cout << "Yes curEnemy->shouldAttack by: " << curEnemy->getChar() << endl;
+                    // cout << "Yes curEnemy->shouldAttack by: " << curEnemy->getChar() << endl;
                     action += curEnemy->getChar();
                     Random r;
                     if (r.randomNum(2) == 0) {
                         int damage = curEnemy->attack(*pc);
-                        action += intToStr(damage);
-
-                        action += " damage to PC. ";
+                        action += " deals " + intToStr(damage) + " damage to PC. ";
                         if (pc->isDead()) {
                             return;
                         }
