@@ -108,11 +108,7 @@ int main (int argc, char *argv[]) {
 
         Floor f{pc, numMap, floorMap, hasArg};
 
-        // 2. Spawn Player
-        if (!hasArg) {
-            cout << "random spawn" << endl;
-            pc->setState(State{7, 5}); 
-        }
+
         
         
         
