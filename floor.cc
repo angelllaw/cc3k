@@ -9,12 +9,15 @@
 #include "itemFactory.h"
 #include "enemyFactory.h"
 #include "direction.h"
+#include "consumable.h"
+#include "dragon.h"
+#include "dragonHorde.h"
 
 #include <vector>
 #include <iostream>
 #include <iomanip>
 #include <string>
-#include <cstdlib>
+// #include <cstdlib>
 
 #include <cassert>
 #include <cmath>
@@ -28,9 +31,12 @@ Floor::Floor(shared_ptr<Player> pc, string numMap, string floorMap, bool hasLayo
     floorNum++;
     init(floorMap, hasLayout);
     // spawn pc's location
-    Random r;
-    int strIdx = r.randomStrIdx(*this);
-    pc->setState(idxToPos(strIdx));
+    if (!hasLayout) {
+        Random r;
+        int strIdx = r.randomStrIdx(*this);
+        pc->setState(idxToPos(strIdx));
+    }
+    
 }
 
 TileType getTileId(char c) {
@@ -60,51 +66,100 @@ void Floor::spawn() {
     eFactory.generateEnemies(*this);
 }
 
+// still have to randomly generate compass
 void Floor::layout(string map) {
     for (int row = 0; row < height; ++row) {
         for (int col = 0; col < width; ++col) {
+            Tile *cur = theFloor[row][col];
             char c = map[row * width + col];
-            switch(c) {
-                case '@':
-                    pc->setState(State{col, row}); // might cause error (check)
-                    break;
-                case '0': // RH potion
-                    break;
-                case '1': // BA potion
-                    break;
-                case '2': // BD potion
-                    break;
-                case '3': // PH potion
-                    break;
-                case '4': // WA potion
-                    break;
-                case '5': // WD potion
-                    break;
-                case '6': // normal gold pile
-                    break;
-                case '7': // small gold pile
-                    break;
-                case '8': // merchant horde
-                    break;
-                case '9': // dragon horde
-                    break;
-                // enemies
-                case 'V':
-                    break;
-                case 'W':
-                    break;
-                case 'T':
-                    break;
-                case 'N':
-                    break;
-                case 'M':
-                    break;
-                case 'D':
-                    break;
-                case 'X':
-                    break;
-                default:
-                    cout << "what the fuck is this L symbol" << endl;
+            if (c == '@') {
+                pc->setState(State{col, row});
+            } else if ('0' <= c && c < '9') { // ignore dragon horde
+                ItemType type;
+                switch (c) {
+                    case '0': // RH potion
+                        type = ItemType::RH;
+                        break;
+                    case '1': // BA potion
+                        type = ItemType::BA;
+                        break;
+                    case '2': // BD potion
+                        type = ItemType::BD;
+                        break;
+                    case '3': // PH potion
+                        type = ItemType::PH;
+                        break;
+                    case '4': // WA potion
+                        type = ItemType::WA;
+                        break;
+                    case '5': // WD potion
+                        type = ItemType::WD;
+                        break;
+                    case '6': // normal gold pile
+                        type = ItemType::NormalGold;
+                        break;
+                    case '7': // small gold pile
+                        type = ItemType::SmallHorde;
+                        break;
+                    case '8': // merchant horde
+                        type = ItemType::MerchantHorde;
+                        break;
+                }
+                unique_ptr<Item> item = make_unique<Consumable>(type);
+                cur->moveItem(item);
+            } else if (c == '.' || c == 'B' || c == '9') { // ignore barrier suit or compass
+                continue;
+            } else if (c == '\\') { // stairs
+                stairs = {col, row};
+            } else if (c == 'D') { // dragon!
+                DragonBaby *baby;
+                for (int dRow = row - 1; dRow >= 0 && dRow < height && dRow <= row + 1; ++dRow) {
+                    for (int dCol = col - 1; dCol >= 0 && dCol < width && dCol <= col + 1; ++dCol) {
+                        char neighbor = map[dRow * width + dCol];
+                        if (neighbor == '9') {
+                            baby = new DragonHorde();
+                        } else if (neighbor == 'B') {
+                        }
+                        // tile points to the dragon baby
+                        unique_ptr<Item> item(baby);
+                        theFloor[dRow][dCol]->moveItem(item);
+                        // cur tile contains dragon
+                        unique_ptr<Enemy> dragon = make_unique<Dragon>(baby);
+                        cur->moveEnemy(dragon);
+                    }
+                }
+                
+                
+                // set dragon baby
+                // set dragon momma
+            } else if (getTileId(c) == TileType::MoveableTile) { // all other enemies
+                EnemyFactory ef;
+                EnemyType type;
+                switch (c) {
+                    case 'V':
+                        type = EnemyType::Vampire;
+                        break;
+                    case 'W':
+                        type = EnemyType::Werewolf;
+                        break;
+                    case 'T':
+                        type = EnemyType::Troll;
+                        break;
+                    case 'N':
+                        type = EnemyType::Goblin;
+                        break;
+                    case 'M':
+                        type = EnemyType::Merchant;
+                        break;
+                    case 'X':
+                        type = EnemyType::Phoenix;
+                        break;
+                    default:
+                        cout << "what is " << c << endl;
+                        break;
+                }
+                unique_ptr<Enemy> e = ef.initializeEnemy(type);
+                cur->moveEnemy(e);
             }
         }
     }
@@ -379,4 +434,9 @@ int Floor::rNeighbourStrIdx(int strIdx, Floor &floor) {
         }
     }
     return -1;
+}
+
+bool Floor::onStairs() {
+    State pos = pc->getState();
+    return stairs.x == pos.x && stairs.y == pos.y;
 }

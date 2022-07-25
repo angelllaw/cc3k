@@ -7,7 +7,8 @@
 #include <memory>
 #include "direction.h" // likley wrong, delete
 #include "state.h"
-using namespace std;
+
+using std::string;
 
 class Player;
 class Tile;
@@ -19,8 +20,8 @@ class Floor {
         const int width = 79;
         const int height = 25;
         std::shared_ptr<Player> pc;
-        vector<vector<Tile *>> theFloor;
-        vector<Chamber *> chambers;
+        std::vector<std::vector<Tile *>> theFloor;
+        std::vector<Chamber *> chambers;
         State stairs;
 
         string floorMap;
@@ -103,12 +104,14 @@ class Floor {
         int getChamberSize(int chamberIdx);
         int getStringIdx(int chamberIdx, int arrIdx);
 
-        Tile* getTile(int strIdxNum); // STRING index num
-        Tile* getTile(State pos); // get tile given a State
+        Tile *getTile(int strIdxNum); // STRING index num
+        Tile *getTile(State pos); // get tile given a State
         State getState(State &curPos, Direction dir);
-        Item* getItem(State &itemPos);
+        Item *getItem(State &itemPos);
         void removeItem(State pos); 
         int rNeighbourStrIdx(int strIdx, Floor &floor);
+        
+        bool onStairs(); 
 };
 
 #endif

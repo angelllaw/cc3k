@@ -36,9 +36,10 @@ Consumable::Consumable(ItemType item) : effect{new Info {0, 0 ,0, 0}} {
         case ItemType::MerchantHorde: // +4 Gold
             effect->gold = 4;
             break;
-        case ItemType::DragonHorde: // +6 Gold
+        /*case ItemType::DragonHorde: // +6 Gold
             effect->gold = 6;
             break;
+        */
         default:
             // just to get rid of warning, if it's anything other than a consumable
             // ... something went wrong 
