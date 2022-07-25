@@ -3,17 +3,15 @@
 #include "state.h"
 #include "dragonBaby.h"
 #include <memory>
+#include <iostream>
 
 using namespace std;
 
-Dragon::Dragon(DragonBaby *baby) : baby{baby} {
-    hasMoved = true;
+Dragon::Dragon(DragonBaby *baby, State &babyPos) : baby{baby}, babyPos{babyPos} {
     init(unique_ptr<Info> (new Info {150, 20, 20, 0}));
 }
 
 Dragon::~Dragon() {}
-
-void Dragon::toggleMove() {}
 
 char Dragon::getChar() { return 'D'; }
 
@@ -22,13 +20,16 @@ int Dragon::goldUponDead() {
     return stats->gold;
 }
 
- bool Dragon::shouldAttack(State &myPos, State &otherPos) {
-     // check if within vicinity of dragonBaby.
-     // how do we know where dragonBaby is?
-     // we can call something on DragonBaby...
-     // probelm is finding the pos of dragonBaby 
+State& Dragon::getBabyPos() {
+    return babyPos;
+}
 
-    int xDist = myPos.x - otherPos.x;
-    int yDist = myPos.y - otherPos.y;
+ bool Dragon::shouldAttack(State &myPos, State &otherPos) {
+    int xDist = babyPos.x - otherPos.x;
+    int yDist = babyPos.y - otherPos.y;
     return (xDist*xDist <= 1 && yDist*yDist <= 1);
  }
+
+bool Dragon::isStationary() {
+    return true;
+}

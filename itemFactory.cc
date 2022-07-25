@@ -55,8 +55,10 @@ void ItemFactory::generateTreasures(Floor &floor) {
             assert (toPlaceItem->getType() == TileType::MoveableTile);
             assert (toPlaceDragon->getType() == TileType::MoveableTile);
 
+            State babyPos = floor.idxToPos(itemIdx);
+
             DragonBaby *db = new DragonHorde;
-            Dragon *dragon = new Dragon{db};
+            Dragon *dragon = new Dragon{db, babyPos};
             // dragon->setDragonBaby(db);
             // db->setDragonMomma(dragon);
 
