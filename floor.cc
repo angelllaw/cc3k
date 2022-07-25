@@ -12,6 +12,7 @@
 #include "consumable.h"
 #include "dragon.h"
 #include "dragonHorde.h"
+#include "barrierSuit.h"
 
 #include <vector>
 #include <iostream>
@@ -180,6 +181,28 @@ void Floor::init(string map, bool hasLayout) {
     } else {
         layout(map);
     }
+}
+
+void Floor::generateBarrierSuit() {
+    int itemIdx;
+    int dragonIdx;
+    Random r;
+    while (true) {
+        itemIdx = r.randomStrIdx(*this);
+        dragonIdx = rNeighbourStrIdx(itemIdx,*this);
+        if (dragonIdx != -1) break;
+    }
+
+    State babyPos = idxToPos(itemIdx);
+    cout << "BarrierSuit at " << babyPos.x << " " << babyPos.y << endl;
+
+    DragonBaby *db = new BarrierSuit;
+    Dragon *dragon = new Dragon{db, babyPos};
+    unique_ptr<Item> item (db); // needs to take a pointer to a dragon
+    unique_ptr<Enemy> enemy (dragon); // needs to take a pointer to a dragonBaby
+
+    getTile(itemIdx)->moveItem(item);
+    getTile(dragonIdx)->moveEnemy(enemy);
 }
 
 void Floor::print(string action) {
@@ -429,6 +452,10 @@ int Floor::rNeighbourStrIdx(int strIdx, Floor &floor) {
         }
     }
     return -1;
+}
+
+int Floor::rNeighbourStrIdx(int strIdx) {
+    return rNeighbourStrIdx(strIdx, *this);
 }
 
 bool Floor::onStairs() {

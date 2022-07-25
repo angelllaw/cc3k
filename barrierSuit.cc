@@ -3,6 +3,7 @@
 #include "elf.h"
 #include "dwarf.h"
 #include "orc.h"
+#include <iostream>
 
 void BarrierSuit::useOn(Human *p) {
     p->setBarrierSuitTrue();
@@ -18,4 +19,9 @@ void BarrierSuit::useOn(Dwarf *p) {
 
 void BarrierSuit::useOn(Orc *p) {
     p->setBarrierSuitTrue();
+    std::cout << "BarrierSuit set true" << std::endl;
+}
+
+char BarrierSuit::getChar() {
+    return 'B';
 }
