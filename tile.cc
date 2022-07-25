@@ -10,7 +10,7 @@
 
 using namespace std;
 
-Tile::Tile(int x, int y, TileType type) : pos{make_unique<State>(State{x, y})}, type{type} {}
+Tile::Tile(int x, int y, TileType type) : pos{make_unique<State>(State{x, y})}, type{type}, item{nullptr}, enemy{nullptr} {}
 
 Tile::~Tile() {}
 

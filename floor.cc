@@ -312,6 +312,9 @@ void Floor::updateFloor(string action) {
                         Direction dir = Direction(neighbors[i]);
                         newPos = getCoords(curPos, dir);
                         if (isValidMove(newPos)) break; // tile is empty movable tile
+                        if (i == (int)neighbors.size() - 1) {
+                            newPos = curPos;
+                        }
                     }
                     // move enemy to state s.
                     // set hasMoved to true
