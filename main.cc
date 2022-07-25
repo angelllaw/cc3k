@@ -16,6 +16,7 @@
 #include "direction.h"
 #include "state.h"
 #include "info.h"
+#include "random.h"
 using namespace std;
 
 Direction getDirection();
@@ -83,6 +84,11 @@ int main (int argc, char *argv[]) {
     
     numFile.open("defaultNumMap.txt");
 
+    Random r;
+    int barrierSuitFloor = r.randomNum(5);
+    barrierSuitFloor = 0; // remove later (for testing rn)
+    cout << "going to generate barrierSuit on floor " << barrierSuitFloor << endl;
+
     for (int floorNum = 0; floorNum < 5; ++floorNum) {
         string floorMap;
         string numMap;
@@ -99,11 +105,9 @@ int main (int argc, char *argv[]) {
         // gets one floor
         for (int i = 0; i < height; ++i) {
             getline(floorFile, line);
-            cout << "floorFile: " << line  << endl;
             floorMap += line;
 
             getline(numFile, line);
-            cout << "numFile:   " << line  << endl;
             numMap += line;
         }
  
@@ -112,7 +116,11 @@ int main (int argc, char *argv[]) {
 
         Floor f{pc, numMap, floorMap, hasArg};
 
-
+        if (!hasArg && floorNum == barrierSuitFloor) {
+            f.generateBarrierSuit();
+            cout << "called generateBarrierSuit() on floor." << endl;
+            // call floor to generate a barrier suit
+        }
         
         
         
@@ -193,6 +201,8 @@ int main (int argc, char *argv[]) {
                         // There is a valid item to use
                         if (f.getTile(itemLoc)->getItem()->getChar() == 'C') {
                             action += "PC uses Compass. Stairs Appear.";
+                        } else if (f.getTile(itemLoc)->getItem()->getChar() == 'B') {
+                            action += "PC equips Barrier Suit.";
                         } else {
                             action += "PC uses Potion";
                         }

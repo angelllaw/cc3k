@@ -94,6 +94,7 @@ class Floor {
 
         void updateFloor(string action);
         void init(string map, bool hasLayout);
+        void generateBarrierSuit();
         void print(string action);
         bool isValidMove(State &newPos);
         bool isValidMove(int strIdxNum);
@@ -109,6 +110,7 @@ class Floor {
         Item *getItem(State &itemPos);
         void removeItem(State pos); 
         int rNeighbourStrIdx(int strIdx, Floor &floor);
+        int rNeighbourStrIdx(int strIdx);
         State idxToPos(int strIdx);
         
         bool onStairs(); 
