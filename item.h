@@ -1,6 +1,8 @@
 #ifndef ITEM_H
 #define ITEM_H
 
+#include <string>
+
 // notes:
 // - dragons should be spawned when dragon hoards are spawned (1/8 prob.)
 // - merchant hoards are implicitly there when merchants are spawned (1/9 prob.)
@@ -25,6 +27,8 @@ class Item {
     virtual bool isGold();
     virtual ~Item();
     virtual char getChar() = 0;
+
+    virtual std::string getPotion();
 };
 
 #endif
