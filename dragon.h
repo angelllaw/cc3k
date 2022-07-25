@@ -8,18 +8,18 @@
 class DragonBaby;
 
 class Dragon : public Enemy {
-    // still need to implement pointer to DragonBaby
 
-    DragonBaby *baby; // don't destroy this when dragon dies since tile still owns it
+    DragonBaby *baby;
+    State babyPos;
+    State& getBabyPos();
 
     public:
-    Dragon(DragonBaby *baby);
+    Dragon(DragonBaby *baby, State &babyPos);
     ~Dragon();
     bool shouldAttack(State &myPos, State &otherPos) override;
-    void toggleMove() override;
-    // void setDragonBaby(DragonBaby *baby);
     char getChar() override;
     int goldUponDead() override;
+    bool isStationary() override;
 };
 
 #endif

@@ -43,3 +43,8 @@ int Enemy::goldUponDead() {
 bool Enemy::dropsMerchantHorde() {
     return false;
 }
+
+bool Enemy::isStationary() {
+    return false;
+}
+

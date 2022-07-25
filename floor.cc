@@ -122,8 +122,10 @@ void Floor::layout(string map) {
                         unique_ptr<Item> item(baby);
                         theFloor[dRow][dCol]->moveItem(item);
                         // cur tile contains dragon
-                        unique_ptr<Enemy> dragon = make_unique<Dragon>(baby);
+                        State babyPos {dCol, dRow};
+                        unique_ptr<Enemy> dragon = make_unique<Dragon>(baby, babyPos);
                         cur->moveEnemy(dragon);
+                        // ANGELA!!!! add breaks
                     }
                 }
                 
@@ -275,75 +277,60 @@ string intToStr(int num) {
 void Floor::updateFloor(string action) {
     for (auto &row : theFloor) {
         for (auto &tile : row) {
-            // update floor tile by tile
 
             // 1. if enemy, try to attack, if can't, then move
-            if (tile->hasEnemy()) { // if tile has an enemy and enemy has not moved
+            if (tile->hasEnemy()) {
                 unique_ptr<Enemy> &curEnemy = tile->getEnemy();
                 if (curEnemy->isDead()) {
                     int goldReward = curEnemy->goldUponDead();
                     pc->addGold(goldReward);
                     action += "Earned " + intToStr(goldReward) + " gold from slaying " + curEnemy->getChar() + ". Another day another slay. ";
-                   //  cout << "Earned " << goldReward << " from killing " <<  << endl;
-                    tile->removeEntities(); // drops gold? adds gold?
+                    tile->removeEntities();
                     continue;
                 } else if (curEnemy->hasMoved) {
                     continue;
                 }
+
                 State curPos = tile->getState();
-                //cout << "Can enemy attack? ";
-                if (curEnemy->shouldAttack(curPos, pc->getState())) { // checks if it can attack
-                    //cout << "Yes" << endl;
+                if (curEnemy->shouldAttack(curPos, pc->getState())) {
+                    cout << "Yes curEnemy->shouldAttack by: " << curEnemy->getChar() << endl;
                     action += curEnemy->getChar();
                     Random r;
                     if (r.randomNum(2) == 0) {
-                        action += " deals ";
-
                         int damage = curEnemy->attack(*pc);
-                        action += intToStr(damage);
-
-                        action += " damage to PC. ";
+                        action += " deals " + intToStr(damage) + " damage to PC. ";
                     } else {
                         action += " misses. ";
                     }
                 } else {
-                    // cout << "No" << endl;
-                    // randomly move
+                    if (curEnemy->isStationary()) continue; // dragons don't ever move
                     State newPos;
                     vector<int> neighbors = Random{}.randomArr(8);
 
                     for (int i = 0; i < (int)neighbors.size(); ++i) {
                         Direction dir = Direction(neighbors[i]);
                         newPos = getCoords(curPos, dir);
-                        if (isValidMove(newPos)) break; // tile is empty movable tile
-                        if (i == (int)neighbors.size() - 1) {
-                            newPos = curPos;
-                        }
+                        if (isValidMove(newPos)) break; // valid move found!
+                        if (i == (int)neighbors.size() - 1) newPos = curPos; // checked all, none available, don't move
                     }
-                    // move enemy to state s.
-                    // set hasMoved to true
-                    curEnemy->toggleMove(); // set hasMoved to true
 
                     assert (0 <= newPos.y && newPos.y < height);
                     assert (0 <= newPos.x && newPos.x < width);
 
+                    curEnemy->toggleMove(); // set hasMoved to true
                     Tile *newTile = theFloor[newPos.y][newPos.x];
 
                     assert (newTile->getType() == TileType::MoveableTile);
-
                     newTile->moveEnemy(curEnemy);
-                    // newTile points to this enemy
-                    // set this tile to point to nothing
                 }
             }
+
         }
     }
-    // loop through again to reset hasMoved boolean
+    // reset hasMoved boolean
     for (auto &row : theFloor) {
         for (auto &tile : row) {
-            if (tile->hasEnemy() && tile->getEnemy()->hasMoved) { // if tile has enemy and hasMoved=true
-                tile->getEnemy()->toggleMove();
-            }
+            if (tile->hasEnemy() && tile->getEnemy()->hasMoved) tile->getEnemy()->toggleMove();
         }
     }
     print(action);

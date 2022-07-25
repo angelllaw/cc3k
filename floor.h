@@ -82,7 +82,6 @@ class Floor {
 */
         void spawnCoords();
         void setChambers(string map);
-        State idxToPos(int strIdx);
 
         static int floorNum;
 
@@ -110,6 +109,7 @@ class Floor {
         Item *getItem(State &itemPos);
         void removeItem(State pos); 
         int rNeighbourStrIdx(int strIdx, Floor &floor);
+        State idxToPos(int strIdx);
         
         bool onStairs(); 
 };
