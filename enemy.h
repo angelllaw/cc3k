@@ -14,12 +14,13 @@ class Enemy : public Character {
     int getAttacked(int damage) override;
     virtual bool shouldAttack(State &myPos, State &otherPos);
     virtual ~Enemy();
-    virtual void toggleMove();
+    void toggleMove();
     bool hasMoved = false;
     bool hasCompass();
     void setCompass(bool status);
     virtual int goldUponDead();
     virtual bool dropsMerchantHorde();
+    virtual bool isStationary();
     // dragons need to tell their dragon babies they're dead
     // tile needs to know merchants will drop a gold
     // 
