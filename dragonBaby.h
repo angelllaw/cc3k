@@ -8,7 +8,6 @@ class Dragon;
 
 class DragonBaby : public Item {
     
-    // Dragon *momma;
     bool hasProtector = true;
 
     public:

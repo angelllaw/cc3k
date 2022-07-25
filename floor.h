@@ -7,12 +7,13 @@
 #include <memory>
 #include "direction.h" // likley wrong, delete
 #include "state.h"
+#include "chamber.h"
 
 using std::string;
 
 class Player;
 class Tile;
-class Chamber;
+// class Chamber;
 class Item;
 
 class Floor {
@@ -21,7 +22,7 @@ class Floor {
         const int height = 25;
         std::shared_ptr<Player> pc;
         std::vector<std::vector<Tile *>> theFloor;
-        std::vector<Chamber *> chambers;
+        std::vector<std::unique_ptr<Chamber>> chambers;
         State stairs;
 
         string floorMap;

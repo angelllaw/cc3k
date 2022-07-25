@@ -110,33 +110,38 @@ void Floor::layout(string map) {
                 }
                 unique_ptr<Item> item = make_unique<Consumable>(type);
                 cur->moveItem(item);
-            } else if (c == '.' || c == 'B' || c == '9') { // ignore barrier suit or compass
+            } else if (c == '.' || c == 'B' || c == '9') { // ignore barrier suit or dragon horde
                 continue;
             } else if (c == '\\') { // stairs
                 stairs = {col, row};
-            } else if (c == 'D') { // dragon!
+            } else if (c == 'D') { // dragon! Invariant: dragon only has one baby
                 DragonBaby *baby;
+                bool foundBaby = false;
                 for (int dRow = row - 1; dRow >= 0 && dRow < height && dRow <= row + 1; ++dRow) {
                     for (int dCol = col - 1; dCol >= 0 && dCol < width && dCol <= col + 1; ++dCol) {
                         char neighbor = map[dRow * width + dCol];
                         if (neighbor == '9') {
                             baby = new DragonHorde();
+                            foundBaby = true;
                         } else if (neighbor == 'B') {
+                            baby = new BarrierSuit();
+                            foundBaby = true;
                         }
-                        // tile points to the dragon baby
-                        unique_ptr<Item> item(baby);
-                        theFloor[dRow][dCol]->moveItem(item);
-                        // cur tile contains dragon
-                        State babyPos {dCol, dRow};
-                        unique_ptr<Enemy> dragon = make_unique<Dragon>(baby, babyPos);
-                        cur->moveEnemy(dragon);
-                        // ANGELA!!!! add breaks
+
+                        if (foundBaby) { // should for sure find a baby
+                            // tile points to the dragon baby
+                            unique_ptr<Item> item(baby);
+                            theFloor[dRow][dCol]->moveItem(item);
+                            // cur tile contains dragon
+                            State babyPos {dCol, dRow};
+                            unique_ptr<Enemy> dragon = make_unique<Dragon>(baby, babyPos);
+                            cur->moveEnemy(dragon);
+                            break;
+                        }
                     }
+                    if (foundBaby) break;
                 }
-                
-                
-                // set dragon baby
-                // set dragon momma
+                assert (foundBaby == true);
             } else if (getTileId(c) == TileType::MoveableTile) { // all other enemies
                 EnemyFactory ef;
                 EnemyType type;
@@ -253,7 +258,7 @@ void Floor::setChambers(string map) {
             char c = map[idx];
             if ('0' <= c && c <= '9') {
                 if ((c - '0') > (int)chambers.size()) {
-                    chambers.emplace_back(new Chamber{});
+                    chambers.emplace_back(make_unique<Chamber>());
                     // cout << "created new chamber" << endl;
                 }
                 chambers[c - '0' - 1]->addTile(idx);

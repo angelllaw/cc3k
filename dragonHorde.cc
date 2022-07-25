@@ -8,35 +8,19 @@
 // all the same function:
 
 void DragonHorde::useOn(Human *p) {
-    if (isDragonDead()) {
-        p->addGold(gold);
-    } else {
-        std::cout << "The Dragon is still guarding the treasure. You must kill the Dragon first." << std::endl;
-    }
+    if (isDragonDead()) p->addGold(gold);
 }
 
 void DragonHorde::useOn(Elf *p) {
-    if (isDragonDead()) {
-        p->addGold(gold);
-    } else {
-        std::cout << "The Dragon is still guarding the treasure. You must kill the Dragon first." << std::endl;
-    }
+    if (isDragonDead()) p->addGold(gold);
 }
 
 void DragonHorde::useOn(Dwarf *p) {
-    if (isDragonDead()) {
-        p->addGold(gold);
-    } else {
-        std::cout << "The Dragon is still guarding the treasure. You must kill the Dragon first." << std::endl;
-    }
+    if (isDragonDead()) p->addGold(gold);
 }
 
 void DragonHorde::useOn(Orc *p) {
-    if (isDragonDead()) {
-        p->addGold(gold);
-    } else {
-        std::cout << "The Dragon is still guarding the treasure. You must kill the Dragon first." << std::endl;
-    }
+    if (isDragonDead()) p->addGold(gold);
 }
 
 char DragonHorde::getChar() {

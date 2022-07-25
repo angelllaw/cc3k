@@ -23,6 +23,7 @@ using namespace std;
 Direction getDirection();
 string directionString(Direction dir);
 void printGoodBye();
+bool attemptMove(Floor &f, shared_ptr<Player> pc, Direction dir, string &action);
 
 int main (int argc, char *argv[]) {
 
@@ -143,7 +144,7 @@ int main (int argc, char *argv[]) {
             while (cin >> cmd) {
                 action = "Action: ";
                 Direction dir;
-                State nextPos;
+                // State nextPos;
                 switch(cmd) {
                     // MOVE
                     case 'n':
@@ -151,7 +152,7 @@ int main (int argc, char *argv[]) {
                         if (cmd == 'o') dir = Direction::N;
                         if (cmd == 'e') dir = Direction::NE;
                         if (cmd == 'w') dir = Direction::NW;
-                        nextPos = f.getState(pc->getState(), dir);
+                        /*nextPos = f.getState(pc->getState(), dir);
                         if (f.validPlayerTile(nextPos) == 1) {
                             pc->move(dir);
                             action += "PC moves " + directionString(dir);
@@ -159,10 +160,21 @@ int main (int argc, char *argv[]) {
                             cout << "Invalid Move." << endl;
                             continue;
                         }
+                        */
+                        if (!attemptMove(f, pc, dir, action)) continue;
                         break;
+
+                        
+
+
+                        
+
+
+
                     case 'e':
                         cin >> cmd;
                         if (cmd == 'a') dir = Direction::E;
+                        /*
                         nextPos = f.getState(pc->getState(), dir);
                         if (f.validPlayerTile(nextPos) == 1) {
                             pc->move(dir);
@@ -171,12 +183,15 @@ int main (int argc, char *argv[]) {
                             cout << "Invalid Move." << endl;
                             continue;
                         }
+                        */
+                        if (!attemptMove(f, pc, dir, action)) continue;
                         break;
                     case 's':
                         cin >> cmd;
                         if (cmd == 'o') dir = Direction::S;
                         if (cmd == 'e') dir = Direction::SE;
                         if (cmd == 'w') dir = Direction::SW;
+                        /*
                         nextPos = f.getState(pc->getState(), dir);
                         if (f.validPlayerTile(nextPos) == 1) {
                             pc->move(dir);
@@ -185,10 +200,13 @@ int main (int argc, char *argv[]) {
                             cout << "Invalid Move." << endl;
                             continue;
                         }
+                        */
+                        if (!attemptMove(f, pc, dir, action)) continue;
                         break;
                     case 'w':
                         cin >> cmd;
                         if (cmd == 'e') dir = Direction::W;
+                        /*
                         nextPos = f.getState(pc->getState(), dir);
                         if (f.validPlayerTile(nextPos) == 1) {
                             pc->move(dir);
@@ -197,6 +215,8 @@ int main (int argc, char *argv[]) {
                             cout << "Invalid Move." << endl;
                             continue;
                         }
+                        */
+                        if (!attemptMove(f, pc, dir, action)) continue;
                         break;
                     // USE ITEM
                     case 'u':
@@ -208,6 +228,9 @@ int main (int argc, char *argv[]) {
                                 continue;
                             } else if (f.getTile(itemLoc)->hasGold()) {
                                 cout << "Invalid Cmd. Pick up Gold by walking over it." << endl;
+                                continue;
+                            } else if (f.getTile(itemLoc)->getItem()->validUse() == false) {
+                                // only for dragon babys
                                 continue;
                             }
                             // There is a valid item to use
@@ -265,7 +288,7 @@ int main (int argc, char *argv[]) {
                     // floor shouldn't need to be reset since it is on the stack and has unique-ptr (auto delete)
                     break;
                 }
-                if (restart) break;
+                if (restart || pc->isDead()) break;
                 f.updateFloor(action); // print is called inside here
                 if (pc->isDead()) break;
             }
@@ -329,4 +352,16 @@ string directionString(Direction dir) {
 void printGoodBye() {
     cout << "Thanks for playing CC3K+" << endl;
     cout << "made by Olivia and Angela" << endl;
+}
+
+bool attemptMove(Floor &f, shared_ptr<Player> pc, Direction dir, string &action) {
+    State nextPos = f.getState(pc->getState(), dir);
+    if (f.validPlayerTile(nextPos) == 1) {
+        pc->move(dir);
+        action += "PC moves " + directionString(dir);
+        return true;
+    } else {
+        cout << "Invalid Move." << endl;
+        return false;
+    }
 }

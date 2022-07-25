@@ -6,20 +6,20 @@
 #include <iostream>
 
 void BarrierSuit::useOn(Human *p) {
-    p->setBarrierSuitTrue();
+    if (isDragonDead()) p->setBarrierSuitTrue();
 }
 
 void BarrierSuit::useOn(Elf *p) {
-    p->setBarrierSuitTrue();
+    if (isDragonDead()) p->setBarrierSuitTrue();
 }
 
 void BarrierSuit::useOn(Dwarf *p) {
-    p->setBarrierSuitTrue();
+    if (isDragonDead()) p->setBarrierSuitTrue();
 }
 
 void BarrierSuit::useOn(Orc *p) {
-    p->setBarrierSuitTrue();
-    std::cout << "BarrierSuit set true" << std::endl;
+    if (isDragonDead()) p->setBarrierSuitTrue();
+    // std::cout << "BarrierSuit set true" << std::endl;
 }
 
 char BarrierSuit::getChar() {

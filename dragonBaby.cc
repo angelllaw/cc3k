@@ -1,20 +1,10 @@
 #include "dragonBaby.h"
 #include "info.h"
 #include "dragon.h"
+#include <iostream>
 
 // probably not necessary, this is a pure virtual class
 DragonBaby::~DragonBaby() {}
-
-/*
-void DragonBaby::setDragonMomma(Dragon *momma) {
-    this->momma = momma;
-    if (momma == nullptr) {
-        hasProtector = true;
-    } else {
-        hasProtector = false;
-    }
-}
-*/
 
 bool DragonBaby::isDragonDead() {
     return !hasProtector;
@@ -26,6 +16,7 @@ void DragonBaby::setProtector() {
 
 
 bool DragonBaby::validUse() {
+    if (hasProtector) std::cout << "You must slay the dragon protector first. " << std::endl;
     return !hasProtector;
 }
 
