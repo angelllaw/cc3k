@@ -15,6 +15,7 @@ Dwarf::Dwarf() : Player{100, 20, 30} {
 
 void Dwarf::useItem(Item *i) {
     i->useOn(this);
+    setHp(min(defaultStats->hp, stats->hp));
 }
 
 string Dwarf::printRace() {

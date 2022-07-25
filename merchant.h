@@ -17,6 +17,8 @@ class Merchant : public Enemy {
     // void attack(Character & victim) override;
 
     char getChar() override;
+
+    static void reset();
 };
 
 #endif

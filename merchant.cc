@@ -34,3 +34,7 @@ bool Merchant::dropsMerchantHorde() {
     return true;
 }
 
+void Merchant::reset() {
+    hostile = false;
+}
+

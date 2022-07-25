@@ -15,7 +15,7 @@ Human::~Human() {}
 
 void Human::useItem(Item *i) {
     i->useOn(this);
-
+    setHp(min(defaultStats->hp, stats->hp));
 }
 
 string Human::printRace() {

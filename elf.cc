@@ -14,6 +14,7 @@ Elf::Elf() : Player{140, 30, 10} {
 
 void Elf::useItem(Item *i) {
     i->useOn(this);
+    setHp(min(defaultStats->hp, stats->hp));
 }
 
 string Elf::printRace() {
