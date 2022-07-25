@@ -5,21 +5,27 @@
 // probably not necessary, this is a pure virtual class
 DragonBaby::~DragonBaby() {}
 
+/*
 void DragonBaby::setDragonMomma(Dragon *momma) {
     this->momma = momma;
     if (momma == nullptr) {
-        deadDragon = true;
+        hasProtector = true;
     } else {
-        deadDragon = false;
+        hasProtector = false;
     }
 }
+*/
 
 bool DragonBaby::isDragonDead() {
-    return deadDragon;
+    return hasProtector;
+}
+
+void DragonBaby::setDeadMom() {
+    hasProtector = false;
 }
 
 
 bool DragonBaby::validUse() {
-    return deadDragon;
+    return hasProtector;
 }
 

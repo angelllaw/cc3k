@@ -17,7 +17,7 @@
 
 using namespace std;
 
-unique_ptr<Enemy> initializeEnemy(EnemyType type) {
+unique_ptr<Enemy> EnemyFactory::initializeEnemy(EnemyType type) {
     switch (type) {
         case EnemyType::Werewolf:
             return unique_ptr<Enemy> (new Werewolf());

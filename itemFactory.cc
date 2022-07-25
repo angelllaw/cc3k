@@ -56,9 +56,9 @@ void ItemFactory::generateTreasures(Floor &floor) {
             assert (toPlaceDragon->getType() == TileType::MoveableTile);
 
             DragonBaby *db = new DragonHorde;
-            Dragon *dragon = new Dragon;
-            dragon->setDragonBaby(db);
-            db->setDragonMomma(dragon);
+            Dragon *dragon = new Dragon{db};
+            // dragon->setDragonBaby(db);
+            // db->setDragonMomma(dragon);
 
             unique_ptr<Item> item (db); // needs to take a pointer to a dragon
             unique_ptr<Enemy> enemy (dragon); // needs to take a pointer to a dragonBaby

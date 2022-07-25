@@ -79,6 +79,7 @@ int main (int argc, char *argv[]) {
         floorFile.open(argv[1]);
         hasArg = true;
     } 
+    numFile.open("defaultNumMap.txt");
 
     for (int floorNum = 0; floorNum < 5; ++floorNum) {
         string floorMap;
@@ -86,9 +87,13 @@ int main (int argc, char *argv[]) {
         string line;
 
         if (!hasArg) {
-            floorFile.open("defaultMap.txt"); // reopens defaultmap if no cmd line arg
+            floorFile.clear();
+            floorFile.open("defaultMap.txt");
+            floorFile.seekg(ios::beg);
+            // reopens defaultmap if no cmd line arg
         }
-        numFile.open("defaultNumMap.txt"); // reopens numMap for every new floor
+        numFile.clear();
+        numFile.seekg(ios::beg); // reopens numMap for every new floor
 
         // gets one floor
         for (int i = 0; i < height; ++i) {
@@ -104,7 +109,11 @@ int main (int argc, char *argv[]) {
         Floor f{pc, numMap, floorMap, hasArg};
 
         // 2. Spawn Player
-        pc->setState(State{7, 5}); 
+        if (!hasArg) {
+            cout << "random spawn" << endl;
+            pc->setState(State{7, 5}); 
+        }
+        
         
         
         string action = "Action: ";
@@ -232,15 +241,20 @@ int main (int argc, char *argv[]) {
                     continue;
             }
 
+            // if player is on stairs
+            if (f.onStairs()) {
+                pc->reset();
+                // floor shouldn't need to be reset since it is on the stack and has unique-ptr (auto delete)
+                break;
+            }
+
             f.updateFloor(action); // print is called inside here
         }
+        if (cin.fail()) {
+            break;
+        }
     }
-    
-
-    
-    
-
-
+    cout << "You've reached the end" << endl;
 }
 
 Direction getDirection() {

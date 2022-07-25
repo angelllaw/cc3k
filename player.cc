@@ -35,12 +35,6 @@ void Player::setState(State newPos) {
     pos->y = newPos.y;
 } 
 
-/*
-Race Player::getRace() {
-    return race;
-}
-*/
-
 void Player::setBarrierSuitTrue() {
     hasBarrierSuit = true;
 }
@@ -94,5 +88,13 @@ bool Player::move(Direction dir) {
             break;
     }
     setState(State {newX, newY});
+}
+
+void Player::reset() {
+    // reset atk and def
+    stats->atk = atk;
+    stats->def = def;
+    // reset compass
+    compass = false;
 }
 
