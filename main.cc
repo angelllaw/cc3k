@@ -77,7 +77,10 @@ int main (int argc, char *argv[]) {
     if (argc == 2) { // optional cmd line arg
         floorFile.open(argv[1]);
         hasArg = true;
-    } 
+    } else {
+        floorFile.open("defaultMap.txt");
+    }
+    
     numFile.open("defaultNumMap.txt");
 
     for (int floorNum = 0; floorNum < 5; ++floorNum) {
@@ -87,7 +90,6 @@ int main (int argc, char *argv[]) {
 
         if (!hasArg) {
             floorFile.clear();
-            floorFile.open("defaultMap.txt");
             floorFile.seekg(ios::beg);
             // reopens defaultmap if no cmd line arg
         }
@@ -97,9 +99,11 @@ int main (int argc, char *argv[]) {
         // gets one floor
         for (int i = 0; i < height; ++i) {
             getline(floorFile, line);
+            cout << "floorFile: " << line  << endl;
             floorMap += line;
 
             getline(numFile, line);
+            cout << "numFile:   " << line  << endl;
             numMap += line;
         }
  
