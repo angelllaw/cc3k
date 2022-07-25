@@ -16,7 +16,7 @@ class DragonBaby : public Item {
     // void setDragonMomma(Dragon *momma);
     virtual ~DragonBaby();
     bool isDragonDead();
-    void setDeadMom();
+    void setProtector();
     bool validUse() override;
 };
 

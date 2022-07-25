@@ -13,18 +13,12 @@ Dragon::Dragon(DragonBaby *baby) : baby{baby} {
 
 Dragon::~Dragon() {}
 
-/*
-void Dragon::setDragonBaby(DragonBaby *baby) {
-    this->baby = baby;
-}
-*/
-
 void Dragon::toggleMove() {}
 
 char Dragon::getChar() { return 'D'; }
 
 int Dragon::goldUponDead() {
-    baby->setDeadMom();
+    baby->setProtector();
     return stats->gold;
 }
 

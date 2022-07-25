@@ -17,15 +17,15 @@ void DragonBaby::setDragonMomma(Dragon *momma) {
 */
 
 bool DragonBaby::isDragonDead() {
-    return hasProtector;
+    return !hasProtector;
 }
 
-void DragonBaby::setDeadMom() {
+void DragonBaby::setProtector() {
     hasProtector = false;
 }
 
 
 bool DragonBaby::validUse() {
-    return hasProtector;
+    return !hasProtector;
 }
 

@@ -266,6 +266,12 @@ State getCoords(State &curPos, Direction dir) {
     return s;
 }
 
+string intToStr(int num) {
+    stringstream ss;
+    ss << num;
+    return ss.str();
+}
+
 void Floor::updateFloor(string action) {
     for (auto &row : theFloor) {
         for (auto &tile : row) {
@@ -277,13 +283,13 @@ void Floor::updateFloor(string action) {
                 if (curEnemy->isDead()) {
                     int goldReward = curEnemy->goldUponDead();
                     pc->addGold(goldReward);
-                    cout << "Earned " << goldReward << " from killing " << curEnemy->getChar() << endl;
+                    action += "Earned " + intToStr(goldReward) + " gold from slaying " + curEnemy->getChar() + ". Another day another slay. ";
+                   //  cout << "Earned " << goldReward << " from killing " <<  << endl;
                     tile->removeEntities(); // drops gold? adds gold?
                     continue;
                 } else if (curEnemy->hasMoved) {
                     continue;
                 }
-                // cout << "tile " << tile->getState().x << ", " << tile->getState().y << " has enemy " << *tile << endl;
                 State curPos = tile->getState();
                 //cout << "Can enemy attack? ";
                 if (curEnemy->shouldAttack(curPos, pc->getState())) { // checks if it can attack
@@ -294,9 +300,7 @@ void Floor::updateFloor(string action) {
                         action += " deals ";
 
                         int damage = curEnemy->attack(*pc);
-                        stringstream ss;
-                        ss << damage;
-                        action += ss.str();
+                        action += intToStr(damage);
 
                         action += " damage to PC. ";
                     } else {
