@@ -8,11 +8,12 @@
 #include "direction.h" // likley wrong, delete
 #include "state.h"
 #include "chamber.h"
+#include "tile.h"
 
 using std::string;
 
 class Player;
-class Tile;
+// class Tile;
 // class Chamber;
 class Item;
 
@@ -21,11 +22,12 @@ class Floor {
         const int width = 79;
         const int height = 25;
         std::shared_ptr<Player> pc;
-        std::vector<std::vector<Tile *>> theFloor;
+        std::vector<std::vector<std::unique_ptr<Tile>>> theFloor;
         std::vector<std::unique_ptr<Chamber>> chambers;
+        const int floorNum = 0;
         State stairs;
 
-        string floorMap;
+        // string floorMap;
 /*
         const string defaultMap = 
             "|-----------------------------------------------------------------------------|"
@@ -83,8 +85,6 @@ class Floor {
 */
         void spawnCoords();
         void setChambers(string map);
-
-        const int floorNum;
 
         void spawn();
         void layout(string map);

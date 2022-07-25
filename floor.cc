@@ -24,14 +24,11 @@
 
 using namespace std;
 
-Floor::Floor(shared_ptr<Player> pc, string numMap, string floorMap, bool hasLayout, int floorNum) : pc{pc}, floorNum{floorNum}{
+Floor::Floor(shared_ptr<Player> pc, string numMap, string floorMap, bool hasLayout, int floorNum) 
+    : pc{pc}, floorNum{floorNum}, stairs{0, 0} {
     setChambers(numMap);
     floorNum++;
     init(floorMap, hasLayout);
-
-    if (!hasLayout) {
-        
-    }
 }
 
 TileType getTileId(char c) {
@@ -73,7 +70,7 @@ void Floor::spawn() {
 void Floor::layout(string map) {
     for (int row = 0; row < height; ++row) {
         for (int col = 0; col < width; ++col) {
-            Tile *cur = theFloor[row][col];
+            Tile *cur = theFloor[row][col].get();
             char c = map[row * width + col];
             if (c == '@') {
                 pc->setState(State{col, row});
@@ -179,12 +176,12 @@ void Floor::layout(string map) {
 void Floor::init(string map, bool hasLayout) {
     // generate the actual floor & tiles
     for (int row = 0; row < height; row++) {
-        vector<Tile *> tmp;
+        vector<unique_ptr<Tile>> tmp;
         for (int col = 0; col < width; col++) {
             char c = map[row * width + col];
-            tmp.emplace_back(new Tile(col, row, getTileId(c)));
+            tmp.emplace_back(make_unique<Tile>(col, row, getTileId(c)));
         }
-        theFloor.emplace_back(tmp);
+        theFloor.emplace_back(move(tmp));
     }
 
     if (!hasLayout) {
@@ -205,7 +202,7 @@ void Floor::generateBarrierSuit() {
     }
 
     State babyPos = idxToPos(itemIdx);
-    cout << "BarrierSuit at " << babyPos.x << " " << babyPos.y << endl;
+    // cout << "BarrierSuit at " << babyPos.x << " " << babyPos.y << endl;
 
     DragonBaby *db = new BarrierSuit;
     Dragon *dragon = new Dragon{db, babyPos};
@@ -353,7 +350,7 @@ void Floor::updateFloor(string action) {
                     assert (0 <= newPos.x && newPos.x < width);
 
                     curEnemy->toggleMove(); // set hasMoved to true
-                    Tile *newTile = theFloor[newPos.y][newPos.x];
+                    Tile *newTile = theFloor[newPos.y][newPos.x].get();
 
                     assert (newTile->getType() == TileType::MoveableTile);
                     newTile->moveEnemy(curEnemy);
@@ -372,7 +369,7 @@ void Floor::updateFloor(string action) {
 }
 
 bool Floor::isValidMove(State &pos) {
-    Tile *t = theFloor[pos.y][pos.x];
+    Tile *t = theFloor[pos.y][pos.x].get();
     State &pcPos = pc->getState();
     if (pcPos.y == pos.y && pcPos.x == pos.x) return false; // on player
     if (pos.x == stairs.x && pos.y == stairs.y) return false; // on stairs
@@ -385,7 +382,7 @@ bool Floor::isValidMove(int idxNum) {
 }
 
 int Floor::validPlayerTile(State &pos) {
-    Tile *t = theFloor[pos.y][pos.x];
+    Tile *t = theFloor[pos.y][pos.x].get();
     TileType type = t->getType();
 
     if (type == TileType::Empty || type == TileType::VWall || type == TileType::HWall) {
@@ -427,11 +424,11 @@ State Floor::idxToPos(int idx) {
 
 Tile *Floor::getTile(int idxNum) {
     State pos = idxToPos(idxNum);
-    return theFloor[pos.y][pos.x];
+    return theFloor[pos.y][pos.x].get();
 }
 
 Tile *Floor::getTile(State pos) {
-    return theFloor[pos.y][pos.x];
+    return theFloor[pos.y][pos.x].get();
 }
 
 
