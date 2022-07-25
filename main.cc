@@ -213,7 +213,7 @@ int main (int argc, char *argv[]) {
                         } else if (f.getTile(itemLoc)->getItem()->getChar() == 'B') {
                             action += "PC equips Barrier Suit.";
                         } else {
-                            action += "PC uses Potion";
+                            action += "PC uses " + f.getTile(itemLoc)->getItem()->getPotion() + ". ";
                         }
                         pc->useItem(f.getItem(itemLoc));
                         f.removeItem(itemLoc);

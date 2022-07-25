@@ -9,7 +9,7 @@ using namespace std;
 
 Player::~Player() {}
 
-Player::Player(const int atk, const int def) : atk{atk}, def{def}, pos{make_unique<State>()} {}
+Player::Player(int hp, int atk, int def) : defaultStats{make_unique<const Info>(Info{hp, atk, def, 0})}, pos{make_unique<State>()} {}
 
 /*
 Player::Player(Race race, Info stats) : atk{stats.atk}, def{stats.def}, race{race}, pos{make_unique<State>()} {
@@ -92,8 +92,8 @@ bool Player::move(Direction dir) {
 
 void Player::reset() {
     // reset atk and def
-    stats->atk = atk;
-    stats->def = def;
+    stats->atk = defaultStats->atk;
+    stats->def = defaultStats->def;
     // reset compass
     compass = false;
 }

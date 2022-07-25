@@ -1,5 +1,5 @@
 #include "item.h"
-#include <iostream>
+#include <string>
 using namespace std;
 
 Item::~Item() {}
@@ -10,4 +10,8 @@ bool Item::validUse() {
 
 bool Item::isGold() {
     return false;
+}
+
+string Item::getPotion() {
+    return "";
 }

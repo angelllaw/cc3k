@@ -4,6 +4,7 @@
 #include "elf.h"
 #include "dwarf.h"
 #include "orc.h"
+#include <string>
 using namespace std;
 
 // MIL IS THERE A DIFFERENCE IF: effect{unique_ptr<Info> (new Info {0, 0, 0, 0})effect{new Info {0, 0 , 0, 0}
@@ -82,4 +83,14 @@ char Consumable::getChar() {
 bool Consumable::isGold() {
     if (effect->gold > 0) return true;
     return false;
+}
+
+string Consumable::getPotion() {
+    if (effect->hp > 0) return "RH";
+    if (effect->hp < 0) return "PH";
+    if (effect->atk > 0) return "BA";
+    if (effect->atk < 0) return "WA";
+    if (effect->def > 0) return "BD";
+    if (effect->def < 0) return "WD";
+    return "";
 }

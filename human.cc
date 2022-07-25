@@ -7,7 +7,7 @@
 
 using namespace std;
 
-Human::Human() : Player{20, 20} {
+Human::Human() : Player{140, 20, 20} {
     stats = make_unique<Info>(Info{140, 20, 20, 0});
 }
 
@@ -15,6 +15,7 @@ Human::~Human() {}
 
 void Human::useItem(Item *i) {
     i->useOn(this);
+
 }
 
 string Human::printRace() {

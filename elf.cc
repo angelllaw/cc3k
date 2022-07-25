@@ -8,7 +8,7 @@ using namespace std;
 
 Elf::~Elf() {}
 
-Elf::Elf() : Player{30, 10} {
+Elf::Elf() : Player{140, 30, 10} {
     stats = make_unique<Info>(Info{140, 30, 10, 0});
 }
 

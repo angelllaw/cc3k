@@ -9,8 +9,9 @@ class Item;
 
 class Player : public Character {
     protected:
-        const int atk = 20; // human default
-        const int def = 20; // human defualt
+        // const int atk = 20; // human default
+        // const int def = 20; // human defualt
+        std::unique_ptr<const Info> defaultStats;
         
         std::unique_ptr<State> pos;
         bool hasBarrierSuit = false;
@@ -18,7 +19,7 @@ class Player : public Character {
 
         int getAttacked(int damage) override; 
 
-        Player(const int atk, const int def);
+        Player(int hp, int atk, int def);
 
     public:
         State &getState();

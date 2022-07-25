@@ -3,6 +3,7 @@
 
 #include "item.h"
 #include <memory>
+#include <string>
 
 
 class Consumable : public Item {
@@ -16,6 +17,7 @@ class Consumable : public Item {
     void useOn(Orc *p) override; 
     char getChar() override;
     bool isGold() override;
+    std::string getPotion() override;
 };
 
 #endif
