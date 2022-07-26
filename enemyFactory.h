@@ -3,9 +3,10 @@
 
 #include <memory>
 
+enum class EnemyType { Dragon, Vampire, Werewolf, Troll, Goblin, Merchant, Phoenix };
+
 class Floor;
 class Enemy;
-enum class EnemyType;
 
 class EnemyFactory {
     

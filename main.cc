@@ -4,15 +4,13 @@
 #include <sstream>
 #include <iomanip>
 #include <memory>
+
 #include "floor.h"
 #include "item.h"
 #include "tile.h"
 #include "enemy.h"
 #include "player.h"
-#include "human.h"
-#include "elf.h"
-#include "dwarf.h"
-#include "orc.h"
+#include "playerFactory.h"
 #include "direction.h"
 #include "state.h"
 #include "info.h"
@@ -45,31 +43,28 @@ int main (int argc, char *argv[]) {
         cout << "o — for orc" << endl;
         cout << endl << "Enter to select:" << endl;
     
-        shared_ptr<Player> pc(nullptr); // warning: cannot access any fields here until you ctor a player 
+        shared_ptr<Player> pc(nullptr);
 
         // 1. Choose Player Race
         char cmd;
         bool validRace = false;
 
         while (cin >> cmd) {
+            PlayerFactory pf;
             switch(cmd) {
                 case 'h':
-                    pc = make_shared<Human>();
                     cout << "You have selected Human." << endl;
                     validRace = true;
                     break;
                 case 'e':
-                    pc = make_shared<Elf>();
                     cout << "You have selected Elf." << endl;
                     validRace = true;
                     break;
                 case 'd':
-                    pc = make_shared<Dwarf>();
                     cout << "You have selected Dwarf." << endl;
                     validRace = true;
                     break;
                 case 'o':
-                    pc = make_shared<Orc>();
                     cout << "You have selected Orc." << endl;
                     validRace = true;
                     break;
@@ -77,8 +72,13 @@ int main (int argc, char *argv[]) {
                     cout << "Invalid command. Enter a valid race:" << endl;
                     break;
             }
-            if (validRace) break;
+            if (validRace) {
+                pc = pf.generatePlayer(cmd);
+                break;
+            }
         }
+
+        if (cin.fail()) break; 
 
         ifstream floorFile;
         ifstream numFile;
@@ -144,38 +144,13 @@ int main (int argc, char *argv[]) {
                         if (cmd == 'o') dir = Direction::N;
                         if (cmd == 'e') dir = Direction::NE;
                         if (cmd == 'w') dir = Direction::NW;
-                        /*nextPos = f.getState(pc->getState(), dir);
-                        if (f.validPlayerTile(nextPos) == 1) {
-                            pc->move(dir);
-                            action += "PC moves " + directionString(dir);
-                        } else {
-                            cout << "Invalid Move." << endl;
-                            continue;
-                        }
-                        */
+
                         if (!attemptMove(f, pc, dir, action)) continue;
                         break;
-
-                        
-
-
-                        
-
-
 
                     case 'e':
                         cin >> cmd;
                         if (cmd == 'a') dir = Direction::E;
-                        /*
-                        nextPos = f.getState(pc->getState(), dir);
-                        if (f.validPlayerTile(nextPos) == 1) {
-                            pc->move(dir);
-                            action += "PC moves " + directionString(dir);
-                        } else {
-                            cout << "Invalid Move." << endl;
-                            continue;
-                        }
-                        */
                         if (!attemptMove(f, pc, dir, action)) continue;
                         break;
                     case 's':
@@ -183,31 +158,13 @@ int main (int argc, char *argv[]) {
                         if (cmd == 'o') dir = Direction::S;
                         if (cmd == 'e') dir = Direction::SE;
                         if (cmd == 'w') dir = Direction::SW;
-                        /*
-                        nextPos = f.getState(pc->getState(), dir);
-                        if (f.validPlayerTile(nextPos) == 1) {
-                            pc->move(dir);
-                            action += "PC moves " + directionString(dir);
-                        } else {
-                            cout << "Invalid Move." << endl;
-                            continue;
-                        }
-                        */
+
                         if (!attemptMove(f, pc, dir, action)) continue;
                         break;
                     case 'w':
                         cin >> cmd;
                         if (cmd == 'e') dir = Direction::W;
-                        /*
-                        nextPos = f.getState(pc->getState(), dir);
-                        if (f.validPlayerTile(nextPos) == 1) {
-                            pc->move(dir);
-                            action += "PC moves " + directionString(dir);
-                        } else {
-                            cout << "Invalid Move." << endl;
-                            continue;
-                        }
-                        */
+ 
                         if (!attemptMove(f, pc, dir, action)) continue;
                         break;
                     // USE ITEM

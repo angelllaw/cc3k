@@ -7,9 +7,7 @@ using namespace std;
 bool Merchant::hostile = false;
 
 Merchant::Merchant() {
-    init(unique_ptr<Info> (new Info {30, 70, 5, 0}));
-    // instead of adding 1 gold immediately to player, Merchant drops gold
-    // still need to implement static hostile variable
+    stats = make_unique<Info>(Info{30, 70, 5, 0});
 }
 
 Merchant::~Merchant() {}

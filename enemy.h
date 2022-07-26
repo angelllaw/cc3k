@@ -4,26 +4,24 @@
 #include "character.h"
 #include "compass.h"
 
-enum class EnemyType { Dragon, Vampire, Werewolf, Troll, Goblin, Merchant, Phoenix };
+
 
 class Enemy : public Character {
     protected:
     bool compass = false;
 
     public:
+    bool hasMoved = false;
+
     int getAttacked(int damage) override;
     virtual bool shouldAttack(State &myPos, State &otherPos);
     virtual ~Enemy();
     void toggleMove();
-    bool hasMoved = false;
     bool hasCompass();
     void setCompass(bool status);
     virtual int goldUponDead();
     virtual bool dropsMerchantHorde();
     virtual bool isStationary();
-    // dragons need to tell their dragon babies they're dead
-    // tile needs to know merchants will drop a gold
-    // 
 
     virtual char getChar() = 0;
 

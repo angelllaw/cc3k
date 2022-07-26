@@ -4,7 +4,7 @@
 #include "item.h"
 #include <memory>
 #include <string>
-
+#include "info.h"
 
 class Consumable : public Item {
     std::unique_ptr<Info> effect;

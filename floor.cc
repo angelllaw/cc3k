@@ -113,27 +113,28 @@ void Floor::layout(string map) {
                 stairs = {col, row};
             } else if (c == 'D') { // dragon! Invariant: dragon only has one baby
                 enemyPosArr.emplace_back(State{col, row});
-                DragonBaby *baby;
+                unique_ptr<DragonBaby> baby;
                 bool foundBaby = false;
                 for (int dRow = row - 1; dRow >= 0 && dRow < height && dRow <= row + 1; ++dRow) {
                     for (int dCol = col - 1; dCol >= 0 && dCol < width && dCol <= col + 1; ++dCol) {
                         char neighbor = map[dRow * width + dCol];
                         if (neighbor == '9') {
-                            baby = new DragonHorde();
+                            baby = make_unique<DragonHorde>();
                             foundBaby = true;
                         } else if (neighbor == 'B') {
-                            baby = new BarrierSuit();
+                            baby = make_unique<BarrierSuit>();
                             foundBaby = true;
                         }
 
                         if (foundBaby) { // should for sure find a baby
-                            // tile points to the dragon baby
-                            unique_ptr<Item> item(baby);
-                            theFloor[dRow][dCol]->moveItem(item);
                             // cur tile contains dragon
                             State babyPos {dCol, dRow};
-                            unique_ptr<Enemy> dragon = make_unique<Dragon>(baby, babyPos);
+                            unique_ptr<Enemy> dragon = make_unique<Dragon>(baby.get(), babyPos);
                             cur->moveEnemy(dragon);
+                            // tile points to the dragon baby
+                            unique_ptr<Item> item = move(baby);
+                            theFloor[dRow][dCol]->moveItem(item);
+                            
                             break;
                         }
                     }
@@ -209,12 +210,9 @@ void Floor::generateBarrierSuit() {
     }
 
     State babyPos = idxToPos(itemIdx);
-    // cout << "BarrierSuit at " << babyPos.x << " " << babyPos.y << endl;
-
-    DragonBaby *db = new BarrierSuit;
-    Dragon *dragon = new Dragon{db, babyPos};
-    unique_ptr<Item> item (db); // needs to take a pointer to a dragon
-    unique_ptr<Enemy> enemy (dragon); // needs to take a pointer to a dragonBaby
+    unique_ptr<DragonBaby> db = make_unique<BarrierSuit>();
+    unique_ptr<Enemy> enemy = make_unique<Dragon>(db.get(), babyPos); // needs to take a pointer to a dragonBaby
+    unique_ptr<Item> item = move(db); // needs to take a pointer to a dragon
 
     getTile(itemIdx)->moveItem(item);
     getTile(dragonIdx)->moveEnemy(enemy);

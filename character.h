@@ -21,21 +21,12 @@ class Character {
         void setDef(int newDef);
         void setGold(int newGold);
 
-        
-        /* State getState();
-        void setState(State newPos); */
-
         bool isDead();
 
         virtual int attack(Character &victim);
         virtual bool move(Direction dir);
 
-        void init(std::unique_ptr<Info> infoToMove);
-
-       virtual ~Character(); // causing issues with make for some reason
-
-       
-
+       virtual ~Character();
 };
 
 #endif

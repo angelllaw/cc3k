@@ -4,7 +4,7 @@
 using namespace std;
 
 Phoenix::Phoenix() {
-    init(unique_ptr<Info> (new Info {50, 35, 20, 1}));
+    stats = make_unique<Info>(Info{50, 35, 20, 1});
 }
 
 Phoenix::~Phoenix() {}

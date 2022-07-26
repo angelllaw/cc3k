@@ -20,17 +20,17 @@ using namespace std;
 unique_ptr<Enemy> EnemyFactory::initializeEnemy(EnemyType type) {
     switch (type) {
         case EnemyType::Werewolf:
-            return unique_ptr<Enemy> (new Werewolf());
+            return make_unique<Werewolf>();
         case EnemyType::Vampire:
-            return unique_ptr<Enemy> (new Vampire());
+            return make_unique<Vampire>();
         case EnemyType::Goblin:
-            return unique_ptr<Enemy> (new Goblin());
+            return make_unique<Goblin>();
         case EnemyType::Troll:
-            return unique_ptr<Enemy> (new Troll());
+            return make_unique<Troll>();
         case EnemyType::Phoenix:
-            return unique_ptr<Enemy> (new Phoenix());
+            return make_unique<Phoenix>();
         case EnemyType::Merchant:
-            return unique_ptr<Enemy> (new Merchant());
+            return make_unique<Merchant>();
         default:
             return unique_ptr<Enemy> (nullptr);
     }
@@ -56,10 +56,8 @@ void EnemyFactory::generateEnemies(Floor &floor) {
         unique_ptr<Enemy> enemy = initializeEnemy(type);
 
         if (i == 0) {
-            cout << "Compass with enemy at :" << toPlace->getState().x << " " << toPlace->getState().y << endl;
             enemy->setCompass(true);
         }
         toPlace->moveEnemy(enemy);
-        
     }
 }

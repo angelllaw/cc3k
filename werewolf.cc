@@ -4,7 +4,7 @@
 using namespace std;
 
 Werewolf::Werewolf() {
-    init(unique_ptr<Info> (new Info {120, 30, 5, 1}));
+    stats = make_unique<Info>(Info{120, 30, 5, 1});
 }
 
 Werewolf::~Werewolf() {}

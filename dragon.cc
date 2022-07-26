@@ -8,7 +8,7 @@
 using namespace std;
 
 Dragon::Dragon(DragonBaby *baby, State &babyPos) : baby{baby}, babyPos{babyPos} {
-    init(unique_ptr<Info> (new Info {150, 20, 20, 0}));
+    stats = make_unique<Info>(Info{150, 20, 20, 0});
 }
 
 Dragon::~Dragon() {}

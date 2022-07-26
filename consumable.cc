@@ -7,8 +7,7 @@
 #include <string>
 using namespace std;
 
-// MIL IS THERE A DIFFERENCE IF: effect{unique_ptr<Info> (new Info {0, 0, 0, 0})effect{new Info {0, 0 , 0, 0}
-Consumable::Consumable(ItemType item) : effect{new Info {0, 0 ,0, 0}} {
+Consumable::Consumable(ItemType item) : effect{make_unique<Info>(Info{0, 0 ,0, 0})} {
     switch (item)  {
         case ItemType::RH: // +10 HP (cannot exceed max)*
             effect->hp = 10;

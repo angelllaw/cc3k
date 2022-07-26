@@ -27,7 +27,7 @@ void ItemFactory::generatePotions(Floor &floor) {
         Tile *toPlace = floor.getTile(stringIdx); // get tile
         assert (toPlace->getType() == TileType::MoveableTile);
         
-        unique_ptr<Item> item (new Consumable{cur});
+        unique_ptr<Item> item = make_unique<Consumable>(cur);
         toPlace->moveItem(item); // place item
     }
 }
@@ -57,13 +57,10 @@ void ItemFactory::generateTreasures(Floor &floor) {
 
             State babyPos = floor.idxToPos(itemIdx);
 
-            DragonBaby *db = new DragonHorde;
-            Dragon *dragon = new Dragon{db, babyPos};
-            // dragon->setDragonBaby(db);
-            // db->setDragonMomma(dragon);
-
-            unique_ptr<Item> item (db); // needs to take a pointer to a dragon
-            unique_ptr<Enemy> enemy (dragon); // needs to take a pointer to a dragonBaby
+            unique_ptr<DragonBaby> db = make_unique<DragonHorde>();
+            unique_ptr<Enemy> enemy = make_unique<Dragon>(db.get(), babyPos); // needs to take a pointer to a dragonBaby
+            unique_ptr<Item> item = move(db); // needs to take a pointer to a dragon
+            
             toPlaceItem->moveItem(item); // place item
             toPlaceDragon->moveEnemy(enemy);
 
@@ -71,7 +68,7 @@ void ItemFactory::generateTreasures(Floor &floor) {
             int stringIdx = r.randomStrIdx(floor); // get random string index in a random chamber
             Tile *toPlace = floor.getTile(stringIdx); // get tile
             assert (toPlace->getType() == TileType::MoveableTile);
-            unique_ptr<Item> item (new Consumable{cur});
+            unique_ptr<Item> item = make_unique<Consumable>(cur);
             toPlace->moveItem(item); // place item
         }
     }

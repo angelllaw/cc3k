@@ -14,7 +14,7 @@ class Elf;
 class Dwarf;
 class Orc;
 
-enum class ItemType { RH, BA, BD, PH, WA, WD, NormalGold, SmallHorde, MerchantHorde, DragonHorde, DragonBaby, Compass };
+enum class ItemType { RH, BA, BD, PH, WA, WD, NormalGold, SmallHorde, MerchantHorde, DragonHorde };
 
 class Item {
 

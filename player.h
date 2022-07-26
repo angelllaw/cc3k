@@ -9,8 +9,6 @@ class Item;
 
 class Player : public Character {
     protected:
-        // const int atk = 20; // human default
-        // const int def = 20; // human defualt
         std::unique_ptr<const Info> defaultStats;
         
         std::unique_ptr<State> pos;
