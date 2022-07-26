@@ -22,6 +22,7 @@ Direction getDirection();
 string directionString(Direction dir);
 void printGoodBye();
 bool attemptMove(Floor &f, shared_ptr<Player> pc, Direction dir, string &action);
+string numToStr(int num);
 
 int main (int argc, char *argv[]) {
 
@@ -136,7 +137,6 @@ int main (int argc, char *argv[]) {
             while (cin >> cmd) {
                 action = "Action: ";
                 Direction dir;
-                // State nextPos;
                 switch(cmd) {
                     // MOVE
                     case 'n':
@@ -184,9 +184,9 @@ int main (int argc, char *argv[]) {
                             }
                             // There is a valid item to use
                             if (f.getTile(itemLoc)->getItem()->getChar() == 'C') {
-                                action += "PC uses Compass. Stairs Appear.";
+                                action += "PC uses Compass. Stairs Appear. ";
                             } else if (f.getTile(itemLoc)->getItem()->getChar() == 'B') {
-                                action += "PC equips Barrier Suit.";
+                                action += "PC equips Barrier Suit. ";
                             } else {
                                 action += "PC uses " + f.getTile(itemLoc)->getItem()->getPotion() + ". ";
                             }
@@ -202,17 +202,11 @@ int main (int argc, char *argv[]) {
                             Tile *t = f.getTile(enemyLoc);
                             if (t->hasEnemy()) {
                                 int damage = pc->attack(*t->getEnemy()); // enemy is not null
-
-                                stringstream ss;
-                                ss << damage;
-                                action += "PC deals " + ss.str() + " damage to ";
+                                action += "PC deals " + numToStr(damage) + " damage to ";
                                 action += t->getEnemy()->getChar();
 
                                 int hp = t->getEnemy()->getInfo().hp;
-                                ss.str("");
-                                ss << hp;
-                                // cout << "HP:" << hp << endl;
-                                action += " (" + ss.str() + " HP). ";
+                                action += " (" + numToStr(hp)  + " HP). ";
                             } else {
                                 action += "PC attacks nothing. ";
                             }
@@ -308,9 +302,16 @@ bool attemptMove(Floor &f, shared_ptr<Player> pc, Direction dir, string &action)
     if (f.validPlayerTile(nextPos) == 1) {
         pc->move(dir);
         action += "PC moves " + directionString(dir);
+        f.checkSurroundings(action);
         return true;
     } else {
         cout << "Invalid Move." << endl;
         return false;
     }
+}
+
+string numToStr(int num) {
+    stringstream ss;
+    ss << num;
+    return ss.str();
 }

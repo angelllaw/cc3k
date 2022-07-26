@@ -36,3 +36,6 @@ void Merchant::reset() {
     hostile = false;
 }
 
+bool Merchant::isHostile() {
+    return hostile;
+}

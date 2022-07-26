@@ -53,13 +53,13 @@ void Consumable::useOn(Human *p) {
 }
 
 // gold is doubled in value
-void Consumable::useOn(Elf *p) {
+void Consumable::useOn(Dwarf *p) {
     effect->gold *= 2;
     p->getInfo().add(*effect);
 }
 
 // negative positions have the opposite effect
-void Consumable::useOn(Dwarf *p) {
+void Consumable::useOn(Elf *p) {
     if (effect->hp < 0) effect->hp *= -1;
     if (effect->atk < 0) effect->atk *= -1;
     if (effect->def < 0) effect->def *= -1;

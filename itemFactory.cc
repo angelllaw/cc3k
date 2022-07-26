@@ -73,5 +73,3 @@ void ItemFactory::generateTreasures(Floor &floor) {
         }
     }
 }
-
-

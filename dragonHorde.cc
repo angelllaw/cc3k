@@ -8,19 +8,19 @@
 // all the same function:
 
 void DragonHorde::useOn(Human *p) {
-    if (isDragonDead()) p->addGold(gold);
+    if (hasNoProtector()) p->addGold(gold);
 }
 
 void DragonHorde::useOn(Elf *p) {
-    if (isDragonDead()) p->addGold(gold);
+    if (hasNoProtector()) p->addGold(gold);
 }
 
 void DragonHorde::useOn(Dwarf *p) {
-    if (isDragonDead()) p->addGold(gold);
+    if (hasNoProtector()) p->addGold(gold * 2);
 }
 
 void DragonHorde::useOn(Orc *p) {
-    if (isDragonDead()) p->addGold(gold);
+    if (hasNoProtector()) p->addGold(gold);
 }
 
 char DragonHorde::getChar() {
@@ -30,4 +30,3 @@ char DragonHorde::getChar() {
 bool DragonHorde::isGold() {
     return true;
 }
-

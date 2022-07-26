@@ -57,6 +57,7 @@ class Floor {
         State idxToPos(int strIdx);
         
         bool onStairs(); 
+        void checkSurroundings(string &action);
 };
 
 #endif

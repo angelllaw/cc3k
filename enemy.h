@@ -22,6 +22,7 @@ class Enemy : public Character {
     virtual int goldUponDead();
     virtual bool dropsMerchantHorde();
     virtual bool isStationary();
+    virtual bool isHostile();
 
     virtual char getChar() = 0;
 

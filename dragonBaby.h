@@ -14,7 +14,7 @@ class DragonBaby : public Item {
     // no need for DragonBaby to override the useOn functions since there will be no DragonBaby object (it's abstract)
     // void setDragonMomma(Dragon *momma);
     virtual ~DragonBaby();
-    bool isDragonDead();
+    bool hasNoProtector();
     void setProtector();
     bool validUse() override;
 };

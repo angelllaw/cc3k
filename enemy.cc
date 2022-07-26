@@ -48,3 +48,6 @@ bool Enemy::isStationary() {
     return false;
 }
 
+bool Enemy::isHostile() {
+    return true;
+}

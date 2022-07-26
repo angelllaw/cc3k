@@ -25,4 +25,3 @@ string Human::printRace() {
 int Human::getScore() {
     return stats->gold * 1.5;
 }
-

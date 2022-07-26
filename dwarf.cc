@@ -21,5 +21,3 @@ void Dwarf::useItem(Item *i) {
 string Dwarf::printRace() {
     return "Dwarf";
 }
-
-

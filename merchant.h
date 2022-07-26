@@ -16,6 +16,7 @@ class Merchant : public Enemy {
     bool dropsMerchantHorde() override;
 
     char getChar() override;
+    bool isHostile() override;
 
     static void reset();
 };

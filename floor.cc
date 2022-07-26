@@ -118,10 +118,10 @@ void Floor::layout(string map) {
                 for (int dRow = row - 1; dRow >= 0 && dRow < height && dRow <= row + 1; ++dRow) {
                     for (int dCol = col - 1; dCol >= 0 && dCol < width && dCol <= col + 1; ++dCol) {
                         char neighbor = map[dRow * width + dCol];
-                        if (neighbor == '9') {
+                        if (neighbor == '9' && !theFloor[dRow][dCol]->hasItem()) { // if floor has item, then the baby already protected
                             baby = make_unique<DragonHorde>();
                             foundBaby = true;
-                        } else if (neighbor == 'B') {
+                        } else if (neighbor == 'B' && !theFloor[dRow][dCol]->hasItem()) {
                             baby = make_unique<BarrierSuit>();
                             foundBaby = true;
                         }
@@ -228,11 +228,9 @@ void Floor::print(string action) {
                 cout << "\033[36m" << '@' << "\033[0m";
             } else if (curX == stairs.x && curY == stairs.y && pc->hasCompass()) { // stairs
                 cout << "\033[44m" << '\\' << "\033[0m";
-                // char print = pc->hasCompass() ? '.' : '\\'; cout << print;
             } else {
                 cout << *col;
             }
-
         }
         cout << endl;
     }
@@ -392,7 +390,6 @@ int Floor::validPlayerTile(State &pos) {
         if (t->hasEnemy()) return -1;
         if (t->hasItem()) {
             if (t->hasGold() && t->getItem()->validUse()) {
-                cout << "player stepping on gold" << endl;
                 pc->useItem(t->getItem().get());
                 t->removeEntities();
                 return 1;
@@ -468,4 +465,35 @@ int Floor::rNeighbourStrIdx(int strIdx) {
 bool Floor::onStairs() {
     State pos = pc->getState();
     return stairs.x == pos.x && stairs.y == pos.y;
+}
+
+void Floor::checkSurroundings(string &action) {
+    State curPos = pc->getState();
+    bool attacked = false;
+    int potions = 0;
+    for (int y = curPos.y - 1; y >= 0 && y < height && y <= curPos.y + 1; ++y) {
+        for (int x = curPos.x - 1; x >= 0 && x < width && x <= curPos.x + 1; ++x) {
+            Tile *t = getTile({x, y});
+            if (t->hasEnemy()) {
+                if (!t->getEnemy()->isHostile()) continue; // don't implicitly attack merchants (non-hostile)
+                int damage = pc->attack(*t->getEnemy()); // enemy is not null
+                action += " and deals " + intToStr(damage) + " damage to ";
+                action += t->getEnemy()->getChar();
+
+                int hp = t->getEnemy()->getInfo().hp;
+                action += " (" + intToStr(hp)  + " HP). ";
+                attacked = true;
+                break;
+            } else if (t->hasItem() && t->getItem()->getChar() == 'P') {
+                potions++;
+            }
+        }
+        if (attacked) break; // player only implicitly attacks one enemy
+    }
+    if (potions > 0 ) {
+        action += (attacked ? "PC " : " and ");
+        action += "sees " + intToStr(potions) + " unknown potion(s). ";
+    } else if (!attacked) {
+        action += ". ";
+    }
 }

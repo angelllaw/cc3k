@@ -17,8 +17,11 @@ Tile::~Tile() {}
 
 void Tile::removeEntities() {
     if (hasEnemy()) {
-        if (enemy->hasCompass()) item = make_unique<Compass>();
-        if (enemy->dropsMerchantHorde()) item = make_unique<Consumable>(ItemType::MerchantHorde);
+        if (enemy->hasCompass()) {
+            item = make_unique<Compass>();
+        } else if (enemy->dropsMerchantHorde()) {
+            item = make_unique<Consumable>(ItemType::MerchantHorde);
+        }
         enemy.reset(nullptr);
         return;
     }
@@ -100,11 +103,17 @@ std::ostream &operator<<(std::ostream &out, const Tile &td) {
             if (td.item.get() == nullptr && td.enemy.get() == nullptr) {
                 out << '.';
             } else if (td.item.get() == nullptr) {
+                /*
                 if (td.enemy->hasCompass()) {
                     // change this colour to see where compass is
                     out << "\033[31m" << td.enemy->getChar() << "\033[0m";
-                } else {
+                    break;
+                }
+                */
+                if (!td.enemy->isHostile()) {
                     out << "\033[31m" << td.enemy->getChar() << "\033[0m";
+                } else { // hostile enemies
+                    out << "\033[31;1m" << td.enemy->getChar() << "\033[0m";
                 }
             } else {
                 char item = td.item->getChar();
@@ -113,11 +122,10 @@ std::ostream &operator<<(std::ostream &out, const Tile &td) {
                 } else if (item == 'P') {
                     out << "\033[35m" << item << "\033[0m";
                 } else {
-                    out << "\033[32m" << item << "\033[0m";
+                    out << "\033[32m" << item << "\033[0m"; // barrier suit, compass
                 }
             }
             break;
     }
     return out;
 }
-
