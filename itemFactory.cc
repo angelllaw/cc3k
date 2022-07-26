@@ -6,41 +6,21 @@
 #include "tile.h"
 #include "dragonHorde.h"
 #include "dragon.h"
-#include "enemy.h" // necessary?
+#include "enemy.h" 
 #include <memory>
 
 #include <iostream>
-#include "state.h" // DELETE
+#include "state.h" 
 #include <cassert>
 
 using namespace std;
 
-void ItemFactory::generatePotions(Floor &floor) {
+void generateItems(Floor &floor, vector<ItemType> itemsProb, int numItems) {
     Random r;
-    vector<ItemType> potions { ItemType::RH, ItemType::BA, ItemType::BD, ItemType::PH, ItemType::WA, ItemType::WD };
-
-    for (int i = 0; i < 10; i++) {
-        int idx = r.randomNum(6); // random potion
-        ItemType cur = potions[idx];
-        
-        int stringIdx = r.randomStrIdx(floor); // get random string index in a random chamber
-        Tile *toPlace = floor.getTile(stringIdx); // get tile
-        assert (toPlace->getType() == TileType::MoveableTile);
-        
-        unique_ptr<Item> item = make_unique<Consumable>(cur);
-        toPlace->moveItem(item); // place item
-    }
-}
-
-void ItemFactory::generateTreasures(Floor &floor) {
-    Random r;
-    // 2. generate 10 treasures
-    vector<ItemType> treasures { ItemType::NormalGold, ItemType::NormalGold, ItemType::NormalGold, ItemType::NormalGold,  
-                                ItemType::NormalGold, ItemType::DragonHorde, ItemType::SmallHorde, ItemType::SmallHorde };
-
-    for (int i = 0; i < 10; i++) {
-        int idx = r.randomNum(8); // random treasure
-        ItemType cur = treasures[idx];
+    int size = itemsProb.size();
+    for (int i = 0; i < numItems; i++) {
+        int idx = r.randomNum(size); // random items
+        ItemType cur = itemsProb[idx];
 
         if (cur == ItemType::DragonHorde) {
             int itemIdx;
@@ -72,4 +52,16 @@ void ItemFactory::generateTreasures(Floor &floor) {
             toPlace->moveItem(item); // place item
         }
     }
+}
+
+void ItemFactory::generatePotions(Floor &floor) {
+    vector<ItemType> potions { ItemType::RH, ItemType::BA, ItemType::BD, ItemType::PH, ItemType::WA, ItemType::WD };
+    generateItems(floor, potions, 10);
+}
+
+void ItemFactory::generateTreasures(Floor &floor) {
+    // 2. generate 10 treasures
+    vector<ItemType> treasures { ItemType::NormalGold, ItemType::NormalGold, ItemType::NormalGold, ItemType::NormalGold,  
+                                ItemType::NormalGold, ItemType::DragonHorde, ItemType::SmallHorde, ItemType::SmallHorde };
+    generateItems(floor, treasures, 10);
 }

@@ -20,7 +20,7 @@ void DragonHorde::useOn(Dwarf *p) {
 }
 
 void DragonHorde::useOn(Orc *p) {
-    if (hasNoProtector()) p->addGold(gold);
+    if (hasNoProtector()) p->addGold(gold / 2);
 }
 
 char DragonHorde::getChar() {
