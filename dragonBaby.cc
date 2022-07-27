@@ -1,9 +1,6 @@
 #include "dragonBaby.h"
-#include "info.h"
-#include "dragon.h"
 #include <iostream>
 
-// probably not necessary, this is a pure virtual class
 DragonBaby::~DragonBaby() {}
 
 bool DragonBaby::hasNoProtector() {

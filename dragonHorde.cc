@@ -3,7 +3,6 @@
 #include "elf.h"
 #include "dwarf.h"
 #include "orc.h"
-#include <iostream>
 
 // all the same function:
 

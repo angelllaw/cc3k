@@ -10,10 +10,7 @@
 #include "troll.h"
 #include "phoenix.h"
 #include "merchant.h"
-
 #include <memory>
-#include <iostream>
-#include <cassert>
 
 using namespace std;
 
@@ -51,7 +48,6 @@ void EnemyFactory::generateEnemies(Floor &floor) {
         
         int stringIdx = r.randomStrIdx(floor); // get random string index in a random chamber
         Tile *toPlace = floor.getTile(stringIdx); // get tile
-        assert (toPlace->getType() == TileType::MoveableTile);
 
         unique_ptr<Enemy> enemy = initializeEnemy(type);
 

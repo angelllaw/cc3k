@@ -3,9 +3,8 @@
 
 #include <string>
 #include <vector>
-#include <map>
 #include <memory>
-#include "direction.h" // likley wrong, delete
+#include "direction.h" 
 #include "state.h"
 #include "chamber.h"
 #include "tile.h"
@@ -16,7 +15,6 @@ class Player;
 class Item;
 
 class Floor {
-        // TODO: add these fields to UML
         const int width = 79;
         const int height = 25;
         std::shared_ptr<Player> pc;

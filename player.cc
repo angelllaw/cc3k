@@ -1,6 +1,5 @@
 #include "player.h"
 #include <algorithm>
-#include <iostream>
 #include <cmath>
 #include "info.h"
 #include "state.h"
@@ -11,13 +10,6 @@ Player::~Player() {}
 
 Player::Player(int hp, int atk, int def) : defaultStats{make_unique<const Info>(Info{hp, atk, def, 0})}, pos{make_unique<State>()} {}
 
-/*
-Player::Player(Race race, Info stats) : atk{stats.atk}, def{stats.def}, race{race}, pos{make_unique<State>()} {
-    this->stats = make_unique<Info>(Info{140, 20, 20, 0});
-    pos->x = 0;
-    pos->y = 0;
-}
-*/
 int Player::getAttacked(int damage) {
     if (hasBarrierSuit) damage /= 2;
     int oldHp = getInfo().hp;
@@ -51,7 +43,7 @@ void Player::addGold(int amount) {
     stats->gold = stats->gold + amount;
 }
 
-bool Player::move(Direction dir) {
+void Player::move(Direction dir) {
     int curX = this->getState().x;
     int curY = this->getState().y;
     int newX = curX;

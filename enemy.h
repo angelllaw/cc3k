@@ -2,15 +2,12 @@
 #define ENEMY_H
 
 #include "character.h"
-#include "compass.h"
-
-
 
 class Enemy : public Character {
-    protected:
+   protected:
     bool compass = false;
 
-    public:
+   public:
     bool hasMoved = false;
 
     int getAttacked(int damage) override;

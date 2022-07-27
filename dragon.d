@@ -1,2 +1,2 @@
-dragon.o: dragon.cc dragon.h enemy.h character.h compass.h item.h state.h \
- info.h dragonBaby.h
+dragon.o: dragon.cc dragon.h enemy.h character.h state.h info.h \
+ dragonBaby.h item.h

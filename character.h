@@ -24,7 +24,6 @@ class Character {
         bool isDead();
 
         virtual int attack(Character &victim);
-        virtual bool move(Direction dir);
 
        virtual ~Character();
 };

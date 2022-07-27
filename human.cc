@@ -1,9 +1,7 @@
 #include "human.h"
 #include "info.h"
 #include "item.h"
-#include "state.h"
 #include <memory>
-#include <iostream>
 
 using namespace std;
 

@@ -2,7 +2,6 @@
 #define DRAGONHORDE_H
 
 #include "dragonBaby.h"
-#include "item.h" // get rid of, temporary
 
 class Human;
 class Elf;

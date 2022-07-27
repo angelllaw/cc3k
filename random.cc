@@ -10,8 +10,6 @@
 #include <random>
 #include <chrono>
 
-#include <cassert>
-
 using namespace std;
 
 // This is an extremely expensive and dumb way of generating random numbers
@@ -39,7 +37,6 @@ int Random::randomNum(int top) {
 
 int Random::randomStrIdx(Floor &floor) {
     while (true) {
-        assert (floor.getNumChambers());
         int cIdx = randomNum(floor.getNumChambers()); // random chamber
         int sizeOfChamber = floor.getChamberSize(cIdx);
         int tileIdx = randomNum(sizeOfChamber); // random tile in chamber

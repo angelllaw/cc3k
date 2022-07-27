@@ -9,8 +9,7 @@ class Floor;
 class Enemy;
 
 class EnemyFactory {
-    
-    public:
+   public:
     void generateEnemies(Floor &floor);
     std::unique_ptr<Enemy> initializeEnemy(EnemyType type);
 };

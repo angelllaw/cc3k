@@ -97,7 +97,7 @@ int main (int argc, char *argv[]) {
 
         Random r;
         int barrierSuitFloor = r.randomNum(5);
-        // barrierSuitFloor = 0; // remove later (for testing rn)
+        // barrierSuitFloor = 0; // (for testing)
         
         int floorNum = 0;
 

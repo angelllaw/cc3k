@@ -3,11 +3,9 @@
 #include "consumable.h"
 #include "enemy.h"
 #include "state.h"
-
+#include "compass.h"
 #include <iostream>
 #include <memory>
-
-#include <cassert>
 
 using namespace std;
 
@@ -65,20 +63,14 @@ State Tile::getState() {
 }
 
 void Tile::moveEnemy(unique_ptr<Enemy> &other) {
-    // assert (enemy.get() == nullptr); // DELETE
-    assert (other.get() != nullptr); 
     // what is currently at enemy is deleted
     // but it should be okay since enemy should b nullptr
     enemy = move(other);
     // other.enemy is set to nullptr
-    assert (other.get() == nullptr); // DELETE
 }
 
 void Tile::moveItem(unique_ptr<Item> &other) {
-    assert (item.get() == nullptr);
-    assert (other.get() != nullptr);
     item = move(other);
-    assert (other.get() == nullptr);
 }
 
 std::ostream &operator<<(std::ostream &out, const Tile &td) {
@@ -103,13 +95,10 @@ std::ostream &operator<<(std::ostream &out, const Tile &td) {
             if (td.item.get() == nullptr && td.enemy.get() == nullptr) {
                 out << '.';
             } else if (td.item.get() == nullptr) {
-                /*
                 if (td.enemy->hasCompass()) {
-                    // change this colour to see where compass is
-                    out << "\033[31m" << td.enemy->getChar() << "\033[0m";
+                    out << "\033[32m" << td.enemy->getChar() << "\033[0m";
                     break;
                 }
-                */
                 if (!td.enemy->isHostile()) {
                     out << "\033[31m" << td.enemy->getChar() << "\033[0m";
                 } else { // hostile enemies

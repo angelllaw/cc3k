@@ -3,7 +3,6 @@
 #include "state.h"
 #include "dragonBaby.h"
 #include <memory>
-#include <iostream>
 
 using namespace std;
 

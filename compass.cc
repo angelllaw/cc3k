@@ -4,8 +4,6 @@
 #include "dwarf.h"
 #include "orc.h"
 
-#include <iostream>
-
 void Compass::useOn(Human *p) {
     p->setCompassTrue();
 }

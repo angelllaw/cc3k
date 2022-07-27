@@ -1,13 +1,9 @@
 #include "enemy.h"
 #include <algorithm>
-#include <iostream>
 #include "info.h"
 #include "state.h"
-#include "compass.h"
 
 using namespace std;
-
-// Enemy::~Enemy() {};
 
 int Enemy::getAttacked(int damage) {
     int oldHp = getInfo().hp;

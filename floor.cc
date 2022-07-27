@@ -18,8 +18,6 @@
 #include <iostream>
 #include <iomanip>
 #include <string>
-
-#include <cassert>
 #include <cmath>
 
 using namespace std;
@@ -52,7 +50,7 @@ void Floor::spawn() {
     while (true) {
         int idx = r.randomStrIdx(*this);
         pos = idxToPos(idx);
-        if (abs(pos.x - stairs.x) > 1 && abs(pos.y - stairs.y) > 1) break;
+        if (abs(pos.x - stairs.x) > 1 || abs(pos.y - stairs.y) > 1) break;
     }
     pc->setState(pos);
 
@@ -134,13 +132,11 @@ void Floor::layout(string map) {
                             // tile points to the dragon baby
                             unique_ptr<Item> item = move(baby);
                             theFloor[dRow][dCol]->moveItem(item);
-                            
                             break;
                         }
                     }
                     if (foundBaby) break;
                 }
-                assert (foundBaby == true);
             } else if (getTileId(c) == TileType::MoveableTile) { // all other enemies
                 enemyPosArr.emplace_back(State{col, row});
                 EnemyFactory ef;
@@ -176,7 +172,6 @@ void Floor::layout(string map) {
     Random r;
     int idx = r.randomNum(enemyPosArr.size());
     State compass = enemyPosArr[idx];
-    assert (getTile(compass)->hasEnemy() == true);
     getTile(compass)->getEnemy()->setCompass(true);
 }
 
@@ -255,10 +250,8 @@ void Floor::setChambers(string map) {
             if ('0' <= c && c <= '9') {
                 if ((c - '0') > (int)chambers.size()) {
                     chambers.emplace_back(make_unique<Chamber>());
-                    // cout << "created new chamber" << endl;
                 }
                 chambers[c - '0' - 1]->addTile(idx);
-                // cout << "added (" << col << ", " << row << ") to chamber " << c - '0' - 1 << endl;
             }
         }
     }
@@ -321,7 +314,6 @@ void Floor::updateFloor(string action) {
 
                 State curPos = tile->getState();
                 if (curEnemy->shouldAttack(curPos, pc->getState())) {
-                    // cout << "Yes curEnemy->shouldAttack by: " << curEnemy->getChar() << endl;
                     action += curEnemy->getChar();
                     Random r;
                     if (r.randomNum(2) == 0) {
@@ -345,13 +337,8 @@ void Floor::updateFloor(string action) {
                         if (i == (int)neighbors.size() - 1) newPos = curPos; // checked all, none available, don't move
                     }
 
-                    assert (0 <= newPos.y && newPos.y < height);
-                    assert (0 <= newPos.x && newPos.x < width);
-
                     curEnemy->toggleMove(); // set hasMoved to true
                     Tile *newTile = theFloor[newPos.y][newPos.x].get();
-
-                    assert (newTile->getType() == TileType::MoveableTile);
                     newTile->moveEnemy(curEnemy);
                 }
             }
@@ -396,9 +383,8 @@ int Floor::validPlayerTile(State &pos) {
             }
             return -1; // has a potion or barrierSuit
         }
-    } else if (pos.x == stairs.x && pos.y == stairs.y) {
-        // STAIRS
     }
+    
     return 1; // must be valid Passage, Door, MoveableTile 
 }
 

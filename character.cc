@@ -3,7 +3,6 @@
 #include "state.h"
 #include <cmath>
 #include <memory>
-#include <iostream>
 
 using namespace std;
 
@@ -30,16 +29,10 @@ bool Character::isDead() {
 
 int Character::attack(Character &victim) {
     int damage = ceil((100.0 / (100 + victim.getInfo().def)) * getInfo().atk);
-    // cout << "player def: " << victim.getInfo().def << endl;
-    // cout << "enemy atk: " << getInfo().atk << endl;
     damage = victim.getAttacked(damage);
     // enemies take damage normally
     // players have to check if they have barrier suit + 50% miss rate
     return damage;
-}
-
-bool Character::move(Direction dir) {
-    return false;
 }
 
 Character::~Character() {}

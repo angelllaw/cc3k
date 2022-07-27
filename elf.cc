@@ -1,7 +1,6 @@
 #include "elf.h"
 #include "info.h"
 #include "item.h"
-#include "state.h"
 #include <memory>
 
 using namespace std;

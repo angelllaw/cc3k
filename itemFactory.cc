@@ -8,10 +8,7 @@
 #include "dragon.h"
 #include "enemy.h" 
 #include <memory>
-
-#include <iostream>
 #include "state.h" 
-#include <cassert>
 
 using namespace std;
 
@@ -32,8 +29,6 @@ void generateItems(Floor &floor, vector<ItemType> itemsProb, int numItems) {
             }
             Tile *toPlaceItem = floor.getTile(itemIdx);
             Tile *toPlaceDragon = floor.getTile(dragonIdx);
-            assert (toPlaceItem->getType() == TileType::MoveableTile);
-            assert (toPlaceDragon->getType() == TileType::MoveableTile);
 
             State babyPos = floor.idxToPos(itemIdx);
 
@@ -47,7 +42,6 @@ void generateItems(Floor &floor, vector<ItemType> itemsProb, int numItems) {
         } else {
             int stringIdx = r.randomStrIdx(floor); // get random string index in a random chamber
             Tile *toPlace = floor.getTile(stringIdx); // get tile
-            assert (toPlace->getType() == TileType::MoveableTile);
             unique_ptr<Item> item = make_unique<Consumable>(cur);
             toPlace->moveItem(item); // place item
         }
